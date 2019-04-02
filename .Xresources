@@ -1,0 +1,158 @@
+
+!!! rxvt-unicode hotkey summary:
+
+! Search buffer (Ctrl+f)
+! Scroll up (Ctrl+Up)
+! Scroll down (Ctrl+Down)
+! Create new tab (Shift+Down)
+! Move to tab on the left (Shift+Left)
+! Move to tab on the right (Shift+Right)
+! Increase font size (Ctrl+Plus)
+! Decrease font size (Ctrl+Minus)
+! Paste clipboard (Ctrl+Shift+V) or (Shift+Insert)
+! Open url in browser (Alt+M)
+! Select with mouse to copy
+
+! Colour and font settings
+
+!*foreground: rgb:eb/db/b2
+*foreground: rgb:f5/d7/f5
+
+!*background: rgb:0a/0a/11
+Xft.autohint: 1
+Xft.antialias: 1
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.rgba: rgb
+Xft.lcdfilter: lcddefault
+!Xft.dpi: 72
+
+
+!general dialog box (affects main hostname, username, password text)
+xscreensaver.Dialog.foreground:         #ffffff
+xscreensaver.Dialog.background:         #111111
+xscreensaver.Dialog.topShadowColor:     #111111
+xscreensaver.Dialog.bottomShadowColor:  #111111
+xscreensaver.Dialog.Button.foreground:  #666666
+xscreensaver.Dialog.Button.background:  #ffffff
+
+! URxvt stuff:
+! Detailed list of settings: urxvt --help 2>&1 | sed -n '/:  /s/^ */! URxvt*/gp'
+! Detailed list of colours: for x in {0..8}; do for i in {30..37}; do for a in {40..47}; do echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m "; done; echo; done; done; echo ""
+! Used to be Tala
+!*background: rgb:1d/20/21
+!cool pink #b0497d #F62BED
+URxvt.color0: #1d2021
+URxvt.color1: #ba484d
+URxvt.color2: #60B48A
+URxvt.color3: #d79921
+URxvt.color4: #E62063
+URxvt.color5: #DC8CC3
+URxvt.color6: #88E7C6
+URxvt.color7: #D2E0E9
+URxvt.color8: #766d7f
+URxvt.color9: #f93483
+URxvt.color10: #F62BED
+URxvt.color11: #fabd2f
+URxvt.color12: #83a598
+URxvt.color13: #ff6666
+URxvt.color14: #9289bf
+URxvt.color15: #FFFFFF
+
+URxvt.cursorColor: #61f2b6
+URxvt.cursorColor2: #ff531a
+
+URxvt.cursorBlink:true
+URxvt.cursorUnderline:false
+
+! Tranparency (composite)
+urxvt*depth: 4
+urxvt*background: rgba:0000/0000/0200/c800
+
+! Fake transparency
+!urxvt*transparent: true
+!urxvt*shading:9
+
+! Geometry
+!URxvt*geometry:  240x84
+URxvt*borderless:false
+!URxvt.borderColor: #003333
+!URxvt.internalBorder: 0
+!URxvt.externalBorder: 1
+
+! Perl extensions
+URxvt.perl-ext-common:default,matcher,selection-to-clipboard,searchable-scrollback,resize-font,vtwheel
+
+! Tabbed
+! Comment out line 369 thru 383 to disable switching tab index with CTRL
+URxvt*tabbed.new-button:False
+
+! Tabbed colour scheme
+URxvt*tabbed.tabbar-fg:8
+URxvt*tabbed.tabbar-bg:0
+URxvt*tabbed.tab-fg:6
+URxvt*tabbed.tab-bg:0
+
+! Matcher
+URxvt.matcher.button:3
+URxvt.keysym.M-m: perl:matcher:list
+URxvt.underlineColor:  red
+URxvt.url-launcher: firefox
+
+URxvt*scrollBar:false
+URxvt*searchable-scrollback:C-S-F
+! Manual claims this is deprecated, but it works, unlike URxvt*keysym.C-f:searchable-scrollback:start
+
+! ctrl up, ctrl down to scroll by line
+URxvt.keysym.C-Up: command:\033]720;1\007
+URxvt.keysym.C-Down: command:\033]721;1\007
+
+! Fade text a bit when not focused
+URxvt*fading:30
+URxvt*fadeColor: #111111
+
+! Do not scroll to bottom if tty receives output
+URxvt*scrollTtyOutput:false
+URxvt*scrollWithBuffer:true
+URxvt*scrollTtyKeypress:true
+
+! https://stackoverflow.com/questions/39884093
+! Disable Ctrl-Alt-c & Ctrl-Alt-v bindings (optional)
+URxvt.keysym.C-M-c:    builtin-string:
+URxvt.keysym.C-M-v:    builtin-string:
+
+! Bind Ctrl-Shift-c & Ctrl-Shift-v to copy and paste
+! I dont know why, but I needed to use hex keysym values to get it to work
+URxvt.keysym.C-S-0x43: eval:selection_to_clipboard
+URxvt.keysym.C-S-0x56: eval:paste_clipboard
+
+! Save lines. Set to 0 if using tmux
+URxvt*saveLines:60000
+
+! Start as a login shell by prepending a - to argv[0] of the shell.
+URxvt*loginShell:true
+
+!## Disable ISO 14755 mode so we can use C-S-Left and C-S-Right to move windows/tabs in tmux
+URxvt*iso14755:False
+URxvt*iso14755_52:False
+
+
+!Fonts
+! good fonts include "Terminus" "Termsyn" "fixed"
+URxvt.allow_bold: true
+!URxvt.letterSpace: -1
+
+URxvt.font:xft:Terminus:size=12
+!URxvt*boldFont:xft:Terminus:size=12:weight=bold
+
+! Terminus font under 14px does not have bold typeface by default
+! see https://bbs.archlinux.org/viewtopic.php?id=95199 for fix
+
+! Resize font
+! https://github.com/simmel/urxvt-resize-font/blob/master/resize-font
+URxvt.keysym.C-minus:     resize-font:smaller
+URxvt.keysym.C-plus:      resize-font:bigger
+URxvt.keysym.C-equal:     resize-font:reset
+!URxvt.keysym.C-question:  resize-font:show
+
+URxvt.resize-font.step: 2

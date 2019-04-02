@@ -1,0 +1,264 @@
+#create rofi dropdown menu
+
+[colors]
+background = #000000
+background-alt = 0
+foreground = #bcf5f5
+foreground-alt = #a366ff
+primary = #F62BED
+secondary = #e60053
+alert = #bd2c40
+
+[bar/satsu]
+;monitor = ${env:MONITOR:0}
+width = 100%
+height = 24
+offset-x = 0%
+offset-y = 0%
+radius = 0.0
+fixed-center = true
+enable-ipc = true
+#pseudo-transparency = true
+
+separator = |
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 5
+line-color = #f00
+
+border-size = 1
+border-color = #18184e
+
+padding-left = 2
+padding-right = 0
+
+module-margin-left = 1
+module-margin-right = 1
+
+font-0 = Fixed:pixelsize=14;
+font-1 = unifont:fontformat=truetype:size=12:antialias=false;0
+font-2 = siji:pixelsize=12;1
+font-3 = Fixed:pixelsize=14;
+
+tray-detached = false
+tray-position = right
+tray-padding = 2
+tray-scale = 1.0
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+
+modules-left = alsa cpu memory battery date updates-void keyboard
+modules-center = i3
+modules-right = eth wlan
+
+[module/xwindow]
+#label-font = 3
+type = internal/xwindow
+label = %title:0:30:...%
+#format-foreground = #0000ff
+format-padding = 2
+
+[module/keyboard]
+type = internal/xkeyboard
+format = <label-indicator>
+format-foreground = ${colors.foreground-alt}
+format-padding = 0
+
+label-indicator-padding = 1
+label-indicator = * %name%
+
+; List of indicators to ignore
+#blacklist-0 = num lock
+#blacklist-1 = scroll lock
+
+[module/updates-void]
+type = custom/script
+format-prefix = "xbps: "
+format-prefix-foreground = ${colors.foreground-alt}
+format = <label>
+exec = sudo /home/satsu/scripts/updates-void.sh
+label = "%output%"
+interval = 120
+
+[module/i3]
+type = internal/i3
+#format-prefix = "|"
+#format-suffix = "|"
+format =  <label-state> <label-mode>
+index-sort = true
+enable-scroll = false
+wrapping-scroll = false
+
+label-mode-padding = 4
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline = ${colors.primary}
+label-focused-padding = 2
+label-focused-font = 3
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = 2
+label-unfocused-font = 3
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+label-visible-font = 3
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+label-urgent-font = 3
+
+; Separator in between workspaces
+#label-separator = |
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = "CPU:"
+format-prefix-foreground = ${colors.foreground-alt}
+#format-underline = #f90000
+label = %percentage:2%%
+
+
+[module/memory]
+type = internal/memory
+interval = 4
+format-prefix = "RAM: "
+format-prefix-foreground = ${colors.foreground-alt}
+#format-underline = #4bffdc
+label = %percentage_used%%
+
+
+[module/wlan]
+type = internal/network
+interface = wlp2s0
+interval = 5
+label-connected = %essid% (%local_ip%) |
+
+format-connected = <ramp-signal> <label-connected>
+format-disconnected =
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.foreground-alt}
+
+[module/eth]
+type = internal/network
+interface = virbr0
+interval = 5
+
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+format-disconnected =
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = " %a"
+date-alt = " %A %d/%m/%Y"
+
+time = %H:%M
+time-alt = %H:%M
+
+format-prefix = 
+format-prefix-foreground = ${colors.foreground-alt}
+#format-underline = #0a6cf5
+
+label = %date% %time%
+label-font = 1
+
+
+[module/alsa]
+type = internal/alsa
+
+format-volume = <bar-volume> <label-volume>
+label-volume =
+label-volume-foreground = ${colors.foreground-alt}
+
+format-muted = <label-muted>
+label-muted-foreground = ${colors.foreground-alt}
+label-muted = " sound muted"
+
+bar-volume-width = 21
+bar-volume-foreground-0 = #00811f
+bar-volume-foreground-1 = #00811f
+bar-volume-foreground-2 = #00811f
+bar-volume-foreground-3 = #00811f
+bar-volume-foreground-4 = #00811f
+bar-volume-foreground-5 = #ffef00
+bar-volume-foreground-6 = #ffef00
+bar-volume-foreground-7 = #ffef00
+bar-volume-foreground-8 = #ffef00
+bar-volume-foreground-9 = #ffef00
+bar-volume-foreground-10 = #ff8c00
+bar-volume-foreground-11 = #ff8c00
+bar-volume-foreground-12 = #ff8c00
+bar-volume-foreground-13 = #ff8c00
+bar-volume-foreground-14 = #ff8c00
+bar-volume-foreground-15 = #e70000
+bar-volume-foreground-16 = #e70000
+bar-volume-foreground-17 = #e70000
+bar-volume-foreground-18 = #e70000
+bar-volume-foreground-19 = #e70000
+bar-volume-foreground-20 = #e70000
+
+bar-volume-gradient = false
+bar-volume-indicator = /
+bar-volume-indicator-font = 3
+bar-volume-fill = ,
+bar-volume-fill-font = 3
+bar-volume-empty = .
+bar-volume-empty-font = 3
+bar-volume-empty-foreground = #dfdfdf
+
+[module/battery]
+type = internal/battery
+battery = BAT1
+adapter = ACAD
+full-at = 99
+
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = #00cc00
+
+format-discharging = <animation-discharging> <label-discharging>
+format-discharging-underline =#ffb52a
+
+#format-full-suffix = " |"
+format-full-prefix = " "
+format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-underline = #000000
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-foreground = ${colors.foreground-alt}
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-framerate = 450
+
+animation-discharging-0 = 
+animation-discharging-1 = 
+animation-discharging-2 = 
+animation-discharging-foreground = ${colors.foreground-alt}
+animation-discharging-framerate = 400

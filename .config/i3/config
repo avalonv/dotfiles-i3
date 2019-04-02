@@ -1,0 +1,418 @@
+#=====================
+#=====VARIABLES=======
+#=====================
+
+# workspace names
+set $mod Mod4
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "0"
+
+# scratchpad window names
+set $W1_name "@hell"
+set $W2_name "@man"
+set $W3_name "@ranger"
+
+# monitor names
+set $main "eDP"
+set $HDMI1 "HDMI-A-0"
+
+font pango:terminus, Icons 12
+
+
+#=====================
+#=====EXEC ONCE=======
+#=====================
+
+exec --no-startup-id pulseaudio --start &
+exec --no-startup-id xrdb ~/.Xresources && xscreensaver -no-splash &
+exec --no-startup-id feh --bg-fill ~/Pictures/Wallpapers/stuffy.png
+exec --no-startup-id setxkbmap -layout us -variant altgr-intl -option nodeadkeys
+exec --no-startup-id xset b off
+exec --no-startup-id sudo xbacklight -set 50
+exec --no-startup-id xset s 30 30
+exec --no-startup-id "pgrep -f xscreen_suspend.sh || ~/scripts/xscreen_suspend.sh"
+exec --no-startup-id "sleep 5 && $HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
+
+
+
+#=====================
+#=====EXEC ALWAYS=====
+#=====================
+
+# Launch redshift, dunst, polybar, compton, and all scratchpads at once, relaunch if it does not exist
+exec_always --no-startup-id xset +dpms
+exec_always --no-startup-id xset dpms 0 120 300
+#exec_always --no-startup-id xfce4-power-manager &
+
+
+#=====================
+#======BINDINGS=======
+#=====================
+
+# start a terminal
+bindsym $mod+Return exec --no-startup-id urxvt &, focus
+
+# restart session
+#bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Control+r exec --no-startup-id "$HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
+bindsym $mod+End exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# sound control
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer sset Master "5%+"
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer sset Master "5%-"
+bindsym XF86AudioMute        exec  --no-startup-idamixer set Master toggle
+
+# screen brightness
+bindsym XF86MonBrightnessUp         exec --no-startup-id sudo xbacklight -inc 4
+bindsym XF86MonBrightnessDown       exec --no-startup-id sudo xbacklight -dec 4
+bindsym shift+XF86MonBrightnessUp   exec --no-startup-id sudo xbacklight -inc 1
+bindsym shift+XF86MonBrightnessDown exec --no-startup-id sudo xbacklight -dec 1
+
+# rofi show progrmans
+bindsym $mod+m exec "rofi -modi 'drun,run' -show drun -sidebar-mode -matching regex -no-drun-show-actions -show-icons -lines 38 -width 18 -location 1 -padding 1 -monitor -4 -drun-display-format {name}"
+
+# rofi show windows
+bindsym $mod+Tab exec "rofi -modi 'window,ssh' -show window -sidebar-mode -show-icons -icon-theme Papirus -no-auto-select -matching regex -lines 10 -fixed-num-lines 5 -width 68 -location 0 -monitor -4 -window-format ' {c:8} >  {{w}} {n11} |  {t:80}'"
+
+# rofi other
+#bindsym $mod+Shift+m     exec rofi -show run
+#bindsym $mod+Control+s   exec rofi -show ssh
+#bindsym $mod+Control+k   exec rofi -show keys -widht -70
+
+# hide/show polybar
+bindsym $mod+Home exec --no-startup-id polybar-msg cmd toggle
+
+# take screenshot of focused window/selected region
+bindsym --release $mod+Shift+p     exec --no-startup-id scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+bindsym --release $mod+Print       exec --no-startup-id scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+bindsym --release $mod+p           exec --no-startup-id scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+
+# lock screen
+bindsym $mod+Control+l focus output primary; exec --no-startup-id $HOME/scripts/xscreen_lock.sh
+
+
+#=====================
+#====WIN BINDINGS=====
+#=====================
+
+# use mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# focus
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# toggle tiling/floating
+bindsym $mod+space floating toggle
+
+# change focus between tiling/floating
+bindsym $mod+grave focus mode_toggle
+
+# focus the parent/child container
+bindsym $mod+a focus parent
+bindsym $mod+d focus child
+
+# move focused
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+bindsym $mod+Shift+Left move left 30px
+bindsym $mod+Shift+Down move down 30px
+bindsym $mod+Shift+Up move up 30px
+bindsym $mod+Shift+Right move right 30px
+
+# i3_movecorner.sh
+bindsym $mod+KP_End   exec --no-startup-id ~/scripts/i3_movecorner.sh 1
+bindsym $mod+KP_Down  exec --no-startup-id ~/scripts/i3_movecorner.sh 2
+bindsym $mod+KP_Next  exec --no-startup-id ~/scripts/i3_movecorner.sh 3
+bindsym $mod+KP_Left  exec --no-startup-id ~/scripts/i3_movecorner.sh 4
+bindsym $mod+KP_Begin exec --no-startup-id ~/scripts/i3_movecorner.sh 5
+bindsym $mod+KP_Right exec --no-startup-id ~/scripts/i3_movecorner.sh 6
+bindsym $mod+KP_Home  exec --no-startup-id ~/scripts/i3_movecorner.sh 7
+bindsym $mod+KP_Up    exec --no-startup-id ~/scripts/i3_movecorner.sh 8
+bindsym $mod+KP_Prior exec --no-startup-id ~/scripts/i3_movecorner.sh 9
+
+#bindsym $mod+Shift+c move position center
+bindsym $mod+c move position mouse
+
+# split in vertical, horizontal orientation
+bindsym $mod+v split v
+bindsym $mod+h split h
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# enter fullscreen
+bindsym $mod+f fullscreen toggle
+
+
+#=====================
+#=====WIN OPTIONS=====
+#=====================
+
+# title styles
+#for_window [class=".*"] title_format "<b>%title</b>"
+for_window [class="Firefox"] title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
+for_window [class="URxvt"] title_format "<span foreground='pink'><b> >_ </b></span><span foreground='grey'>%title</span>"
+
+# launch as floating
+for_window [class="peek"] floating enable
+for_window [class="Pqiv"] floating enable
+for_window [class="radeon-profile"] floating enable
+for_window [class="XTerm"] floating enable
+#for_window [class="Steam"] floating enable
+for_window [class="feh"] floating enable
+for_window [class="VirtualBox Machine"] floating enable
+for_window [class="copyq"] floating enable
+for_window [class=Ristretto] floating enable
+for_window [class="Nitrogen"] floating enable
+#for_window [class="vlc"] floating enable
+for_window [class="Xfce4-panel"] floating enable
+for_window [class="Mousepad"] floating enable
+for_window [class="mpv"] floating enable
+for_window [class="xev"] floating enable
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="Preferences"] floating enable
+
+for_window [instance="Friends List"] floating enable
+for_window [instance="File Upload"] resize set 520 400
+for_window [instance="^nagbar-cmd"] floating enable
+
+
+# border styles
+smart_borders on
+hide_edge_borders none
+#for_window [focused] border pixel 5
+for_window [class=".*"] border pixel 4
+for_window [instance="^@"] border normal
+for_window [floating] border normal
+
+# other
+#floating_maximum_size 1280 x 900
+focus_follows_mouse no
+default_orientation vertical
+focus_on_window_activation focus
+force_display_urgency_hint 2000 ms
+#mouse_warping none
+
+
+#=====================
+#=====WORKSPACES======
+#=====================
+
+workspace_layout tabbed
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+# assign workspaces to screens
+workspace $ws1 output $main
+workspace $ws2 output $main
+workspace $ws3 output $main
+workspace $ws4 output $main
+workspace $ws5 output $main
+workspace $ws6 output $main
+workspace $ws7 output $main
+workspace $ws8 output $main
+workspace $ws9 output $main
+workspace $ws10 output $main
+
+# assign programs to workspaces
+# actually nvm
+#assign [class="URxvt"] → $ws1
+#assign [class="Firefox"]$ws2
+#assign [class="Nemo"] → $ws3
+#assign [class="Transmission-gtk"] → $ws3
+#assign [class="GParted"] → $ws3
+#assign [class="Atril"] → $ws1
+#assign [class="Parole"] → $ws4
+#assign [class="discord"] → $ws5
+#assign [class="Steam"] → $ws3
+#assign [class="VirtualBox Manager"] → $ws10
+
+# move between workspaces
+bindsym $mod+bracketright workspace next
+bindsym $mod+bracketleft workspace prev
+bindsym $mod+Mod1+Right workspace next
+bindsym $mod+Mod1+Left workspace prev
+
+
+
+#=====================
+#=====SCRATCHPADS=====
+#=====================
+
+# aka "minimizable" windows
+bindsym $mod+plus scratchpad show
+bindsym $mod+BackSpace move scratchpad
+bindsym $mod+Shift+BackSpace [instance="^@"] move scratchpad
+
+# scratchpad 1
+for_window [instance=$W1_name] floating enable
+for_window [instance=$W1_name] resize set 770 400
+for_window [instance=$W1_name] mark W1, move scratchpad
+for_window [instance=$W1_name] sticky enable
+for_window [instance=$W1_name] title_format "<span foreground='$cool_lime'><b>[W1]</b></span><span foreground='$cool_purple'> %title</span>"
+bindsym $mod+Shift+F1 [con_mark="W1"] focus
+bindsym $mod+F1 [instance=$W1_name] scratchpad show
+
+# scratchpad 2
+for_window [instance=$W2_name] floating enable
+for_window [instance=$W2_name] resize set 640 850
+for_window [instance=$W2_name] mark W2, move scratchpad
+for_window [instance=$W2_name] sticky enable
+for_window [instance=$W2_name] title_format "<span foreground='$cool_lime'><b>[W2]</b></span><span foreground='$cool_purple'> %title</span>"
+bindsym $mod+Shift+F2 [con_mark="W2"] focus
+bindsym $mod+F2 [instance=$W2_name] scratchpad show
+
+# ranger
+for_window [instance=$W3_name] floating enable
+for_window [instance=$W3_name] resize set 900 400
+for_window [instance=$W3_name] mark W3, move scratchpad
+for_window [instance=$W3_name] sticky enable
+for_window [instance=$W3_name] title_format "<span foreground='$cool_lime'><b>[W3]</b></span><span foreground='$cool_purple'> %title</span>"
+bindsym $mod+Shift+F3 [con_mark="W3"] focus
+bindsym $mod+F3 [instance=$W3_name] scratchpad show
+
+# top
+#exec urxvt -name ^@gotop -e gotop --rate=0.8 &
+for_window [instance="^@gotop"] floating enable
+for_window [instance="^@gotop"] resize set 600 450
+for_window [instance="^@gotop"] move scratchpad
+for_window [instance="^@gotop"] sticky enable
+bindsym $mod+F12 [instance="^@gotop"] scratchpad show
+
+
+#=====================
+#=======COLOURS=======
+#=====================
+
+set $focus #00b3b3
+set $focus_ind #61f2b6
+set $inact #735787
+set $inact_ind #27213d
+set $unfocus #735787
+set $urgent #ff0000
+set $black #000000
+set $transparent #00001a
+set $cool_pink #F62BED
+set $cool_lime #00ff99
+set $cool_purple #a366ff
+set $light_pink #ff66cc
+
+# class                 <border>        <background>    <text>          <indicator>     <child_border>
+client.focused          $focus          $transparent    #ccffff         $focus_ind      $focus
+client.focused_inactive $inact          $transparent    $inact          $inact          #404040
+client.unfocused        $transparent    $black          $inact          $transparent    $black
+client.urgent           $urgent         $transparent    $urgent         $urgent         $urgent
+client.placeholder      $transparent    $black          $transparent    #222222         $transparent
+client.background       #111
+
+
+#=====================
+#========BAR==========
+#=====================
+# nope
+#bar {
+#    #i3bar_command
+#        colors {
+#                # <border name>      <border>   <background>    <text>
+#                focused_workspace    #735787    $transparent    #4ec493
+#                binding_mode         #7bcdb4    #222222         #94cee0
+#                inactive_workspace   #000000    #000000         #735787
+#                active_workspace     #735787    #000000         #735787
+#                urgent_workspace     #000000    #d67d2a         #000000
+#        }
+#
+#        #font pango:DejaVU Sans Mono, Icons 14
+#        #font pango:monospace 12
+#        strip_workspace_numbers no
+#        position bottom
+#        #status_command i3status
+#        separator_symbol "/"
+#        #mode hide
+#        hidden_state hide
+#        modifier $mod
+#        output none
+#        tray_output none
+#        tray_padding 3
+#}
+
+
+#=====================
+#========MODES========
+#=====================
+# i3-gaps bad
+# resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
+mode "resize" {
+        bindsym j resize shrink width 2 px or 2 ppt
+        bindsym k resize grow height 2 px or 2 ppt
+        bindsym l resize shrink height 2 px or 2 ppt
+        bindsym semicolon resize grow width 2 px or 2 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 18 px or 18 ppt
+        bindsym Down resize grow height 18 px or 18 ppt
+        bindsym Up resize shrink height 18 px or 18 ppt
+        bindsym Right resize grow width 18 px or 18 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Shift+Left resize shrink width 5 px or 5 ppt
+        bindsym Shift+Down resize grow height 5 px or 5 ppt
+        bindsym Shift+Up resize shrink height 5 px or 5 ppt
+        bindsym Shift+Right resize grow width 5 px or 5 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
