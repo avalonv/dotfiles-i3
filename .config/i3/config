@@ -99,13 +99,17 @@ bindsym $mod+Tab exec "rofi -modi 'window,ssh' -show window -sidebar-mode -show-
 bindsym $mod+Home exec --no-startup-id polybar-msg cmd toggle
 
 # take screenshot of focused window/selected region
-bindsym --release $mod+Shift+p     exec --no-startup-id scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
-bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
-bindsym --release $mod+Print       exec --no-startup-id scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
-bindsym --release $mod+p           exec --no-startup-id scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+#bindsym --release $mod+Shift+p     exec --no-startup-id scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+#bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+#bindsym --release $mod+Print       exec --no-startup-id scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+#bindsym --release $mod+p           exec --no-startup-id scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+bindsym --release $mod+Shift+p     exec --no-startup-id maim -m 9 -s ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
+bindsym --release $mod+Shift+Print exec --no-startup-id maim -m 9 -s ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
+bindsym --release $mod+Print       exec --no-startup-id maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
+bindsym --release $mod+p           exec --no-startup-id maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
 
 # lock screen
-bindsym $mod+Control+l focus output primary; exec --no-startup-id $HOME/scripts/xscreen_lock.sh
+bindsym $mod+Control+l focus output primary; exec --no-startup-id xautolock -locknow
 
 
 #=====================
