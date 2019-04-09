@@ -31,16 +31,24 @@ font pango:terminus, Icons 12
 #=====EXEC ONCE=======
 #=====================
 
-exec --no-startup-id pulseaudio --start &
-exec --no-startup-id xrdb ~/.Xresources && xscreensaver -no-splash &
 exec --no-startup-id feh --bg-fill ~/Pictures/Wallpapers/stuffy.png
 exec --no-startup-id setxkbmap -layout us -variant altgr-intl -option nodeadkeys
-exec --no-startup-id xset b off
 exec --no-startup-id sudo xbacklight -set 50
-exec --no-startup-id xset s 30 30
-exec --no-startup-id "pgrep -f xscreen_suspend.sh || ~/scripts/xscreen_suspend.sh"
+exec --no-startup-id pulseaudio --start &
+exec --no-startup-id compton --config ~/.config/compton/compton.conf &
+exec --no-startup-id xrdb ~/.Xresources
+exec --no-startup-id xscreensaver -nosplash
+exec --no-startup-id xset b off
+#exec --no-startup-id xset s 120
+## Lock after x seconds inactivity
+exec --no-startup-id xautolock -detectsleep -time 2 -locker "xscreensaver-command -lock"
+#exec --no-startup-id xautolock -detectsleep -time 2 -locker "~/scripts/i3_lock.sh"
+## Auto-lock after suspend.
+## # https://wiki.archlinux.org/index.php/Power_management#xss-lock
+#exec --no-startup-id xss-lock -l -- "~/scripts/transfer-sleep-lock-i3lock.sh"&
+exec --no-startup-id mate-power-manager &
 exec --no-startup-id "sleep 5 && $HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
-
+#exec --no-startup-id "pgrep -f xscreen_suspend.sh || ~/scripts/xscreen_suspend.sh"
 
 
 #=====================
