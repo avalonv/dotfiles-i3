@@ -4,15 +4,15 @@
 echo "=========RELOADING I3========="
 xrdb ~/.Xresources
 
-urxvt_options="-bg '#040008' +hold -pe 'tabbed'"
+urxvt_options="-bg '#040008'"
 # Launch scratchpads
 echo 'Launching scratchpads'
 for id in $@; do
     echo $id
     if ! pgrep --full @${id} &> /dev/null ; then
         case $id in
-        hell) eval "urxvt $urxvt_options -name @hell" &;;
-        man) eval "urxvt $urxvt_options -name @man" &;;# -fn "xft:Terminus:size=14" &;;
+        hell) eval "urxvt -pe 'tabbed' $urxvt_options -name @hell" &;;
+        man) eval "urxvt -pe 'tabbed' $urxvt_options -name @man" &;;# -fn "xft:Terminus:size=14" &;;
         ranger) eval "urxvt $urxvt_options -name @ranger -e 'ranger'" &;;#-fn "xft:Terminus:size=14" &;;
         gotop) eval "urxvt $urxvt_options -name @gotop -e 'gotop --rate=0.7'" &;;
         ?) eval "urxvt $urxvt_options -name @${id}" &;;
@@ -21,24 +21,24 @@ for id in $@; do
 done
 echo "Scratchpads launched"
 
-function l_compton
-{
-    echo -n "Trying to kill compton"
-    killall -q compton
-    while pgrep -u $UID -x compton > /dev/null
-    do
-        sleep 1
-        echo -n '...'
-    done
-    echo -e '\nLaunching compton...'
-    compton --config ~/.config/compton/compton.conf &
-    local last_exit="$?"
-    if [[ $last_exit -eq '124' ]]; then
-        echo "$0: couldn't launch compton"
-    else
-        echo 'compton launched'
-    fi
-}
+#function l_compton
+#{
+#    echo -n "Trying to kill compton"
+#    killall -q compton
+#    while pgrep -u $UID -x compton > /dev/null
+#    do
+#        sleep 1
+#        echo -n '...'
+#    done
+#    echo -e '\nLaunching compton...'
+#    compton --config ~/.config/compton/compton.conf &
+#    local last_exit="$?"
+#    if [[ $last_exit -eq '124' ]]; then
+#        echo "$0: couldn't launch compton"
+#    else
+#        echo 'compton launched'
+#    fi
+#}
 
 function l_polybar
 {
