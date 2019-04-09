@@ -60,13 +60,13 @@ URxvt.color14: #9289bf
 URxvt.color15: #FFFFFF
 
 URxvt.cursorColor: #61f2b6
-URxvt.cursorColor2: #ff531a
+URxvt.cursorColor2: #ff0000
 
 URxvt.cursorBlink:true
 URxvt.cursorUnderline:false
 
 ! Tranparency (composite)
-urxvt*depth: 4
+! urxvt*depth: 4
 urxvt*background: rgba:0000/0000/0200/c800
 
 ! Fake transparency
@@ -79,6 +79,8 @@ URxvt*borderless:false
 !URxvt.borderColor: #003333
 !URxvt.internalBorder: 0
 !URxvt.externalBorder: 1
+
+URxvt.iconFile:/usr/share/icons/Papirus-Dark/32x32/apps/utilities-x-terminal.svg
 
 ! Perl extensions
 URxvt.perl-ext-common:default,matcher,selection-to-clipboard,searchable-scrollback,resize-font,vtwheel
@@ -143,6 +145,7 @@ URxvt.allow_bold: true
 !URxvt.letterSpace: -1
 
 URxvt.font:xft:Terminus:size=12
+URxvt.italicFont:xft:Terminus:size=12:weight=oblique
 !URxvt*boldFont:xft:Terminus:size=12:weight=bold
 
 ! Terminus font under 14px does not have bold typeface by default
