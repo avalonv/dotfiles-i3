@@ -66,6 +66,10 @@ if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis
 endif
 
+" Do incremental searching when it's possible to timeout.
+"if has('reltime')
+"  set incsearch
+"endif
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -76,18 +80,36 @@ inoremap <C-U> <C-G>u<C-U>v
 " Revert with ":unmap Q".
 noremap Q gq
 
-"quit all, force
+" switch between windows
+noremap <A-tab> <C-W><C-W>
+inoremap <A-tab> <esc><C-W><C-W>
+vnoremap <A-tab> <esc><C-W><C-W>
+
+" go to next/previous tab respectively
+noremap <A-.> :tabnext<cr>
+noremap <A-,> :tabprevious<cr>
+
+" go to next/previous buffer respectively
+noremap gn :bn<cr>
+noremap gp :bp<cr>
+
+" close
+noremap <A-Q> :q<cr>
+inoremap <A-Q> <esc>:q<cr>
+vnoremap <A-Q> <esc>:q<cr>
+
+" close all, force
 noremap dabs :qa!<cr>
 
 " toggle show line numbers
-noremap <F9> :set nu!<cr>
+noremap <F7> :set nu!<cr>
 
 " toggle this when you wanna paste some text from a website
-noremap <F4> :set paste!<cr>
+noremap <F8> :set paste!<cr>
 
 " disable highlighting for the last search
 " (https://stackoverflow.com/questions/657447/vim-clear-last-search-highlighting)
-nnoremap <F3> :let @/ = ""<cr>
+noremap <F9> :let @/ = ""<cr>
 
 " go to beggining/end of line respectively (in all modes)
 inoremap <A-a> <home>
@@ -104,28 +126,47 @@ inoremap <A-w> <Esc>lwi
 " in insert mode, paste the unnamed register (aka whatever you last yanked in vim)
 inoremap <A-p> <C-r>"
 
-" go to next/previous tab respectively
-noremap <A-.> :tabnext<cr>
-noremap <A-,> :tabprevious<cr>
+" in insert mode, go to matching bracket
+inoremap <A-5> <Esc>%i
 
-" go to next/previous buffer respectively
-noremap gn :bn<cr>
-noremap gp :bp<cr>
+" find and replace
+" in visual mode, replace only selection, non linewise (good for removing
+" trailing space in v-blocks) https://stackoverflow.com/a/1104144/8225672
+nnoremap <A-r> :%s///gc<left><left><left><left>
+vnoremap <A-r> :s/\%V//gc<left><left><left><left>
 
 " insert a new line, from the current character/end of the line respectively
 nnoremap oo o<Esc>
 nnoremap OO i<cr><Esc>
 
-" copy line, without inserting new line, keep cursor location
-noremap yy my<Esc>0y$<Esc>`y
-noremap YY my<Esc>^y$<Esc>`y
+" save/paste to custom register
+noremap <F1> "1y<Esc>
+noremap <F2> "2y<Esc>
+noremap <F3> "3y<Esc>
+inoremap <A-F1> <Esc>"1pi
+inoremap <A-F2> <Esc>"2pi
+inoremap <A-F3> <Esc>"3pi
+nnoremap <A-F1> <Esc>"1p
+nnoremap <A-F2> <Esc>"2p
+nnoremap <A-F3> <Esc>"3p
 
-" the trailing space is intentional
+" copy line, without inserting new line, keep cursor location
+noremap Y my<Esc>0y$<Esc>`y
+
+" open new tab. the trailing space is intentional
 noremap <A-n> :tabedit 
 
 " pressing shift is a lil hard
 noremap ; :
 
+" move lines up or down
+" https://vim.fandom.com/wiki/Moving_lines_up_or_down
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
 
 "colorscheme elflord
 colorscheme default
@@ -137,6 +178,11 @@ hi Comment          ctermfg=242                              cterm=Italic
 hi LineNr           ctermfg=240                              cterm=Bold
 hi Function         ctermfg=198                              cterm=Bold
 hi Boolean          ctermfg=198                              cterm=Bold
+
+"*****************************************************************************
+"" Plug install packages
+"*****************************************************************************
+" this bit was stolen from ren :)
 
 let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
 
@@ -155,12 +201,6 @@ endif
 
 " Required:
 call plug#begin(expand('~/.config/nvim/plugged'))
-
-"*****************************************************************************
-"" Plug install packages
-"*****************************************************************************
-" stolen from ren :)
-
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'vim-airline/vim-airline'
