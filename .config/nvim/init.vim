@@ -1,52 +1,13 @@
 " When installing vim on Void, install "vim-x11" for clipboard support
+" (or just use neovim)
 
-if has('vim_starting')
-  set nocompatible               " Be iMproved
-endif
-
-" Switch syntax highlighting on when the terminal has colors or when using the
-" GUI (which always has colors).
-if &t_Co > 2 || has("gui_running")
-  " Revert with ":syntax off".
-
-  " I like highlighting strings inside C comments.
-  " Revert with ":unlet c_comment_strings".
-  let c_comment_strings=1
-endif
-
-" Only do this part when Vim was compiled with the +eval feature.
-if 1
-
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  " Revert with ":filetype off".
-  filetype plugin indent on
-
-  " Put these in an autocmd group, so that you can revert them with:
-  " ":augroup vimStartup | au! | augroup END"
-  augroup vimStartup
-    au!
-
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid, when inside an event handler
-    " (happens when dropping a file on gvim) and for a commit message (it's
-    " likely a different one than last time).
-    autocmd BufReadPost *
-      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-      \ |   exe "normal! g`\""
-      \ | endif
-
-  augroup END
-
-endif
-
-syntax on
-set showmode                    " Show current mode
-set backspace=indent,eol,start  " Allow backspacing over everything in insert mode.
-set tabpagemax=100              " increase max number of tabs (default is 10)
-set history=200                 " keep 200 lines of command line history
+set nocompatible                " don't be annoying
+filetype plugin indent on       " enable plugins for file type detection
+syntax on                       " use syntax highlighting
+set showmode                    " show current mode
+set backspace=indent,eol,start  " allow backspacing over everything in insert mode.
+set tabpagemax=30               " increase max number of tabs (default is 10)
+set history=400                 " keep 200 lines of command line history
 set showcmd                     " display incomplete commands
 set wildmenu                    " display completion matches in a status line
 set wildmode=longest,list,full  " bash like autocompletion
@@ -57,16 +18,13 @@ set shiftwidth=4                " CTRL-V <tab> to insert a real tab.
 set expandtab                   " ^
 set smarttab                    " ^
 set hlsearch                    " highlight ALL matches when searchinag
-
-" Do incremental searching when it's possible to timeout.
-"if has('reltime')
-"  set incsearch
-"endif
-"
+let c_comment_strings=1         " show strings inside C comments
 set ttimeout                    " time out for key codes
-set ttimeoutlen=100	            " wait up to 100ms after Esc for special key
-set display=truncate            " Show @@@ in the last line if it is truncated.
-set background=dark             " Don't look awful
+set ttimeoutlen=100             " wait up to 100ms after Esc for special key
+set display=truncate            " show @@@ in the last line if it is truncated.
+set background=dark             " don't look awful
+set ignorecase                  " ignore case in searches
+set smartcase                   " if pattern contains upper case letter, it is case sensitive
 
 " File name, modified flag, line, column, percentage
 set ruler
@@ -96,6 +54,9 @@ set whichwrap+=<,>,h,l,[,]
 "set syntax=whitespace
 set listchars=tab:>-,trail:␣,extends:>,precedes:<
 set list
+
+" Blinking cursor in insert mode
+set guicursor=i:blinkon1ver20
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
