@@ -6,7 +6,7 @@ background-alt = 0
 foreground = #bcf5f5
 foreground-alt = #a366ff
 primary = #F62BED
-secondary = #e60053
+secondary = #00ff99
 alert = #bd2c40
 
 [bar/satsu]
@@ -64,11 +64,11 @@ format-padding = 2
 [module/keyboard]
 type = internal/xkeyboard
 format = <label-indicator>
-format-foreground = ${colors.foreground-alt}
+format-foreground = ${colors.secondary}
 format-padding = 0
 
 label-indicator-padding = 1
-label-indicator = * %name%
+label-indicator = [%name%]
 
 ; List of indicators to ignore
 #blacklist-0 = num lock
@@ -79,7 +79,7 @@ type = custom/script
 format-prefix = "xbps: "
 format-prefix-foreground = ${colors.foreground-alt}
 format = <label>
-exec = sudo /home/satsu/scripts/updates-void.sh
+exec = sudo $HOME/scripts/updates-void.sh
 label = "%output%"
 interval = 120
 
@@ -126,7 +126,7 @@ label-urgent-font = 3
 
 [module/cpu]
 type = internal/cpu
-interval = 2
+interval = 3
 format-prefix = "CPU:"
 format-prefix-foreground = ${colors.foreground-alt}
 #format-underline = #f90000
@@ -135,7 +135,7 @@ label = %percentage:2%%
 
 [module/memory]
 type = internal/memory
-interval = 4
+interval = 5
 format-prefix = "RAM: "
 format-prefix-foreground = ${colors.foreground-alt}
 #format-underline = #4bffdc
@@ -160,7 +160,7 @@ ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
 type = internal/network
-interface = virbr0
+interface = enp1s0
 interval = 5
 
 format-connected-prefix = " "
@@ -172,7 +172,7 @@ format-disconnected =
 type = internal/date
 interval = 5
 
-date = " %a"
+date = " %a %d"
 date-alt = " %A %d/%m/%Y"
 
 time = %H:%M
