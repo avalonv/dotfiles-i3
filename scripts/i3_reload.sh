@@ -21,19 +21,24 @@ for id in $@; do
 done
 echo "Scratchpads launched"
 
+function wait_for
+{
+    program=$1
+    echo -n "Trying to kill $program"
+    killall -q $program
+    while pgrep -u $UID -x $program > /dev/null; do
+        sleep 1
+        echo -n '...'
+    done
+    echo -e "\nLaunching $program"
+}
+
 #function l_compton
 #{
-#    echo -n "Trying to kill compton"
-#    killall -q compton
-#    while pgrep -u $UID -x compton > /dev/null
-#    do
-#        sleep 1
-#        echo -n '...'
-#    done
-#    echo -e '\nLaunching compton...'
+#    wait_for compton
 #    compton --config ~/.config/compton/compton.conf &
 #    local last_exit="$?"
-#    if [[ $last_exit -eq '124' ]]; then
+#    if [[ $last_exit -ne '0' ]]; then
 #        echo "$0: couldn't launch compton"
 #    else
 #        echo 'compton launched'
@@ -42,18 +47,10 @@ echo "Scratchpads launched"
 
 function l_polybar
 {
-    # Terminate already running bar instances
-    echo -n "Trying to kill polybar"
-    killall -q polybar
-    while pgrep -u $UID -x polybar > /dev/null
-    do
-        sleep 1
-        echo -n '...'
-    done
-    echo -e '\nLaunching polybar...'
+    wait_for polybar
     polybar satsu &
     local last_exit="$?"
-    if [[ $last_exit -eq '124' ]]; then
+    if [[ $last_exit -ne '0' ]]; then
         echo "$0: couldn't launch polybar"
     else
         echo 'Polybar launched'
@@ -63,7 +60,7 @@ function l_polybar
 function l_systray
 {
     # Start applets
-    for arg in "dunst -conf /home/satsu/.config/dunst/dunstrc" "copyq" "caffeine" #"wpa_gui -qt"
+    for arg in "dunst -conf $HOME/.config/dunst/dunstrc" "copyq" "caffeine" #"wpa_gui -qt"
     do
         if ! ps ax | grep -v grep | grep -io "$arg" > /dev/null
         then
@@ -75,19 +72,11 @@ function l_systray
 
 function l_redshift
 {
-    # Terminate already running redshift instances
-    echo -n "Trying to kill redshift"
-    killall -q redshift
-    while pgrep -u $UID -x redshift > /dev/null
-    do
-        sleep 1
-        echo -n '...'
-    done
+    wait_for redshift
     redshift -x
-    echo -e "\nLaunching redshift"
     redshift -c ~/.config/redshift.conf &
     local last_exit="$?"
-    if [[ $last_exit -eq '124' ]]; then
+    if [[ $last_exit -ne '0' ]]; then
         echo "$0: couldn't launch redshift"
     else
         echo "Redshift launched"
