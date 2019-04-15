@@ -290,8 +290,8 @@ workspace $ws10 output $main
 #assign [class="VirtualBox Manager"] → $ws10
 
 # move between workspaces
-bindsym $mod+bracketright workspace next
-bindsym $mod+bracketleft workspace prev
+bindsym $mod+Mod1+l workspace next
+bindsym $mod+Mod1+h workspace prev
 bindsym $mod+Mod1+Right workspace next
 bindsym $mod+Mod1+Left workspace prev
 
@@ -405,10 +405,10 @@ client.background       #111
 # resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
 mode "resize" {
-        bindsym j resize shrink width 2 px or 2 ppt
-        bindsym k resize grow height 2 px or 2 ppt
-        bindsym l resize shrink height 2 px or 2 ppt
-        bindsym semicolon resize grow width 2 px or 2 ppt
+        bindsym h resize shrink width 2 px or 2 ppt
+        bindsym j resize grow height 2 px or 2 ppt
+        bindsym k resize shrink height 2 px or 2 ppt
+        bindsym l resize grow width 2 px or 2 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 18 px or 18 ppt
