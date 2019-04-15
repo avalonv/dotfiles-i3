@@ -113,7 +113,23 @@ bindsym $mod+Control+l focus output primary; exec --no-startup-id xautolock -loc
 
 
 #=====================
-#====WIN BINDINGS=====
+#===MOUSE=BINDINGS====
+#=====================
+
+# simulate mouse buttons
+#bindsym --release $mod+z exec --no-startup-id xdotool click --clearmodifiers 1
+#bindsym --release $mod+x exec --no-startup-id xdotool click --clearmodifiers 3
+bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m1'
+bindsym $mod+x exec xvkbd -no-repeat -no-jump-pointer -text '\m3'
+#bindsym $mod+Mod1+j exec xvkbd -no-jump-pointer -no-repeat -text '\m4'
+#bindsym $mod+Mod1+k exec xvkbd -no-jump-pointer -no-repeat -text '\m5'
+bindsym $mod+Mod1+j exec xvkbd -no-jump-pointer -text '\[Page_Down]'
+bindsym $mod+Mod1+k exec xvkbd -no-jump-pointer -text '<PageUp>'
+
+
+
+#=====================
+#====WIN=BINDINGS=====
 #=====================
 
 # use mouse+$mod to drag floating windows to their wanted position
