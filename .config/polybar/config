@@ -52,7 +52,17 @@ cursor-scroll = ns-resize
 
 modules-left = alsa cpu memory battery date updates-void keyboard
 modules-center = i3
-modules-right = eth wlan
+modules-right = acpi-warn eth wlan
+
+
+[module/acpi-warn]
+type = custom/script
+format-prefix-foreground = ${colors.secondary}
+format-prefix = "-- "
+format = <label>
+exec = pgrep acpid >/dev/null && echo "" || echo "ACPI"
+label = "%output%"
+interval = 10
 
 [module/xwindow]
 #label-font = 3
