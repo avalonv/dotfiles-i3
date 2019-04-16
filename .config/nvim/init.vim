@@ -175,9 +175,10 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
+command RemoveTrailing :%s/[\t| ]$//g<cr><F9>
+
 "colorscheme elflord
 colorscheme default
-hi Normal           ctermfg=7           ctermbg=16
 hi TabLineFill      ctermfg=16          ctermbg=232          cterm=NONE
 hi TabLine          ctermfg=14          ctermbg=232          cterm=NONE
 hi TabLineSel       ctermfg=10          ctermbg=232          cterm=Bold
