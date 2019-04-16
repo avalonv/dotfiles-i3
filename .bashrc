@@ -20,8 +20,8 @@ export VISUAL='/bin/vim -p'
 
 function set_prompt
 {
-    local cool_ass_cat='~(=^⋅ω⋅^)'
     local last_exit=$?
+    local cool_ass_cat='~(=^⋅ω⋅^)'
     local PS1begin='\[\e[0;37m\]|\[\e[1;30m\]'
     local PS1user='\[\e[1;31m\]\u\[\e[m\]'
     local PS1host='\[\e[0;37m\]@\[\e[0;37m\]\h'
