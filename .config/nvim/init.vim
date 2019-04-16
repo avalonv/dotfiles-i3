@@ -102,29 +102,33 @@ vnoremap <A-Q> <esc>:q<cr>
 noremap dabs :qa!<cr>
 
 " toggle show line numbers
-noremap <F7> :set nu!<cr>
+map <F7> :set nu!<cr>
 
 " toggle this when you wanna paste some text from a website
-noremap <F8> :set paste!<cr>
+map <F8> :set paste!<cr>
 
 " disable highlighting for the last search
 " (https://stackoverflow.com/questions/657447/vim-clear-last-search-highlighting)
-noremap <F9> :let @/ = ""<cr>
+map <F9> :let @/ = ""<cr>
+
+" toggle case insensitve searches
+map <F10> :set ignorecase!<cr>
 
 " go to beggining/end of line respectively (in all modes)
-inoremap <A-a> <home>
-inoremap <A-e> <end>
-noremap <A-a> <home>
-noremap <A-e> <end>
-vnoremap <A-a> <home>
-vnoremap <A-e> <end>
+inoremap <A-h> <home>
+inoremap <A-l> <end>
+noremap <A-h> <home>
+noremap <A-l> <end>
+vnoremap <A-h> <home>
+vnoremap <A-l> <end>
 
 " in insert mode, move a word backwards/fowards respectively
 inoremap <A-b> <Esc>hbi
 inoremap <A-w> <Esc>lwi
 
-" in insert mode, paste the unnamed register (aka whatever you last yanked in vim)
-inoremap <A-p> <C-r>"
+" paste last [y]ank
+noremap <A-p> "0p
+inoremap <A-p> <C-r>0
 
 " in insert mode, go to matching bracket
 inoremap <A-5> <Esc>%i
@@ -139,21 +143,24 @@ vnoremap <A-r> :s/\%V//gc<left><left><left><left>
 nnoremap oo o<Esc>
 nnoremap OO i<cr><Esc>
 
-" save/paste to custom register
-noremap <F1> "1y<Esc>
-noremap <F2> "2y<Esc>
-noremap <F3> "3y<Esc>
+" paste from register history
 inoremap <A-F1> <Esc>"1pi
 inoremap <A-F2> <Esc>"2pi
 inoremap <A-F3> <Esc>"3pi
+inoremap <A-F4> <Esc>"4pi
 nnoremap <A-F1> <Esc>"1p
 nnoremap <A-F2> <Esc>"2p
 nnoremap <A-F3> <Esc>"3p
+nnoremap <A-F4> <Esc>"4p
 
-" copy line, without inserting new line, keep cursor location
+" backspace WORD, but don't append to register
+" (https://stackoverflow.com/a/3638557/8225672)
+noremap <A-BS> "_dB<Esc>
+
+" copy entire line, without the \n at the end, keep cursor location
 noremap Y my<Esc>0y$<Esc>`y
 
-" open new tab. the trailing space is intentional
+" open new tab (the trailing space is intentional)
 noremap <A-n> :tabedit 
 
 " pressing shift is a lil hard
