@@ -114,24 +114,34 @@ map <F9> :let @/ = ""<cr>
 " toggle case insensitve searches
 map <F10> :set ignorecase!<cr>
 
-" go to beggining/end of line respectively (in all modes)
-inoremap <A-h> <home>
-inoremap <A-l> <end>
-noremap <A-h> <home>
-noremap <A-l> <end>
-vnoremap <A-h> <home>
-vnoremap <A-l> <end>
+" go to beggining/end of line respectively
+inoremap <A-H> <esc>^i
+inoremap <A-L> <end>
+noremap <A-H> ^
+noremap <A-L> <end>
+vnoremap <A-H> ^
+vnoremap <A-L> <end>
 
 " in insert mode, move a word backwards/fowards respectively
 inoremap <A-b> <Esc>hbi
 inoremap <A-w> <Esc>lwi
+
+" emulate arrow keys in insert mode
+inoremap <A-h> <left>
+inoremap <A-j> <down>
+inoremap <A-k> <up>
+inoremap <A-l> <right>
 
 " paste last [y]ank
 noremap <A-p> "0p
 inoremap <A-p> <C-r>0
 
 " in insert mode, go to matching bracket
-inoremap <A-5> <Esc>%i
+inoremap <A-%> <Esc>%i
+
+" backspace is very far away
+inoremap <A-x> <BS>
+nnoremap <A-x> <BS>
 
 " find and replace
 " in visual mode, replace only selection, non linewise (good for removing
@@ -168,12 +178,12 @@ noremap ; :
 
 " move lines up or down
 " https://vim.fandom.com/wiki/Moving_lines_up_or_down
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
+nnoremap <A-J> :m .+1<CR>==
+nnoremap <A-K> :m .-2<CR>==
+inoremap <A-J> <Esc>:m .+1<CR>==gi
+inoremap <A-K> <Esc>:m .-2<CR>==gi
+vnoremap <A-J> :m '>+1<CR>gv=gv
+vnoremap <A-K> :m '<-2<CR>gv=gv
 
 command RemoveTrailing :%s/[\t| ]$//g<cr><F9>
 
