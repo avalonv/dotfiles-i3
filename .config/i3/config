@@ -91,15 +91,10 @@ bindsym shift+XF86MonBrightnessUp   exec --no-startup-id sudo xbacklight -inc 1
 bindsym shift+XF86MonBrightnessDown exec --no-startup-id sudo xbacklight -dec 1
 
 # rofi show progrmans
-bindsym $mod+m exec "rofi -modi 'drun,run' -show drun -sidebar-mode -matching regex -no-drun-show-actions -show-icons -lines 38 -width 18 -location 1 -padding 1 -monitor -4 -drun-display-format {name}"
+bindsym $mod+m exec rofi -modi "drun#run" -show drun -lines 38 -width 18 -location 1 -padding 1 -monitor -4
 
 # rofi show windows
-bindsym $mod+Tab exec rofi -modi "window#ssh#bindings:egrep '^bindsym' $HOME/.config/i3/config" -show window -sidebar-mode -show-icons -icon-theme Papirus -no-auto-select -matching regex -lines 10 -fixed-num-lines 5 -width 68 -location 0 -monitor -4 -window-format ' {c:8} >  {{w}} {n11} |  {t:80}'
-
-# rofi other
-#bindsym $mod+Shift+m     exec rofi -show run
-#bindsym $mod+Control+s   exec rofi -show ssh
-#bindsym $mod+Control+k   exec rofi -show keys -widht -70
+bindsym $mod+Tab exec rofi -modi "window#ssh#bindings:egrep '^bindsym' $HOME/.config/i3/config" -show window -lines 10 -fixed-num-lines 5 -width 68 -location 0 -monitor -4
 
 # hide/show polybar
 bindsym $mod+Home exec --no-startup-id polybar-msg cmd toggle
@@ -310,9 +305,10 @@ bindsym $mod+plus scratchpad show
 bindsym $mod+BackSpace move scratchpad
 bindsym $mod+Shift+BackSpace [instance="^@"] move scratchpad
 
+# "xwinfo" is useful for getting the sizes of windows
 # scratchpad 1
 for_window [instance=$W1_name] floating enable
-for_window [instance=$W1_name] resize set 770 400
+for_window [instance=$W1_name] resize set 650 440
 for_window [instance=$W1_name] mark W1, move scratchpad
 for_window [instance=$W1_name] sticky enable
 for_window [instance=$W1_name] title_format "<span foreground='$cool_lime'><b>[W1]</b></span><span foreground='$cool_purple'> %title</span>"
@@ -321,7 +317,7 @@ bindsym $mod+F1 [instance=$W1_name] scratchpad show
 
 # scratchpad 2
 for_window [instance=$W2_name] floating enable
-for_window [instance=$W2_name] resize set 640 850
+for_window [instance=$W2_name] resize set 650 830
 for_window [instance=$W2_name] mark W2, move scratchpad
 for_window [instance=$W2_name] sticky enable
 for_window [instance=$W2_name] title_format "<span foreground='$cool_lime'><b>[W2]</b></span><span foreground='$cool_purple'> %title</span>"
@@ -330,7 +326,7 @@ bindsym $mod+F2 [instance=$W2_name] scratchpad show
 
 # ranger
 for_window [instance=$W3_name] floating enable
-for_window [instance=$W3_name] resize set 900 400
+for_window [instance=$W3_name] resize set 900 440
 for_window [instance=$W3_name] mark W3, move scratchpad
 for_window [instance=$W3_name] sticky enable
 for_window [instance=$W3_name] title_format "<span foreground='$cool_lime'><b>[W3]</b></span><span foreground='$cool_purple'> %title</span>"
