@@ -1,3 +1,7 @@
+# TODO:
+# find out if there are any i3-gaps options left
+# learn how to use xmodmap
+
 #=====================
 #=====VARIABLES=======
 #=====================
@@ -31,33 +35,35 @@ font pango:terminus, Icons 12
 #=====EXEC=ONCE=======
 #=====================
 
+# wallpaper
 exec --no-startup-id feh --bg-fill ~/Pictures/Wallpapers/stuffy.png
+exec --no-startup-id xrdb .Xresources
+
+# keyboard with right alt for acentos
 exec --no-startup-id setxkbmap -layout us -variant altgr-intl -option nodeadkeys
+
 exec --no-startup-id sudo xbacklight -set 50
 exec --no-startup-id pulseaudio --start &
-exec --no-startup-id compton --config ~/.config/compton/compton.conf &
-exec --no-startup-id xrdb ~/.Xresources
-exec --no-startup-id xscreensaver -nosplash
-exec --no-startup-id xset b off
-#exec --no-startup-id xset s 120
-## Lock after x seconds inactivity
-exec --no-startup-id xautolock -detectsleep -time 2 -locker "xscreensaver-command -lock"
-#exec --no-startup-id xautolock -detectsleep -time 2 -locker "~/scripts/i3_lock.sh"
+
+# blank xscreensaver after x minutes of inactivity, lock with i3lock otherwise
+exec --no-startup-id xautolock -detectsleep -time 2 -locker "xscreensaver-command -activate" -nowlocker $HOME/scripts/i3_lock.sh
+
 ## Auto-lock after suspend.
 ## # https://wiki.archlinux.org/index.php/Power_management#xss-lock
 #exec --no-startup-id xss-lock -l -- "~/scripts/transfer-sleep-lock-i3lock.sh"&
 exec --no-startup-id mate-power-manager &
-exec --no-startup-id "sleep 5 && $HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
-#exec --no-startup-id "pgrep -f xscreen_suspend.sh || ~/scripts/xscreen_suspend.sh"
+exec --no-startup-id "sleep 5 && $HOME/scripts/i3_reload.sh 'start' 'hell' 'man' 'ranger' && xscreensaver -nosplash"
 
 
 #=====================
 #=====EXEC=ALWAYS=====
 #=====================
 
-# Launch redshift, dunst, polybar, compton, and all scratchpads at once, relaunch if it does not exist
+# launch redshift, dunst, polybar, compton, and all scratchpads at once, relaunch if it does not exist
 exec_always --no-startup-id xset dpms 70 120 300
 
+# turn off god awful beep
+exec_always --no-startup-id exec --no-startup-id xset b off
 
 
 #=====================
@@ -108,7 +114,7 @@ bindsym --release $mod+Shift+Print exec --no-startup-id maim -m 9 -s ~/Pictures/
 bindsym --release $mod+Print       exec --no-startup-id maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
 bindsym --release $mod+p           exec --no-startup-id maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
 
-# lock screen
+# lock screen (now)
 bindsym $mod+Control+l focus output primary; exec --no-startup-id xautolock -locknow
 
 
@@ -181,7 +187,7 @@ bindsym $mod+KP_Home  exec --no-startup-id ~/scripts/i3_movecorner.sh 7
 bindsym $mod+KP_Up    exec --no-startup-id ~/scripts/i3_movecorner.sh 8
 bindsym $mod+KP_Prior exec --no-startup-id ~/scripts/i3_movecorner.sh 9
 
-#bindsym $mod+Shift+c move position center
+# warp to mouse
 bindsym $mod+c move position mouse
 
 # split in vertical, horizontal orientation
@@ -202,7 +208,6 @@ bindsym $mod+f fullscreen toggle
 #=====================
 
 # title styles
-#for_window [class=".*"] title_format "<b>%title</b>"
 for_window [class="Firefox"] title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
 for_window [class="URxvt"] title_format "<span foreground='pink'><b> >_ </b></span><span foreground='grey'>%title</span>"
 
@@ -215,11 +220,9 @@ for_window [class="XTerm"] floating enable
 for_window [class="feh"] floating enable
 for_window [class="VirtualBox Machine"] floating enable
 for_window [class="copyq"] floating enable
-for_window [class=Ristretto] floating enable
-for_window [class="Nitrogen"] floating enable
+for_window [class="Ristretto"] floating enable
 #for_window [class="vlc"] floating enable
 for_window [class="Xfce4-panel"] floating enable
-for_window [class="Mousepad"] floating enable
 for_window [class="mpv"] floating enable
 for_window [class="xev"] floating enable
 
@@ -230,7 +233,6 @@ for_window [window_role="Preferences"] floating enable
 
 for_window [instance="Friends List"] floating enable
 for_window [instance="File Upload"] resize set 520 400
-for_window [instance="^nagbar-cmd"] floating enable
 
 
 # border styles
@@ -292,25 +294,11 @@ workspace $ws8 output $main
 workspace $ws9 output $main
 workspace $ws10 output $main
 
-# assign programs to workspaces
-# actually nvm
-#assign [class="URxvt"] → $ws1
-#assign [class="Firefox"]$ws2
-#assign [class="Nemo"] → $ws3
-#assign [class="Transmission-gtk"] → $ws3
-#assign [class="GParted"] → $ws3
-#assign [class="Atril"] → $ws1
-#assign [class="Parole"] → $ws4
-#assign [class="discord"] → $ws5
-#assign [class="Steam"] → $ws3
-#assign [class="VirtualBox Manager"] → $ws10
-
 # move between workspaces
 bindsym $mod+Mod1+l workspace next
 bindsym $mod+Mod1+h workspace prev
 bindsym $mod+Mod1+Right workspace next
 bindsym $mod+Mod1+Left workspace prev
-
 
 
 #=====================
@@ -383,42 +371,10 @@ client.urgent           $urgent         $transparent    $urgent         $urgent 
 client.placeholder      $transparent    $black          $transparent    #222222         $transparent
 client.background       #111
 
-
-#=====================
-#========BAR==========
-#=====================
-# nope
-#bar {
-#    #i3bar_command
-#        colors {
-#                # <border name>      <border>   <background>    <text>
-#                focused_workspace    #735787    $transparent    #4ec493
-#                binding_mode         #7bcdb4    #222222         #94cee0
-#                inactive_workspace   #000000    #000000         #735787
-#                active_workspace     #735787    #000000         #735787
-#                urgent_workspace     #000000    #d67d2a         #000000
-#        }
-#
-#        #font pango:DejaVU Sans Mono, Icons 14
-#        #font pango:monospace 12
-#        strip_workspace_numbers no
-#        position bottom
-#        #status_command i3status
-#        separator_symbol "/"
-#        #mode hide
-#        hidden_state hide
-#        modifier $mod
-#        output none
-#        tray_output none
-#        tray_padding 3
-#}
-
-
 #=====================
 #========MODES========
 #=====================
 # i3-gaps bad
-# resize window (you can also use the mouse for that)
 bindsym $mod+r mode "resize"
 mode "resize" {
         bindsym h resize shrink width 2 px or 2 ppt
