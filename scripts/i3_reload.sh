@@ -1,21 +1,25 @@
 #!/usr/bin/env bash
 
-
 echo "=========RELOADING I3========="
 xrdb ~/.Xresources
 
-urxvt_options="-bg '#040008'"
-# Launch scratchpads
+# when starting i3 for the first time
+if [[ $1 == 'start' ]]; then
+    startall='true'
+    shift
+fi
+
+urxvt_color="-bg '#040008'"
 echo 'Launching scratchpads'
 for id in $@; do
     echo $id
     if ! pgrep --full @${id} &> /dev/null ; then
         case $id in
-        hell) eval "urxvt -pe 'tabbed' $urxvt_options -name @hell" &;;
-        man) eval "urxvt -pe 'tabbed' $urxvt_options -name @man" &;;# -fn "xft:Terminus:size=14" &;;
-        ranger) eval "urxvt $urxvt_options -name @ranger -e 'ranger'" &;;#-fn "xft:Terminus:size=14" &;;
-        gotop) eval "urxvt $urxvt_options -name @gotop -e 'gotop --rate=0.7'" &;;
-        ?) eval "urxvt $urxvt_options -name @${id}" &;;
+        hell) eval "urxvt -pe 'tabbed' $urxvt_color -name @hell" &;;
+        man) eval "urxvt -pe 'tabbed' $urxvt_color -name @man  -fn 'xft:Terminus:size=10'" &;;
+        ranger) eval "urxvt $urxvt_color -name @ranger -e 'ranger'" &;;
+        gotop) eval "urxvt $urxvt_color -name @gotop -e 'gotop --rate=0.7'" &;;
+        ?) eval "urxvt $urxvt_color -name @${id}" &;;
         esac
     fi
 done
@@ -33,17 +37,17 @@ function wait_for
     echo -e "\nLaunching $program"
 }
 
-#function l_compton
-#{
-#    wait_for compton
-#    compton --config ~/.config/compton/compton.conf &
-#    local last_exit="$?"
-#    if [[ $last_exit -ne '0' ]]; then
-#        echo "$0: couldn't launch compton"
-#    else
-#        echo 'compton launched'
-#    fi
-#}
+function l_compton
+{
+    wait_for compton
+    compton --config ~/.config/compton/compton.conf &
+    local last_exit="$?"
+    if [[ $last_exit -ne '0' ]]; then
+        echo "$0: couldn't launch compton"
+    else
+        echo 'compton launched'
+    fi
+}
 
 function l_polybar
 {
@@ -59,7 +63,7 @@ function l_polybar
 
 function l_systray
 {
-    # Start applets
+    # doesn't kill them, only starts them
     for arg in "dunst -conf $HOME/.config/dunst/dunstrc" "copyq" "caffeine" #"wpa_gui -qt"
     do
         if ! ps ax | grep -v grep | grep -io "$arg" > /dev/null
@@ -83,9 +87,19 @@ function l_redshift
     fi
 }
 
-for i in l_compton l_polybar l_systray l_redshift; do
-    ${i}
-done
+functionlist=$'compton\npolybar\nsystray\nredshift'
+
+if [[ -n $startall ]]; then
+    for i in $functionlist; do
+        eval "l_${i}"
+    done
+else
+    prompt="Restart (Shift+Enter to select)"
+    checklist=$(echo "$functionlist" | rofi -dmenu -multi-select -p "$prompt")
+    for choice in $checklist; do
+        echo "l_${choice}"
+        eval "l_${choice}"
+    done
+fi
 
 echo "=========Done========="
-exit 0
