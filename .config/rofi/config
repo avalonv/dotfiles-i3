@@ -1,39 +1,23 @@
-!! https://github.com/beingmohit/dotfiles/blob/master/config/rofi/config
+!theme example: https://github.com/beingmohit/dotfiles/blob/master/config/rofi/config
 
-rofi.theme: ~/.config/rofi/17script.me
-! Terminal to use
-!rofi.terminal:                       rofi-sensible-terminal
-rofi.terminal:                       urxvt
-! Ssh client to use
-rofi.ssh-client:                     ssh
-! Ssh command to execute
-rofi.ssh-command:                    {terminal} -e {ssh-client} {host}
-! Run command to execute
-rofi.run-command:                    {cmd}
-! Command to get extra run targets
-rofi.run-list-command:
-! Run command to execute that runs in shell
+rofi.theme: ~/.config/rofi/awfulpinktheme.rasi
 rofi.run-shell-command: {terminal} -e {cmd}
-
+rofi.ssh-command: {terminal} -e {ssh-client} {host}
+rofi.run-command: {cmd}
+rofi.icon-theme: Papirus
 rofi.bw: 2
+rofi.ssh-client: ssh
+rofi.terminal: urxvt
+rofi.show-icons: True
 rofi.opacity: 40
-
-!!!! https://github.com/mightysilentsaint/stuff/blob/master/dotfiles/home/mss/.config/rofi/config
-!!COLORS		        bg    				fg    		activeb		ACTIVE	 	hlfg
-!rofi.color-normal: 	#000000,  			#F62BED,  	#000000,	#E62063,  	#FFFFFF
-!
-!!					background			border		seperator
-!rofi.color-window:	#000000,  			#F62BED , 	#002b36
-!rofi.color-enabled:	true
-!
-!!FONTS
+!rofi.window-match-fields:
+rofi.window-format: {c:8} >  {{w}} {n11} |  {t:80}
+rofi.drun-display-format: {name}
+rofi.matching: fuzzy
+rofi.no-sort: True
+!rofi.matching: regex
+!rofi.filter: -@[hmr
+!rofi.disable-history: True
+rofi.case-sensitive: False
+rofi.sidebar-mode: True
 rofi.font:terminus bold 16
-
-!rofi.font:terminus 14
-!
-!!DISPLAY
-!rofi.bw: 2
-!rofi.opacity: 90
-!rofi.width: 40
-!rofi.lines: 10
-!rofi.columns: 1
