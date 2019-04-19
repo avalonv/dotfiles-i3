@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# install s-nail + postfix
+# install s-nail + postfix + geoip
 # insp: https://gist.github.com/tommybutler/6953743#file-iloggedin-sh
 
 recipient=$1; shift
@@ -12,14 +12,17 @@ msg_subject="Alert! $remote_ip - login to $(hostname)"
 if [[ -z "$remote_ip" ]]; then
     remote_ip="localhost"
 else
-    ip_location="$(geoiplookup $remote_ip | awk -F ', ' '/[^not found]*$/{print $NF;exit}')"
+    ip_location="$(geoiplookup $remote_ip |
+    awk -F ', ' '/[^not found]*$/{print $NF;exit}')"
 fi
 
 if echo -e "$ignored_ips" | grep -q "$remote_ip" ; then
     exit 0
 fi
 
-msg_body="New login to ${USER}@$(hostname) from $remote_ip $([[ -n $ip_location ]] && echo "($ip_location) ")at $current_date"
+msg_body="New login to ${USER}@$(hostname) from $remote_ip \
+$([[ -n $ip_location ]] && echo "($ip_location) ")at $current_date"
+
 echo -e "$msg_body" | mail -s "$msg_subject" "$recipient"
 exit $?
 
