@@ -140,19 +140,17 @@ label-urgent-font = 3
 [module/cpu]
 type = internal/cpu
 interval = 3
-format-prefix = "CPU:"
+format-prefix = "cpu"
 format-prefix-foreground = ${colors.foreground-alt}
-#format-underline = #f90000
-label = %percentage:2%%
+label = " %percentage:2%%"
 
 
 [module/memory]
 type = internal/memory
 interval = 5
-format-prefix = "RAM: "
+format-prefix = "ram"
 format-prefix-foreground = ${colors.foreground-alt}
-#format-underline = #4bffdc
-label = %percentage_used%%
+label = " %percentage_used%%"
 
 
 [module/wlan]
@@ -202,40 +200,45 @@ label-font = 1
 [module/alsa]
 type = internal/alsa
 
-format-volume = <bar-volume> <label-volume>
-label-volume =
+format-volume = <bar-volume>
+#label-volume =
 label-volume-foreground = ${colors.foreground-alt}
 
 format-muted = <label-muted>
 label-muted-foreground = ${colors.foreground-alt}
 label-muted = " sound muted"
 
+# gay https://www.color-hex.com/color-palette/28256
 bar-volume-width = 21
-bar-volume-foreground-0 = #00811f
-bar-volume-foreground-1 = #00811f
-bar-volume-foreground-2 = #00811f
-bar-volume-foreground-3 = #00811f
-bar-volume-foreground-4 = #00811f
-bar-volume-foreground-5 = #ffef00
-bar-volume-foreground-6 = #ffef00
-bar-volume-foreground-7 = #ffef00
-bar-volume-foreground-8 = #ffef00
-bar-volume-foreground-9 = #ffef00
-bar-volume-foreground-10 = #ff8c00
-bar-volume-foreground-11 = #ff8c00
-bar-volume-foreground-12 = #ff8c00
-bar-volume-foreground-13 = #ff8c00
-bar-volume-foreground-14 = #ff8c00
-bar-volume-foreground-15 = #e70000
-bar-volume-foreground-16 = #e70000
-bar-volume-foreground-17 = #e70000
-bar-volume-foreground-18 = #e70000
-bar-volume-foreground-19 = #e70000
-bar-volume-foreground-20 = #e70000
+bar-volume-foreground-0 =  #74d7ec
+bar-volume-foreground-1 =  #74d7ec
+bar-volume-foreground-2 =  #74d7ec
+bar-volume-foreground-3 =  #74d7ec
+bar-volume-foreground-4 =  #ffafc7
+bar-volume-foreground-5 =  #ffafc7
+bar-volume-foreground-6 =  #ffafc7
+bar-volume-foreground-7 =  #ffafc7
+bar-volume-foreground-8 =  #fbf9f5
+bar-volume-foreground-9 =  #fbf9f5
+bar-volume-foreground-10 = #fbf9f5
+bar-volume-foreground-11 = #fbf9f5
+bar-volume-foreground-12 = #ffafc7
+bar-volume-foreground-13 = #ffafc7
+bar-volume-foreground-14 = #ffafc7
+bar-volume-foreground-15 = #ffafc7
+bar-volume-foreground-16 = #74d7ec
+bar-volume-foreground-17 = #74d7ec
+bar-volume-foreground-18 = #74d7ec
+bar-volume-foreground-19 = #74d7ec
+bar-volume-foreground-20 = #74d7ec
 
-bar-volume-gradient = false
+# bigger:
+#i=0; echo 'bar-volume-width = 25'; for c in 74d7ec ffafc7 fbf9f5 ffafc7 74d7ec ; do for n in {0..4}; do echo "bar-volume-foreground-${i} = #${c}"; let i++; done; done
+
+bar-volume-gradient = true
 bar-volume-indicator = /
 bar-volume-indicator-font = 3
+bar-volume-indicator-foreground = ${colors.foreground-alt}
 bar-volume-fill = ,
 bar-volume-fill-font = 3
 bar-volume-empty = .
