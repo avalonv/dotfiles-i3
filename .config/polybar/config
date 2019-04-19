@@ -2,9 +2,9 @@
 
 [colors]
 background = #000000
-background-alt = 0
-foreground = #bcf5f5
-foreground-alt = #a366ff
+background-alt = #000000
+foreground = #FFDEE4
+foreground-alt = #00b3b3
 primary = #F62BED
 secondary = #00ff99
 alert = #bd2c40
@@ -15,7 +15,7 @@ width = 100%
 height = 24
 offset-x = 0%
 offset-y = 0%
-radius = 0.0
+radius = 3.0
 fixed-center = true
 enable-ipc = true
 #pseudo-transparency = true
@@ -27,8 +27,10 @@ foreground = ${colors.foreground}
 line-size = 5
 line-color = #f00
 
-border-size = 1
-border-color = #18184e
+#border-size = 4
+#border-color = #735787
+border-size = 0
+border-color = #00000000
 
 padding-left = 2
 padding-right = 0
@@ -50,14 +52,14 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 
 
-modules-left = alsa cpu memory battery date updates-void keyboard
+modules-left = alsa cpu memory battery date keyboard
 modules-center = i3
-modules-right = acpi-warn eth wlan
+modules-right = updates-void acpi-warn eth wlan
 
 
 [module/acpi-warn]
 type = custom/script
-format-prefix-foreground = ${colors.secondary}
+format-prefix-foreground = ${colors.primary}
 format-prefix = "-- "
 format = <label>
 exec = pgrep acpid >/dev/null && echo "" || echo "ACPI"
@@ -74,7 +76,7 @@ format-padding = 2
 [module/keyboard]
 type = internal/xkeyboard
 format = <label-indicator>
-format-foreground = ${colors.secondary}
+format-foreground = ${colors.primary}
 format-padding = 0
 
 label-indicator-padding = 1
@@ -87,7 +89,7 @@ label-indicator = [%name%]
 [module/updates-void]
 type = custom/script
 format-prefix = "xbps: "
-format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-foreground = ${colors.primary}
 format = <label>
 exec = sudo $HOME/scripts/updates-void.sh
 label = "%output%"
@@ -109,12 +111,13 @@ label-mode-background = ${colors.primary}
 ; focused = Active workspace on focused monitor
 label-focused = %index%
 label-focused-background = ${colors.background-alt}
-label-focused-underline = ${colors.primary}
+label-focused-underline = ${colors.secondary}
 label-focused-padding = 2
 label-focused-font = 3
 
 ; unfocused = Inactive workspace on any monitor
 label-unfocused = %index%
+label-unfocused-background = ${colors.background-alt}
 label-unfocused-padding = 2
 label-unfocused-font = 3
 
