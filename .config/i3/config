@@ -36,7 +36,7 @@ font pango:terminus, Icons 12
 #=====================
 
 # wallpaper
-exec --no-startup-id feh --bg-fill ~/Pictures/Wallpapers/stuffy.png
+exec --no-startup-id feh --bg-max ~/Pictures/Wallpapers/mice_big.png
 exec --no-startup-id xrdb .Xresources
 
 # keyboard with right alt for acentos
@@ -202,9 +202,6 @@ bindsym $mod+f fullscreen toggle
 #=====WIN=OPTIONS=====
 #=====================
 
-# title styles
-for_window [class="Firefox"] title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
-for_window [class="URxvt"] title_format "<span foreground='pink'><b> >_ </b></span><span foreground='grey'>%title</span>"
 
 # launch as floating
 for_window [class="peek"] floating enable
@@ -297,6 +294,17 @@ bindsym $mod+Mod1+Left workspace prev
 
 
 #=====================
+#=====TITLE=STYLES====
+#=====================
+
+# title styles
+for_window [class="Firefox"] title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
+for_window [class="URxvt"] title_format "<span foreground='$light_pink'><b> >_ </b></span><span>%title</span>"
+for_window [instance=$W3_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
+for_window [instance=$W2_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
+for_window [instance=$W1_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
+
+#=====================
 #=====SCRATCHPADS=====
 #=====================
 
@@ -311,7 +319,6 @@ for_window [instance=$W1_name] floating enable
 for_window [instance=$W1_name] resize set 650 440
 for_window [instance=$W1_name] mark W1, move scratchpad
 for_window [instance=$W1_name] sticky enable
-for_window [instance=$W1_name] title_format "<span foreground='$cool_lime'><b>[W1]</b></span><span foreground='$cool_purple'> %title</span>"
 bindsym $mod+Shift+F1 [con_mark="W1"] focus
 bindsym $mod+F1 [instance=$W1_name] scratchpad show
 
@@ -320,7 +327,6 @@ for_window [instance=$W2_name] floating enable
 for_window [instance=$W2_name] resize set 650 830
 for_window [instance=$W2_name] mark W2, move scratchpad
 for_window [instance=$W2_name] sticky enable
-for_window [instance=$W2_name] title_format "<span foreground='$cool_lime'><b>[W2]</b></span><span foreground='$cool_purple'> %title</span>"
 bindsym $mod+Shift+F2 [con_mark="W2"] focus
 bindsym $mod+F2 [instance=$W2_name] scratchpad show
 
@@ -329,7 +335,6 @@ for_window [instance=$W3_name] floating enable
 for_window [instance=$W3_name] resize set 900 440
 for_window [instance=$W3_name] mark W3, move scratchpad
 for_window [instance=$W3_name] sticky enable
-for_window [instance=$W3_name] title_format "<span foreground='$cool_lime'><b>[W3]</b></span><span foreground='$cool_purple'> %title</span>"
 bindsym $mod+Shift+F3 [con_mark="W3"] focus
 bindsym $mod+F3 [instance=$W3_name] scratchpad show
 
