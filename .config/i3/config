@@ -351,25 +351,28 @@ bindsym $mod+F12 [instance="^@gotop"] scratchpad show
 #=======COLOURS=======
 #=====================
 
-set $focus #00b3b3
+set $bright_lime #00b3b3
+set $title #ffffff
 set $focus_ind #61f2b6
-set $inact #735787
+set $dark_pink #735787
 set $inact_ind #27213d
 set $unfocus #735787
 set $urgent #ff0000
 set $black #000000
-set $transparent #00001a
-set $cool_pink #F62BED
+set $dark_blue #00001a
+set $darker_blue #000011
+set $light_pink #ff66cc
+set $lighter_pink #cc99ff
 set $cool_lime #00ff99
 set $cool_purple #a366ff
-set $light_pink #ff66cc
+set $fuschia #ff0066
 
 # class                 <border>        <background>    <text>          <indicator>     <child_border>
-client.focused          $focus          $transparent    #ccffff         $focus_ind      $focus
-client.focused_inactive $inact          $transparent    $inact          $inact          #404040
-client.unfocused        $transparent    $black          $inact          $transparent    $black
-client.urgent           $urgent         $transparent    $urgent         $urgent         $urgent
-client.placeholder      $transparent    $black          $transparent    #222222         $transparent
+client.focused          $bright_lime    $dark_blue    $lighter_pink   $focus_ind      $bright_lime
+client.focused_inactive $dark_pink      $darker_blue    $dark_pink      $dark_pink      #404040
+client.unfocused        $dark_blue    $black          $dark_pink      $dark_blue    $black
+client.urgent           $urgent         $dark_blue    $urgent         $urgent         $urgent
+client.placeholder      $dark_blue    $black          $dark_blue    #222222         $dark_blue
 client.background       #111
 
 #=====================
