@@ -135,7 +135,13 @@ bindsym $mod+x exec xvkbd -no-repeat -no-jump-pointer -text '\m3'
 bindsym $mod+Mod1+j exec xvkbd -no-jump-pointer -text '\[Page_Down]'
 bindsym $mod+Mod1+k exec xvkbd -no-jump-pointer -text '<PageUp>'
 
-
+# Disable focus change for clicks on titlebars
+# with the middle mouse button
+bindsym button1 nop
+bindsym button2 nop
+bindsym button3 nop
+bindsym button4 nop
+bindsym button5 nop
 
 #=====================
 #====WIN=BINDINGS=====
@@ -239,9 +245,9 @@ for_window [instance="File Upload"] resize set 520 400
 
 
 # border styles
-smart_borders on
-hide_edge_borders none
-#for_window [focused] border pixel 5
+# comment this if using vanilla i3
+#smart_borders on
+hide_edge_borders smart
 for_window [class=".*"] border pixel 4
 for_window [instance="^@"] border normal
 for_window [floating] border normal
