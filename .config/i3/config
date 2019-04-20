@@ -28,7 +28,7 @@ set $W3_name "@ranger"
 set $main "eDP"
 set $HDMI1 "HDMI-A-0"
 
-font pango:terminus, Icons 12
+font pango:terminus, Icons 10
 
 
 #=====================
@@ -59,7 +59,7 @@ exec --no-startup-id "sleep 5 && $HOME/scripts/i3_reload.sh 'start' 'hell' 'man'
 #=====EXEC=ALWAYS=====
 #=====================
 
-# launch redshift, dunst, polybar, compton, and all scratchpads at once, relaunch if it does not exist
+# energy star
 exec_always --no-startup-id xset dpms 70 120 300
 
 # turn off god awful beep
@@ -73,11 +73,8 @@ exec_always --no-startup-id exec --no-startup-id xset b off
 # start a terminal
 bindsym $mod+Return exec --no-startup-id urxvt &, focus
 
-# restart session
-#bindsym $mod+Shift+c reload
-bindsym $mod+Shift+r restart
-bindsym $mod+Control+r exec --no-startup-id "$HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
-bindsym $mod+End exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# restart i3
+bindsym $mod+shift+r restart
 
 # sound control
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer sset Master "5%+"
@@ -91,23 +88,34 @@ bindsym shift+XF86MonBrightnessUp   exec --no-startup-id sudo xbacklight -inc 1
 bindsym shift+XF86MonBrightnessDown exec --no-startup-id sudo xbacklight -dec 1
 
 # rofi show progrmans
-bindsym $mod+m exec rofi -modi "drun#run" -show drun -lines 38 -width 18 -location 1 -padding 1 -monitor -4
+bindsym $mod+semicolon exec \
+rofi -modi "drun#run" -show drun -lines 38 -width 18 -location 1
 
 # rofi show windows
-bindsym $mod+Tab exec rofi -modi "window#ssh#bindings:egrep '^bindsym' $HOME/.config/i3/config" -show window -lines 10 -fixed-num-lines 5 -width 68 -location 0 -monitor -4
+bindsym $mod+Tab exec \
+rofi -modi "window#ssh#bindings:egrep '^bindsym' $HOME/.config/i3/config" -show window -lines 12 -width 68 -location 0
 
 # hide/show polybar
 bindsym $mod+Home exec --no-startup-id polybar-msg cmd toggle
 
-# take screenshot of focused window/selected region
+# take screenshot of focused window/selected region (maim)
+bindsym --release $mod+Shift+p  exec --no-startup-id \
+maim -m 9 -s ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
+
+bindsym --release $mod+Shift+Print exec --no-startup-id \
+maim -m 9 -s ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
+
+bindsym --release $mod+Print exec --no-startup-id \
+maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
+
+bindsym --release $mod+p exec --no-startup-id \
+maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
+
+# scrot:
 #bindsym --release $mod+Shift+p     exec --no-startup-id scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
 #bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
 #bindsym --release $mod+Print       exec --no-startup-id scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
 #bindsym --release $mod+p           exec --no-startup-id scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
-bindsym --release $mod+Shift+p     exec --no-startup-id maim -m 9 -s ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
-bindsym --release $mod+Shift+Print exec --no-startup-id maim -m 9 -s ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
-bindsym --release $mod+Print       exec --no-startup-id maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
-bindsym --release $mod+p           exec --no-startup-id maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
 
 # lock screen (now)
 bindsym $mod+Control+l focus output primary; exec --no-startup-id xautolock -locknow
@@ -153,6 +161,9 @@ bindsym $mod+Shift+q kill
 # toggle tiling/floating
 bindsym $mod+space floating toggle
 
+# toggle floating, and resize to a small rectangle
+bindsym $mod+minus floating enable, resize set 800 600, move absolute position center
+
 # change focus between tiling/floating
 bindsym $mod+grave focus mode_toggle
 
@@ -161,15 +172,15 @@ bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
 # move focused
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+ bindsym $mod+Shift+Left  move left
+ bindsym $mod+Shift+Down  move down
+ bindsym $mod+Shift+Up    move up
+ bindsym $mod+Shift+Right move right
 
-bindsym $mod+Shift+Left move left 30px
-bindsym $mod+Shift+Down move down 30px
-bindsym $mod+Shift+Up move up 30px
-bindsym $mod+Shift+Right move right 30px
+ bindsym $mod+Shift+h     move left 30px
+ bindsym $mod+Shift+j     move down 30px
+ bindsym $mod+Shift+k     move up 30px
+ bindsym $mod+Shift+l     move right 30px
 
 # i3_movecorner.sh
 bindsym $mod+KP_End   exec --no-startup-id ~/scripts/i3_movecorner.sh 1
@@ -249,6 +260,7 @@ force_display_urgency_hint 2000 ms
 #=====================
 
 workspace_layout tabbed
+workspace_auto_back_and_forth yes
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -298,22 +310,23 @@ bindsym $mod+Mod1+Left workspace prev
 #=====================
 
 # title styles
-for_window [class="Firefox"] title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
-for_window [class="URxvt"] title_format "<span foreground='$light_pink'><b> >_ </b></span><span>%title</span>"
+for_window [class="Firefox"]   title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
+for_window [class="URxvt"]     title_format "<span foreground='$light_pink'><b> >_ </b></span><span>%title</span>"
 for_window [instance=$W3_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
 for_window [instance=$W2_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
 for_window [instance=$W1_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
+
 
 #=====================
 #=====SCRATCHPADS=====
 #=====================
 
 # aka "minimizable" windows
+# "xwinfo" is useful for getting the sizes of windows
 bindsym $mod+plus scratchpad show
 bindsym $mod+BackSpace move scratchpad
-bindsym $mod+Shift+BackSpace [instance="^@"] move scratchpad
+bindsym $mod+Escape [instance="^@"] move scratchpad
 
-# "xwinfo" is useful for getting the sizes of windows
 # scratchpad 1
 for_window [instance=$W1_name] floating enable
 for_window [instance=$W1_name] resize set 650 440
