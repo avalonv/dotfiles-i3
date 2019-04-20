@@ -367,32 +367,33 @@ bindsym $mod+F12 [instance="^@gotop"] scratchpad show
 
 
 #=====================
-#=======COLOURS=======
+#=======COLORS========
 #=====================
 
-set $bright_lime #00b3b3
-set $title #ffffff
-set $focus_ind #61f2b6
-set $dark_pink #735787
-set $inact_ind #27213d
-set $unfocus #735787
-set $urgent #ff0000
-set $black #000000
-set $dark_blue #00001a
-set $darker_blue #000011
-set $light_pink #ff66cc
-set $lighter_pink #cc99ff
-set $cool_lime #00ff99
-set $cool_purple #a366ff
-set $fuschia #ff0066
+set $bright_lime    #00b3b3
+set $title          #ffffff
+set $focus_ind      #61f2b6
+set $dark_pink      #735787
+set $inact_ind      #27213d
+set $unfocus        #735787
+set $urgent         #ff0000
+set $black          #000000
+set $dark_blue      #00001a
+set $darker_blue    #000011
+set $light_pink     #ff66cc
+set $lighter_pink   #cc99ff
+set $cool_lime      #00ff99
+set $cool_purple    #a366ff
+set $fuschia        #ff0066
 
 # class                 <border>        <background>    <text>          <indicator>     <child_border>
-client.focused          $bright_lime    $dark_blue    $lighter_pink   $focus_ind      $bright_lime
+client.focused          $bright_lime    $dark_blue      $lighter_pink   $focus_ind      $bright_lime
 client.focused_inactive $dark_pink      $darker_blue    $dark_pink      $dark_pink      #404040
-client.unfocused        $dark_blue    $black          $dark_pink      $dark_blue    $black
-client.urgent           $urgent         $dark_blue    $urgent         $urgent         $urgent
-client.placeholder      $dark_blue    $black          $dark_blue    #222222         $dark_blue
+client.unfocused        $dark_blue      $black          $dark_pink      $dark_blue      $black
+client.urgent           $urgent         $dark_blue      $urgent         $urgent         $urgent
+client.placeholder      $dark_blue      $black          $dark_blue      #222222         $dark_blue
 client.background       #111
+
 
 #=====================
 #========MODES========
@@ -400,25 +401,96 @@ client.background       #111
 # i3-gaps bad
 bindsym $mod+r mode "resize"
 mode "resize" {
-        bindsym h resize shrink width 2 px or 2 ppt
-        bindsym j resize grow height 2 px or 2 ppt
-        bindsym k resize shrink height 2 px or 2 ppt
-        bindsym l resize grow width 2 px or 2 ppt
+        bindsym h resize shrink width 20 px or 20 ppt
+        bindsym j resize grow height 20 px or 20 ppt
+        bindsym k resize shrink height 20 px or 20 ppt
+        bindsym l resize grow width 20 px or 20 ppt
+
+        bindsym Shift+h resize shrink width 4 px or 4 ppt
+        bindsym Shift+j resize grow height 4 px or 4 ppt
+        bindsym Shift+k resize shrink height 4 px or 4 ppt
+        bindsym Shift+l resize grow width 4 px or 4 ppt
 
         # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 18 px or 18 ppt
-        bindsym Down resize grow height 18 px or 18 ppt
-        bindsym Up resize shrink height 18 px or 18 ppt
-        bindsym Right resize grow width 18 px or 18 ppt
+        bindsym Left  resize shrink width 4 px or 4 ppt
+        bindsym Down  resize grow height 4 px or 4 ppt
+        bindsym Up    resize shrink height 4 px or 4 ppt
+        bindsym Right resize grow width 4 px or 4 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Shift+Left resize shrink width 5 px or 5 ppt
-        bindsym Shift+Down resize grow height 5 px or 5 ppt
-        bindsym Shift+Up resize shrink height 5 px or 5 ppt
-        bindsym Shift+Right resize grow width 5 px or 5 ppt
+        bindsym Shift+Left  resize shrink width 2 px or 2 ppt
+        bindsym Shift+Down  resize grow height 2 px or 2 ppt
+        bindsym Shift+Up    resize shrink height 2 px or 2 ppt
+        bindsym Shift+Right resize grow width 2 px or 2 ppt
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
+}
+
+# mark a window
+bindsym $mod+m mode "mark"
+mode "mark" {
+        bindsym 1 mark --add --toggle 1, mode "default"
+        bindsym 2 mark --add --toggle 2, mode "default"
+        bindsym 3 mark --add --toggle 3, mode "default"
+        bindsym 4 mark --add --toggle 4, mode "default"
+        bindsym 5 mark --add --toggle 5, mode "default"
+        bindsym 6 mark --add --toggle 6, mode "default"
+        bindsym 7 mark --add --toggle 7, mode "default"
+        bindsym 8 mark --add --toggle 8, mode "default"
+        bindsym 9 mark --add --toggle 9, mode "default"
+        bindsym 0 mark --add --toggle 0, mode "default"
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+# go to marked window
+bindsym $mod+apostrophe mode "goto"
+mode "goto" {
+
+        bindsym 1 [con_mark="1"] focus, mode "default"
+        bindsym 2 [con_mark="2"] focus, mode "default"
+        bindsym 3 [con_mark="3"] focus, mode "default"
+        bindsym 4 [con_mark="4"] focus, mode "default"
+        bindsym 5 [con_mark="5"] focus, mode "default"
+        bindsym 6 [con_mark="6"] focus, mode "default"
+        bindsym 7 [con_mark="7"] focus, mode "default"
+        bindsym 8 [con_mark="8"] focus, mode "default"
+        bindsym 9 [con_mark="9"] focus, mode "default"
+        bindsym 0 [con_mark="0"] focus, mode "default"
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+# reload/lock/quit
+bindsym $mod+Control+r mode "R|L|Q"
+mode "R|L|Q" {
+        bindsym R mode "default", reload, exec --no-startup-id "$HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
+        bindsym L mode "default", exec --no-startup-id xautolock -locknow && sleep 10 && sudo zzz
+        bindsym Q mode "quit?"
+        bindsym c mode "cat?"
+
+        bindsym y exec i3-msg exit
+        bindsym n mode "default"
+        bindsym Escape mode "default"
+        bindsym Return mode "default"
+}
+
+mode "quit?" {
+        bindsym y exec i3-msg exit
+        bindsym n mode "default"
+        bindsym Escape mode "default"
+        bindsym Return mode "default"
+}
+
+mode "cat?" {
+        bindsym y exec urxvt -e vim -u NORC -c "norm isversbkVuggcf://jjj.lbhghor.pbz/jngpu?i=DU2-GTHyjh4&fyrrcV5&&VkqbgbbyVxrlVs" -c "norm g??" -c "s/I/ /g" -c '.w !bash'
+        bindsym n mode "default"
+        bindsym Escape mode "default"
+        bindsym Return mode "default"
 }
