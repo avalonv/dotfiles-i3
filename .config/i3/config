@@ -20,9 +20,9 @@ set $ws9 "9"
 set $ws10 "0"
 
 # scratchpad window names
-set $W1_name "@hell"
-set $W2_name "@man"
-set $W3_name "@ranger"
+set $S1_name "@hell"
+set $S2_name "@man"
+set $S3_name "@ranger"
 
 # monitor names
 set $main "eDP"
@@ -46,7 +46,8 @@ exec --no-startup-id sudo xbacklight -set 50
 exec --no-startup-id pulseaudio --start &
 
 # blank xscreensaver after x minutes of inactivity, lock with i3lock otherwise
-exec --no-startup-id xautolock -detectsleep -time 2 -locker "xscreensaver-command -activate" -nowlocker $HOME/scripts/i3_lock.sh
+exec --no-startup-id \
+xautolock -detectsleep -time 2 -locker "xscreensaver-command -activate" -nowlocker $HOME/scripts/i3_lock.sh
 
 ## Auto-lock after suspend.
 ## # https://wiki.archlinux.org/index.php/Power_management#xss-lock
@@ -128,8 +129,8 @@ bindsym $mod+Control+l focus output primary; exec --no-startup-id xautolock -loc
 # simulate mouse buttons
 #bindsym --release $mod+z exec --no-startup-id xdotool click --clearmodifiers 1
 #bindsym --release $mod+x exec --no-startup-id xdotool click --clearmodifiers 3
-bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m1'
-bindsym $mod+x exec xvkbd -no-repeat -no-jump-pointer -text '\m3'
+#######bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m1'
+bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m3'
 #bindsym $mod+Mod1+j exec xvkbd -no-jump-pointer -no-repeat -text '\m4'
 #bindsym $mod+Mod1+k exec xvkbd -no-jump-pointer -no-repeat -text '\m5'
 bindsym $mod+Mod1+j exec xvkbd -no-jump-pointer -text '\[Page_Down]'
@@ -221,7 +222,8 @@ bindsym $mod+f fullscreen toggle
 
 
 # launch as floating
-for_window [class="peek"] floating enable
+for_window [class="Peek"] floating enable
+for_window [class="Gpick"] floating enable, resize set 700 340
 for_window [class="Pqiv"] floating enable
 for_window [class="radeon-profile"] floating enable
 for_window [class="XTerm"] floating enable
@@ -318,9 +320,9 @@ bindsym $mod+Mod1+Left workspace prev
 # title styles
 for_window [class="Firefox"]   title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
 for_window [class="URxvt"]     title_format "<span foreground='$light_pink'><b> >_ </b></span><span>%title</span>"
-for_window [instance=$W3_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
-for_window [instance=$W2_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
-for_window [instance=$W1_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
+for_window [instance=$S3_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
+for_window [instance=$S2_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
+for_window [instance=$S1_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
 
 
 #=====================
