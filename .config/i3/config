@@ -332,40 +332,39 @@ for_window [instance=$S1_name] title_format "<span foreground='$fuschia'><b>✸<
 # aka "minimizable" windows
 # "xwinfo" is useful for getting the sizes of windows
 bindsym $mod+plus scratchpad show
-bindsym $mod+BackSpace move scratchpad
-bindsym $mod+Escape [instance="^@"] move scratchpad
+bindsym $mod+x move scratchpad
+bindsym $mod+shift+x move scratchpad, mark --add _last
 
-# scratchpad 1
-for_window [instance=$W1_name] floating enable
-for_window [instance=$W1_name] resize set 650 440
-for_window [instance=$W1_name] mark W1, move scratchpad
-for_window [instance=$W1_name] sticky enable
-bindsym $mod+Shift+F1 [con_mark="W1"] focus
-bindsym $mod+F1 [instance=$W1_name] scratchpad show
+# hide the named scratchpads
+bindsym $mod+Escape [con_mark="^S[1-3]"] move scratchpad
 
-# scratchpad 2
-for_window [instance=$W2_name] floating enable
-for_window [instance=$W2_name] resize set 650 830
-for_window [instance=$W2_name] mark W2, move scratchpad
-for_window [instance=$W2_name] sticky enable
-bindsym $mod+Shift+F2 [con_mark="W2"] focus
-bindsym $mod+F2 [instance=$W2_name] scratchpad show
+# mark, goto last scratchpad window
+bindsym $mod+o [con_mark="_last"] focus
 
-# ranger
-for_window [instance=$W3_name] floating enable
-for_window [instance=$W3_name] resize set 900 440
-for_window [instance=$W3_name] mark W3, move scratchpad
-for_window [instance=$W3_name] sticky enable
-bindsym $mod+Shift+F3 [con_mark="W3"] focus
-bindsym $mod+F3 [instance=$W3_name] scratchpad show
 
-# top
-#exec urxvt -name ^@gotop -e gotop --rate=0.8 &
-for_window [instance="^@gotop"] floating enable
-for_window [instance="^@gotop"] resize set 600 450
-for_window [instance="^@gotop"] move scratchpad
-for_window [instance="^@gotop"] sticky enable
-bindsym $mod+F12 [instance="^@gotop"] scratchpad show
+# scratchpad 1 (hell)
+for_window [instance=$S1_name] floating enable
+for_window [instance=$S1_name] resize set 650 440
+for_window [instance=$S1_name] mark S1, move scratchpad
+for_window [instance=$S1_name] sticky enable
+bindsym $mod+Shift+F1 [con_mark="S1"] focus
+bindsym $mod+F1 [instance=$S1_name] scratchpad show
+
+# scratchpad 2 (man)
+for_window [instance=$S2_name] floating enable
+for_window [instance=$S2_name] resize set 650 830
+for_window [instance=$S2_name] mark S2, move scratchpad
+for_window [instance=$S2_name] sticky enable
+bindsym $mod+Shift+F2 [con_mark="S2"] focus
+bindsym $mod+F2 [instance=$S2_name] scratchpad show
+
+# scratchpad 3 (ranger)
+for_window [instance=$S3_name] floating enable
+for_window [instance=$S3_name] resize set 900 440
+for_window [instance=$S3_name] mark S3, move scratchpad
+for_window [instance=$S3_name] sticky enable
+bindsym $mod+Shift+F3 [con_mark="S3"] focus
+bindsym $mod+F3 [instance=$S3_name] scratchpad show
 
 
 #=====================
@@ -433,16 +432,16 @@ mode "resize" {
 # mark a window
 bindsym $mod+m mode "mark"
 mode "mark" {
-        bindsym 1 mark --add --toggle 1, mode "default"
-        bindsym 2 mark --add --toggle 2, mode "default"
-        bindsym 3 mark --add --toggle 3, mode "default"
-        bindsym 4 mark --add --toggle 4, mode "default"
-        bindsym 5 mark --add --toggle 5, mode "default"
-        bindsym 6 mark --add --toggle 6, mode "default"
-        bindsym 7 mark --add --toggle 7, mode "default"
-        bindsym 8 mark --add --toggle 8, mode "default"
-        bindsym 9 mark --add --toggle 9, mode "default"
-        bindsym 0 mark --add --toggle 0, mode "default"
+        bindsym $mod+1 mark --add --toggle M1, mark --add _last, mode "default"
+        bindsym $mod+2 mark --add --toggle M2, mark --add _last, mode "default"
+        bindsym $mod+3 mark --add --toggle M3, mark --add _last, mode "default"
+        bindsym $mod+4 mark --add --toggle M4, mark --add _last, mode "default"
+        bindsym $mod+5 mark --add --toggle M5, mark --add _last, mode "default"
+        bindsym $mod+6 mark --add --toggle M6, mark --add _last, mode "default"
+        bindsym $mod+7 mark --add --toggle M7, mark --add _last, mode "default"
+        bindsym $mod+8 mark --add --toggle M8, mark --add _last, mode "default"
+        bindsym $mod+9 mark --add --toggle M9, mark --add _last, mode "default"
+        bindsym $mod+0 mark --add --toggle M0, mark --add _last, mode "default"
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -453,16 +452,16 @@ mode "mark" {
 bindsym $mod+apostrophe mode "goto"
 mode "goto" {
 
-        bindsym 1 [con_mark="1"] focus, mode "default"
-        bindsym 2 [con_mark="2"] focus, mode "default"
-        bindsym 3 [con_mark="3"] focus, mode "default"
-        bindsym 4 [con_mark="4"] focus, mode "default"
-        bindsym 5 [con_mark="5"] focus, mode "default"
-        bindsym 6 [con_mark="6"] focus, mode "default"
-        bindsym 7 [con_mark="7"] focus, mode "default"
-        bindsym 8 [con_mark="8"] focus, mode "default"
-        bindsym 9 [con_mark="9"] focus, mode "default"
-        bindsym 0 [con_mark="0"] focus, mode "default"
+        bindsym $mod+1 [con_mark="M1"] focus, mark --add _last, mode "default"
+        bindsym $mod+2 [con_mark="M2"] focus, mark --add _last, mode "default"
+        bindsym $mod+3 [con_mark="M3"] focus, mark --add _last, mode "default"
+        bindsym $mod+4 [con_mark="M4"] focus, mark --add _last, mode "default"
+        bindsym $mod+5 [con_mark="M5"] focus, mark --add _last, mode "default"
+        bindsym $mod+6 [con_mark="M6"] focus, mark --add _last, mode "default"
+        bindsym $mod+7 [con_mark="M7"] focus, mark --add _last, mode "default"
+        bindsym $mod+8 [con_mark="M8"] focus, mark --add _last, mode "default"
+        bindsym $mod+9 [con_mark="M9"] focus, mark --add _last, mode "default"
+        bindsym $mod+0 [con_mark="M0"] focus, mark --add _last, mode "default"
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -472,27 +471,28 @@ mode "goto" {
 # reload/lock/quit
 bindsym $mod+Control+r mode "R|L|Q"
 mode "R|L|Q" {
-        bindsym R mode "default", reload, exec --no-startup-id "$HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
-        bindsym L mode "default", exec --no-startup-id xautolock -locknow && sleep 10 && sudo zzz
-        bindsym Q mode "quit?"
-        bindsym c mode "cat?"
+        bindsym $mod+R mode "default", reload, exec --no-startup-id "$HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
+        bindsym $mod+L mode "default", exec --no-startup-id xautolock -locknow && sleep 10 && sudo zzz
+        bindsym $mod+Q mode "quit?"
+        bindsym $mod+c mode "cat?"
 
-        bindsym y exec i3-msg exit
-        bindsym n mode "default"
+        bindsym $mod+y exec i3-msg exit
+        bindsym $mod+n mode "default"
         bindsym Escape mode "default"
         bindsym Return mode "default"
 }
 
 mode "quit?" {
-        bindsym y exec i3-msg exit
-        bindsym n mode "default"
+        bindsym $mod+y exec i3-msg exit
+        bindsym $mod+n mode "default"
         bindsym Escape mode "default"
         bindsym Return mode "default"
 }
 
 mode "cat?" {
-        bindsym y exec urxvt -e vim -u NORC -c "norm isversbkVuggcf://jjj.lbhghor.pbz/jngpu?i=DU2-GTHyjh4&fyrrcV5&&VkqbgbbyVxrlVs" -c "norm g??" -c "s/I/ /g" -c '.w !bash'
-        bindsym n mode "default"
+        bindsym $mod+y exec urxvt -e vim -u NORC -c "norm isversbkVlbhgh.or/DU2-GTHyjh4&fyrrcV5V&&kqbgbbyVxrlVs" \
+        -c "norm g??" -c "s/I/ /g" -c '.w !bash', mode "default"
+        bindsym $mod+n mode "default"
         bindsym Escape mode "default"
         bindsym Return mode "default"
 }
