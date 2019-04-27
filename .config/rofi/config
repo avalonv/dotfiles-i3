@@ -11,7 +11,7 @@ rofi.terminal: urxvt
 rofi.show-icons: True
 rofi.opacity: 40
 !rofi.window-match-fields:
-rofi.window-format: {c:8} >  {{w}} {n11} |  {t:80}
+rofi.window-format: {w} {c:8} :  {n11} :  {t:80}
 rofi.drun-display-format: {name}
 rofi.matching: fuzzy
 rofi.no-sort: True
@@ -21,3 +21,4 @@ rofi.no-sort: True
 rofi.case-sensitive: False
 rofi.sidebar-mode: True
 rofi.font:terminus bold 16
+!rofi.fake-transparency: true
