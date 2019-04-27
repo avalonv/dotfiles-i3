@@ -1,4 +1,4 @@
-# TODO:
+# moomincore0 TODO:
 # find out if there are any i3-gaps options left
 # learn how to use xmodmap
 
@@ -28,7 +28,47 @@ set $S3_name "@ranger"
 set $main "eDP"
 set $HDMI1 "HDMI-A-0"
 
+# exec alias
+set $ensi exec --no-startup-id
+
 font pango:terminus, Icons 10
+
+
+#=====================
+#=======COLORS========
+#=====================
+
+
+set $inact_ind                                     #27213D
+set $urgent                                        #FF0000
+set $black                                         #000000
+set $darker_blue                                   #000011
+set $light_pink                                    #FF66CC
+set_from_resource $dark_blue moomincore0           #00001A
+#moomincore0                                       #142043
+set_from_resource $crimson moomincore1             #FF0066
+#moomincore2                                       #00807F
+#moomincore3                                       #D79921
+set_from_resource $lighter_pink moomincore4        #CC99FF
+#moomincore5                                       #DC8CC3
+#moomincore6                                       #74D7EC
+#moomincore7                                       #DFA8FF
+#moomincore8                                       #766D7F
+set_from_resource $fuschia moomincore9             #F62BED
+#moomincore10                                      #F93483
+#moomincore11                                      #F5A2BB
+set_from_resource $turquoise moomincore12          #00B3B3
+#moomincore13                                      #FF6666
+set_from_resource $dark_pink moomincore14          #735787
+set_from_resource $title moomincore15              #FFFFFF
+
+# class                 <border>        <background>    <text>          <indicator>     <child_border>
+client.focused          $turquoise      $dark_blue      $lighter_pink   $focus_ind      $turquoise
+client.focused_inactive $dark_pink      $darker_blue    $dark_pink      $dark_pink      #404040
+client.unfocused        $dark_blue      $black          $dark_pink      $dark_blue      $black
+client.urgent           $fuschia        $dark_blue      $fuschia        $fuschia        $fuschia
+client.placeholder      $dark_blue      $black          $dark_blue      #222222         $dark_blue
+client.background       #111
 
 
 #=====================
@@ -36,24 +76,23 @@ font pango:terminus, Icons 10
 #=====================
 
 # wallpaper
-exec --no-startup-id feh --bg-max ~/Pictures/Wallpapers/mice_big.png
-exec --no-startup-id xrdb .Xresources
+$ensi feh --bg-scale /Pictures/Wallpapers/touhou_abstract_fuschia.png
+$ensi xrdb .Xresources
 
 # keyboard with right alt for acentos
-exec --no-startup-id setxkbmap -layout us -variant altgr-intl -option nodeadkeys
+$ensi setxkbmap -layout us -variant altgr-intl -option nodeadkeys
 
-exec --no-startup-id sudo xbacklight -set 50
-exec --no-startup-id pulseaudio --start &
+$ensi sudo xbacklight -set 50
+$ensi pulseaudio --start &
 
 # blank xscreensaver after x minutes of inactivity, lock with i3lock otherwise
-exec --no-startup-id \
-xautolock -detectsleep -time 2 -locker "xscreensaver-command -activate" -nowlocker $HOME/scripts/i3_lock.sh
+$ensi xautolock -detectsleep -time 2 -locker "pgrep i3lock || xscreensaver-command -activate" -nowlocker $HOME/scripts/i3_lock.sh
 
 ## Auto-lock after suspend.
 ## # https://wiki.archlinux.org/index.php/Power_management#xss-lock
-#exec --no-startup-id xss-lock -l -- "~/scripts/transfer-sleep-lock-i3lock.sh"&
-exec --no-startup-id mate-power-manager &
-exec --no-startup-id "sleep 5 && $HOME/scripts/i3_reload.sh 'start' 'hell' 'man' 'ranger' && xscreensaver -nosplash"
+#$ensi xss-lock -l -- "~/scripts/transfer-sleep-lock-i3lock.sh"&
+$ensi mate-power-manager &
+$ensi "sleep 5 && $HOME/scripts/i3_reload.sh 'start' 'hell' 'man' 'ranger' && xscreensaver -nosplash"
 
 
 #=====================
@@ -64,7 +103,7 @@ exec --no-startup-id "sleep 5 && $HOME/scripts/i3_reload.sh 'start' 'hell' 'man'
 exec_always --no-startup-id xset dpms 70 120 300
 
 # turn off god awful beep
-exec_always --no-startup-id exec --no-startup-id xset b off
+exec_always --no-startup-id xset b off
 
 
 #=====================
@@ -72,21 +111,21 @@ exec_always --no-startup-id exec --no-startup-id xset b off
 #=====================
 
 # start a terminal
-bindsym $mod+Return exec --no-startup-id urxvt &, focus
+bindsym $mod+Return $ensi urxvt &, focus
 
 # restart i3
 bindsym $mod+shift+r restart
 
 # sound control
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer sset Master "5%+"
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer sset Master "5%-"
-bindsym XF86AudioMute        exec --no-startup-id amixer set Master toggle
+bindsym XF86AudioRaiseVolume $ensi amixer sset Master "5%+"
+bindsym XF86AudioLowerVolume $ensi amixer sset Master "5%-"
+bindsym XF86AudioMute        $ensi amixer set Master toggle
 
 # screen brightness
-bindsym XF86MonBrightnessUp         exec --no-startup-id sudo xbacklight -inc 4
-bindsym XF86MonBrightnessDown       exec --no-startup-id sudo xbacklight -dec 4
-bindsym shift+XF86MonBrightnessUp   exec --no-startup-id sudo xbacklight -inc 1
-bindsym shift+XF86MonBrightnessDown exec --no-startup-id sudo xbacklight -dec 1
+bindsym XF86MonBrightnessUp         $ensi sudo xbacklight -inc 4
+bindsym XF86MonBrightnessDown       $ensi sudo xbacklight -dec 4
+bindsym shift+XF86MonBrightnessUp   $ensi sudo xbacklight -inc 1
+bindsym shift+XF86MonBrightnessDown $ensi sudo xbacklight -dec 1
 
 # rofi show progrmans
 bindsym $mod+semicolon exec \
@@ -97,29 +136,29 @@ bindsym $mod+Tab exec \
 rofi -modi "window#ssh#bindings:egrep '^bindsym' $HOME/.config/i3/config" -show window -lines 12 -width 68 -location 0
 
 # hide/show polybar
-bindsym $mod+Home exec --no-startup-id polybar-msg cmd toggle
+bindsym $mod+Home $ensi polybar-msg cmd toggle
 
 # take screenshot of focused window/selected region (maim)
-bindsym --release $mod+Shift+p  exec --no-startup-id \
+bindsym --release $mod+Shift+p  $ensi \
 maim -m 9 -s ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
 
-bindsym --release $mod+Shift+Print exec --no-startup-id \
+bindsym --release $mod+Shift+Print $ensi \
 maim -m 9 -s ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
 
-bindsym --release $mod+Print exec --no-startup-id \
+bindsym --release $mod+Print $ensi \
 maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
 
-bindsym --release $mod+p exec --no-startup-id \
+bindsym --release $mod+p $ensi \
 maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
 
 # scrot:
-#bindsym --release $mod+Shift+p     exec --no-startup-id scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
-#bindsym --release $mod+Shift+Print exec --no-startup-id scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
-#bindsym --release $mod+Print       exec --no-startup-id scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
-#bindsym --release $mod+p           exec --no-startup-id scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+#bindsym --release $mod+Shift+p     $ensi scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+#bindsym --release $mod+Shift+Print $ensi scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+#bindsym --release $mod+Print       $ensi scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
+#bindsym --release $mod+p           $ensi scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
 
 # lock screen (now)
-bindsym $mod+Control+l focus output primary; exec --no-startup-id xautolock -locknow
+bindsym $mod+Control+l focus output primary; $ensi xautolock -locknow
 
 
 #=====================
@@ -127,8 +166,8 @@ bindsym $mod+Control+l focus output primary; exec --no-startup-id xautolock -loc
 #=====================
 
 # simulate mouse buttons
-#bindsym --release $mod+z exec --no-startup-id xdotool click --clearmodifiers 1
-#bindsym --release $mod+x exec --no-startup-id xdotool click --clearmodifiers 3
+#bindsym --release $mod+z $ensi xdotool click --clearmodifiers 1
+#bindsym --release $mod+x $ensi xdotool click --clearmodifiers 3
 #######bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m1'
 bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m3'
 #bindsym $mod+Mod1+j exec xvkbd -no-jump-pointer -no-repeat -text '\m4'
@@ -190,15 +229,15 @@ bindsym $mod+d focus child
  bindsym $mod+Shift+l     move right 30px
 
 # i3_movecorner.sh
-bindsym $mod+KP_End   exec --no-startup-id ~/scripts/i3_movecorner.sh 1
-bindsym $mod+KP_Down  exec --no-startup-id ~/scripts/i3_movecorner.sh 2
-bindsym $mod+KP_Next  exec --no-startup-id ~/scripts/i3_movecorner.sh 3
-bindsym $mod+KP_Left  exec --no-startup-id ~/scripts/i3_movecorner.sh 4
-bindsym $mod+KP_Begin exec --no-startup-id ~/scripts/i3_movecorner.sh 5
-bindsym $mod+KP_Right exec --no-startup-id ~/scripts/i3_movecorner.sh 6
-bindsym $mod+KP_Home  exec --no-startup-id ~/scripts/i3_movecorner.sh 7
-bindsym $mod+KP_Up    exec --no-startup-id ~/scripts/i3_movecorner.sh 8
-bindsym $mod+KP_Prior exec --no-startup-id ~/scripts/i3_movecorner.sh 9
+bindsym $mod+KP_End   $ensi ~/scripts/i3_movecorner.sh 1
+bindsym $mod+KP_Down  $ensi ~/scripts/i3_movecorner.sh 2
+bindsym $mod+KP_Next  $ensi ~/scripts/i3_movecorner.sh 3
+bindsym $mod+KP_Left  $ensi ~/scripts/i3_movecorner.sh 4
+bindsym $mod+KP_Begin $ensi ~/scripts/i3_movecorner.sh 5
+bindsym $mod+KP_Right $ensi ~/scripts/i3_movecorner.sh 6
+bindsym $mod+KP_Home  $ensi ~/scripts/i3_movecorner.sh 7
+bindsym $mod+KP_Up    $ensi ~/scripts/i3_movecorner.sh 8
+bindsym $mod+KP_Prior $ensi ~/scripts/i3_movecorner.sh 9
 
 # warp to mouse
 bindsym $mod+c move position mouse
@@ -319,10 +358,11 @@ bindsym $mod+Mod1+Left workspace prev
 
 # title styles
 for_window [class="Firefox"]   title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
-for_window [class="URxvt"]     title_format "<span foreground='$light_pink'><b> >_ </b></span><span>%title</span>"
-for_window [instance=$S3_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
-for_window [instance=$S2_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
-for_window [instance=$S1_name] title_format "<span foreground='$fuschia'><b>✸</b></span><span> %title</span>"
+for_window [class="URxvt"]     title_format "<span foreground='$light_pink'><b> term </b></span><span>%title</span>"
+for_window [class="i3-frame"]  title_format "<span foreground='$light_pink'> %title</span>"
+for_window [instance=$S3_name] title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
+for_window [instance=$S2_name] title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
+for_window [instance=$S1_name] title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
 
 
 #=====================
@@ -333,7 +373,7 @@ for_window [instance=$S1_name] title_format "<span foreground='$fuschia'><b>✸<
 # "xwinfo" is useful for getting the sizes of windows
 bindsym $mod+plus scratchpad show
 bindsym $mod+x move scratchpad
-bindsym $mod+shift+x move scratchpad, mark --add _last
+bindsym $mod+shift+x mark --add _last, move scratchpad
 
 # hide the named scratchpads
 bindsym $mod+Escape [con_mark="^S[1-3]"] move scratchpad
@@ -352,7 +392,7 @@ bindsym $mod+F1 [instance=$S1_name] scratchpad show
 
 # scratchpad 2 (man)
 for_window [instance=$S2_name] floating enable
-for_window [instance=$S2_name] resize set 650 830
+for_window [instance=$S2_name] resize set 650 830, move position 1270 45
 for_window [instance=$S2_name] mark S2, move scratchpad
 for_window [instance=$S2_name] sticky enable
 bindsym $mod+Shift+F2 [con_mark="S2"] focus
@@ -360,40 +400,11 @@ bindsym $mod+F2 [instance=$S2_name] scratchpad show
 
 # scratchpad 3 (ranger)
 for_window [instance=$S3_name] floating enable
-for_window [instance=$S3_name] resize set 900 440
+for_window [instance=$S3_name] resize set 900 440, move position 0 640
 for_window [instance=$S3_name] mark S3, move scratchpad
 for_window [instance=$S3_name] sticky enable
 bindsym $mod+Shift+F3 [con_mark="S3"] focus
 bindsym $mod+F3 [instance=$S3_name] scratchpad show
-
-
-#=====================
-#=======COLORS========
-#=====================
-
-set $bright_lime    #00b3b3
-set $title          #ffffff
-set $focus_ind      #61f2b6
-set $dark_pink      #735787
-set $inact_ind      #27213d
-set $unfocus        #735787
-set $urgent         #ff0000
-set $black          #000000
-set $dark_blue      #00001a
-set $darker_blue    #000011
-set $light_pink     #ff66cc
-set $lighter_pink   #cc99ff
-set $cool_lime      #00ff99
-set $cool_purple    #a366ff
-set $fuschia        #ff0066
-
-# class                 <border>        <background>    <text>          <indicator>     <child_border>
-client.focused          $bright_lime    $dark_blue      $lighter_pink   $focus_ind      $bright_lime
-client.focused_inactive $dark_pink      $darker_blue    $dark_pink      $dark_pink      #404040
-client.unfocused        $dark_blue      $black          $dark_pink      $dark_blue      $black
-client.urgent           $urgent         $dark_blue      $urgent         $urgent         $urgent
-client.placeholder      $dark_blue      $black          $dark_blue      #222222         $dark_blue
-client.background       #111
 
 
 #=====================
@@ -471,8 +482,8 @@ mode "goto" {
 # reload/lock/quit
 bindsym $mod+Control+r mode "R|L|Q"
 mode "R|L|Q" {
-        bindsym $mod+R mode "default", reload, exec --no-startup-id "$HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
-        bindsym $mod+L mode "default", exec --no-startup-id xautolock -locknow && sleep 10 && sudo zzz
+        bindsym $mod+R mode "default", reload, $ensi "$HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
+        bindsym $mod+L mode "default", $ensi xautolock -locknow && sleep 10 && sudo zzz
         bindsym $mod+Q mode "quit?"
         bindsym $mod+c mode "cat?"
 
