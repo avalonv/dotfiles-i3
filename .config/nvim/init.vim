@@ -66,6 +66,13 @@ if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis
 endif
 
+" https://vi.stackexchange.com/a/456/1111
+fun! RmTrailing()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+
 " Do incremental searching when it's possible to timeout.
 "if has('reltime')
 "  set incsearch
@@ -185,8 +192,6 @@ inoremap <A-K> <Esc>:m .-2<CR>==gi
 vnoremap <A-J> :m '>+1<CR>gv=gv
 vnoremap <A-K> :m '<-2<CR>gv=gv
 
-command RemoveTrailing :%s/[\t| ]$//g<cr><F9>
-
 "colorscheme elflord
 colorscheme default
 hi TabLineFill      ctermfg=16          ctermbg=232          cterm=NONE
@@ -222,7 +227,11 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ap/vim-css-color'
+" cool airline themes: bubblegum, wombat, lucius, jellybean, raven, serene
 let g:airline_symbols_ascii = 1    " i don't like fancy fonts v_v
+let g:airline_theme = 'serene'
 set noshowmode                     " if the airline loads it will always show the mode
 
 call plug#end()
