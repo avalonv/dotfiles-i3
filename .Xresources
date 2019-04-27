@@ -1,24 +1,9 @@
-
-!!! rxvt-unicode hotkey summary:
-
-! Search buffer (Ctrl+f)
-! Scroll up (Ctrl+Up)
-! Scroll down (Ctrl+Down)
-! Create new tab (Shift+Down)
-! Move to tab on the left (Shift+Left)
-! Move to tab on the right (Shift+Right)
-! Increase font size (Ctrl+Plus)
-! Decrease font size (Ctrl+Minus)
-! Paste clipboard (Ctrl+Shift+V) or (Shift+Insert)
-! Open url in browser (Alt+M)
-! Select with mouse to copy
-
 ! Colour and font settings
 
-!*foreground: rgb:eb/db/b2
-*foreground: rgb:f5/d7/f5
+! actual foreground/background of x windows
+*foreground: #ffffff
+*background: #000000
 
-!*background: rgb:0a/0a/11
 Xft.autohint: 1
 Xft.antialias: 1
 Xft.hinting: true
@@ -26,7 +11,6 @@ Xft.hintstyle: hintslight
 Xft.rgba: rgb
 Xft.lcdfilter: lcddefault
 !Xft.dpi: 72
-
 
 !general dialog box (affects main hostname, username, password text)
 xscreensaver.Dialog.foreground:         #ffffff
@@ -36,28 +20,46 @@ xscreensaver.Dialog.bottomShadowColor:  #111111
 xscreensaver.Dialog.Button.foreground:  #666666
 xscreensaver.Dialog.Button.background:  #ffffff
 
-! URxvt stuff:
-! Detailed list of settings: urxvt --help 2>&1 | sed -n '/:  /s/^ */! URxvt*/gp'
 ! Detailed list of colours: for x in {0..8}; do for i in {30..37}; do for a in {40..47}; do echo -ne "\e[$x;$i;$a""m\\\e[$x;$i;$a""m\e[0;37;40m "; done; echo; done; done; echo ""
-! Used to be Tala
-!*background: rgb:1d/20/21
-!cool pink #b0497d #F62BED
-URxvt.color0: #1d2021
-URxvt.color1: #ba484d
-URxvt.color2: #60B48A
-URxvt.color3: #d79921
-URxvt.color4: #E62063
-URxvt.color5: #DC8CC3
-URxvt.color6: #88E7C6
-URxvt.color7: #D2E0E9
-URxvt.color8: #766d7f
-URxvt.color9: #f93483
-URxvt.color10: #F62BED
-URxvt.color11: #fabd2f
-URxvt.color12: #83a598
-URxvt.color13: #ff6666
-URxvt.color14: #9289bf
-URxvt.color15: #FFFFFF
+! Detailed list of colours 2: for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done
+! Colors
+
+!#define moomincore0  #142043
+#define moomincore0  #00001A
+#define moomincore1  #FF0066
+#define moomincore2  #00807F
+#define moomincore3  #D79921
+#define moomincore4  #CC99FF
+#define moomincore5  #DC8CC3
+#define moomincore6  #74D7EC
+#define moomincore7  #DFA8FF
+#define moomincore8  #766D7F
+#define moomincore9  #F62BED
+#define moomincore10 #F93483
+#define moomincore11 #F5A2BB
+#define moomincore12 #00B3B3
+#define moomincore13 #FF6666
+#define moomincore14 #735787
+#define moomincore15 #FFFFFF
+
+! URxvt stuff:
+
+URxvt.color0: moomincore0
+URxvt.color1: moomincore1
+URxvt.color2: moomincore2
+URxvt.color3: moomincore3
+URxvt.color4: moomincore4
+URxvt.color5: moomincore5
+URxvt.color6: moomincore6
+URxvt.color7: moomincore7
+URxvt.color8: moomincore8
+URxvt.color9: moomincore9
+URxvt.color10: moomincore10
+URxvt.color11: moomincore11
+URxvt.color12: moomincore12
+URxvt.color13: moomincore13
+URxvt.color14: moomincore14
+URxvt.color15: moomincore15
 
 URxvt.cursorColor: #ff0000
 URxvt.cursorColor2: #61f2b6
@@ -75,7 +77,7 @@ urxvt*background: rgba:0000/0000/0200/c800
 
 ! Geometry
 !URxvt*geometry:  240x84
-URxvt*borderless:false
+URxvt*borderless:true
 !URxvt.borderColor: #003333
 !URxvt.internalBorder: 0
 !URxvt.externalBorder: 1
@@ -140,16 +142,19 @@ URxvt*iso14755_52:False
 
 
 !Fonts
-! good fonts include "Terminus" "Termsyn" "fixed"
+! `fc-list -v | grep -i <fontname>`
 URxvt.allow_bold: true
 !URxvt.letterSpace: -1
 
-URxvt.font:xft:Terminus:size=12
-URxvt.italicFont:xft:Terminus:size=12:weight=oblique
-!URxvt*boldFont:xft:Terminus:size=12:weight=bold
-
-! Terminus font under 14px does not have bold typeface by default
+! Terminus font under 14px did not have bold typeface by default
 ! see https://bbs.archlinux.org/viewtopic.php?id=95199 for fix
+URxvt.font:xft:Terminus:size=12
+URxvt.boldFont:xft:Terminus:size=12:weight=bold
+URxvt.italicFont:xft:Terminus:size=12:weight=oblique
+!URxvt.font:xft:Hack:size=10
+!URxvt.italicFont:xft:Hack:size=10:weight=italic
+!URxvt.boldFont:xft:Hack:size=10:weight=bold
+
 
 ! Resize font
 ! https://github.com/simmel/urxvt-resize-font/blob/master/resize-font
