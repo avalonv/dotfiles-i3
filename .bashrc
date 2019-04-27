@@ -22,16 +22,16 @@ function set_prompt
 {
     local last_exit=$?
     local cool_ass_cat='~(=^⋅ω⋅^)'
-    local PS1begin='\[\e[0;37m\]|\[\e[1;30m\]'
+    local PS1begin='\[\e[m\]|\[\e[1;30m\]'
     local PS1user='\[\e[1;31m\]\u\[\e[m\]'
-    local PS1host='\[\e[0;37m\]@\[\e[0;37m\]\h'
-    local PS1bad='|\[\e[1;35m\]'"${last_exit}"
+    local PS1host='\[\e[m\]@\h'
+    local PS1bad='|\[\e[1;32m\]'"${last_exit}"
     local PS1time='(\A)'
-    local PS1dir='\[\e[0;37m\]|\[\e[0;32m\]\w\[\e[0;37m\]'
+    local PS1dir='\[\e[m\]|\[\e[1;34m\]\w\[\e[m\]'
     local PS1end='\n\[\e[1;37m\]\$\[\e[m\] '
 
     if [[ $(pwd) == "/home/$(id -nu ${UID})" ]]; then
-      PS1dir="\[\e[0;37m\]|\[\e[0;36m\]$cool_ass_cat\[\e[0;37m\]"
+      PS1dir="\[\e[m\]|\[\e[1;33m\]$cool_ass_cat\[\e[m\]"
     fi
 
     if [[ $last_exit = 0 ]]; then
@@ -94,3 +94,4 @@ alias killjobs='kill $(jobs -p)'
 alias snow='for((I=0;J=--I;))do clear;for((D=LINES;S=++J**3%COLUMNS,--D;))do printf %*s*\\n $S;done;sleep .1;done'
 alias dic='dict_query'
 alias do_bonsai='while true; do ~/gitlab/bonsai.sh/bonsai.sh -l -t 1.0 -T -L 32 -b 2 && notify-send "bonsai $(echo $tty)" && sleep 1m; done'
+alias term_colors='for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done' # https://stackoverflow.com/a/28938235/8225672 # https://stackoverflow.com/questions/6403744/are-there-terminals-that-support-true-color#comment24567873_6486000
