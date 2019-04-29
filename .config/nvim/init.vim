@@ -1,5 +1,7 @@
 " When installing vim on Void, install "vim-x11" for proper clipboard support
 " (or just use neovim)
+" read:
+" https://stackoverflow.com/questions/20579142/toggle-function-in-vim
 
 set nocompatible                                        " don't be annoying
 filetype plugin indent on                               " enable plugins for file type detection
@@ -7,7 +9,7 @@ syntax on                                               " use syntax highlightin
 set noshowmode                                          " don't show current mode
 set backspace=indent,eol,start                          " allow backspacing over everything in insert mode.
 set tabpagemax=30                                       " increase max number of tabs (default is 10)
-set history=400                                         "  lots of command line history
+set history=1000                                        " lots of command line history
 set showcmd                                             " display incomplete commands
 set wildmenu                                            " display completion matches in a status line
 set wildmode=longest,list,full                          " bash like autocompletion
@@ -17,13 +19,13 @@ set tabstop=4                                           " input 4 spaces when <t
 set shiftwidth=4                                        " CTRL-V <tab> to insert a real tab.
 set expandtab                                           " ^
 set smarttab                                            " ^
-set hlsearch                                            " highlight ALL matches when searchinag
+set hlsearch                                            " highlight matches while searching
 let c_comment_strings=1                                 " show strings inside C comments
 set mouse=vi                                            " enable mouse suppport in visual and insert modes
 set ttimeout                                            " time out for key codes
 set ttimeoutlen=100                                     " wait up to 100ms after Esc for special key
 set display=truncate                                    " show @@@ in the last line if it is truncated.
-set background=dark                                     " don't look awful
+set background=dark                                     " don't hurt my eyes
 set ignorecase                                          " ignore case in searches
 set smartcase                                           " if pattern contains upper case letter, it is case sensitive
 set ruler                                               " file name, modified flag, line, column, percentage
@@ -37,7 +39,7 @@ set whichwrap+=<,>,h,l,[,]                              " go up/down when you re
 set list                                                " explicitly display trailing characters
 set listchars=tab:>-,trail:␣,extends:>,precedes:<       " ^
 set guicursor=i:blinkon1ver20                           " blinking cursor in insert mode
-set cursorline                                          " highlight the current line
+set nocursorline                                        " highlight the current line (disabled bc hogs resources)
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -55,6 +57,21 @@ function! RmTrailing()
 endfunction
 
 command RmTrailing call RmTrailing()
+
+" open multiple tabs at once
+" https://vi.stackexchange.com/a/2110
+fun! OpenMultipleTabs(pattern_list)
+    for p in a:pattern_list
+        for c in glob(l:p, 0, 1)
+            execute 'tabedit ' . l:c
+        endfor
+    endfor
+endfun
+
+command! -bar -bang -nargs=+ -complete=file Tabedit call OpenMultipleTabs([<f-args>])
+
+" like :!chmod 744
+command MakeExe call setfperm("%","rwxr--r--")
 
 " open help windows on the right
 " https://stackoverflow.com/a/21843502/8225672
@@ -87,14 +104,14 @@ inoremap <silent> <A-.> <esc>:tabnext<cr>
 inoremap <silent> <A-,> <esc>:tabprevious<cr>
 
 " open new tab
-noremap <A-n> :tabedit<space>
+noremap <A-n> :Tabedit<space>
 
 " open ranger (files are opened in new tab)
 " a bit buggy, <F1> seems to fix things
 noremap <silent> <Leader>R :RangerTab<cr>
 
 " move all buffers to tabs
-" see https://superuser.com/a/430324/900060
+" https://superuser.com/a/430324/900060
 " :h sball
 noremap <Leader>T :tab sball<cr>
 
@@ -149,6 +166,10 @@ inoremap <A-%> <Esc>%i
 nnoremap <A-r> :%s///gc<left><left><left><left>
 vnoremap <A-r> :s/\%V//gc<left><left><left><left>
 
+" filter selection with shell commands
+" https://stackoverflow.com/a/2600768/8225672
+vnoremap <A-c> :!eval<space>
+
 " insert a new line, from the current character/end of the line respectively
 nnoremap oo o<Esc>
 nnoremap OO i<cr><Esc>
@@ -198,10 +219,11 @@ hi TabLineFill      ctermfg=16          ctermbg=232          cterm=NONE
 hi TabLine          ctermfg=14          ctermbg=232          cterm=NONE
 hi TabLineSel       ctermfg=10          ctermbg=232          cterm=Bold
 "hi Comment          ctermfg=242                              cterm=Italic
-hi Operator         ctermfg=9
+hi Operator         ctermfg=3
 hi Conditional      ctermfg=11                               cterm=Bold
 hi Constant         ctermfg=116
 hi Type             ctermfg=13
+hi PreProc          ctermfg=4 "63
 hi String           ctermfg=84
 hi Number           ctermfg=111
 hi Repeat           ctermfg=11                               cterm=Bold
