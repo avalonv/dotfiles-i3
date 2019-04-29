@@ -1,6 +1,6 @@
-# moomincore0 TODO:
-# find out if there are any i3-gaps options left
-# learn how to use xmodmap
+# TODO:
+# find out if there are any i3-gaps options left >:c
+# learn how to use xmodmap?
 
 #=====================
 #=====VARIABLES=======
@@ -30,6 +30,10 @@ set $HDMI1 "HDMI-A-0"
 
 # exec alias
 set $ensi exec --no-startup-id
+
+# show marks on polybar
+set $showmarks exec --no-startup-id polybar-msg hook marks 2
+set $hidemarks exec --no-startup-id polybar-msg hook marks 1
 
 font pango:terminus, Icons 10
 
@@ -160,20 +164,20 @@ maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S
 # lock screen (now)
 bindsym $mod+Control+l focus output primary; $ensi xautolock -locknow
 
-
 #=====================
 #===MOUSE=BINDINGS====
 #=====================
 
+### THIS IS AWFUL!!!!
 # simulate mouse buttons
 #bindsym --release $mod+z $ensi xdotool click --clearmodifiers 1
 #bindsym --release $mod+x $ensi xdotool click --clearmodifiers 3
-#######bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m1'
-bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m3'
+#bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m1'
+#bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m3'
 #bindsym $mod+Mod1+j exec xvkbd -no-jump-pointer -no-repeat -text '\m4'
 #bindsym $mod+Mod1+k exec xvkbd -no-jump-pointer -no-repeat -text '\m5'
-bindsym $mod+Mod1+j exec xvkbd -no-jump-pointer -text '\[Page_Down]'
-bindsym $mod+Mod1+k exec xvkbd -no-jump-pointer -text '<PageUp>'
+#bindsym $mod+Mod1+j exec xvkbd -no-jump-pointer -text '\[Page_Down]'
+#bindsym $mod+Mod1+k exec xvkbd -no-jump-pointer -text '<PageUp>'
 
 # Disable focus change for clicks on titlebars
 # with the middle mouse button
@@ -286,8 +290,7 @@ for_window [instance="File Upload"] resize set 520 400
 
 
 # border styles
-# comment this if using vanilla i3
-#smart_borders on
+#smart_borders on (gaps?)
 hide_edge_borders smart
 for_window [class=".*"] border pixel 4
 for_window [instance="^@"] border normal
@@ -388,7 +391,7 @@ for_window [instance=$S1_name] resize set 650 440
 for_window [instance=$S1_name] mark S1, move scratchpad
 for_window [instance=$S1_name] sticky enable
 bindsym $mod+Shift+F1 [con_mark="S1"] focus
-bindsym $mod+F1 [instance=$S1_name] scratchpad show
+bindsym $mod+F1 [con_mark="S1"] scratchpad show
 
 # scratchpad 2 (man)
 for_window [instance=$S2_name] floating enable
@@ -396,7 +399,7 @@ for_window [instance=$S2_name] resize set 650 830, move position 1270 45
 for_window [instance=$S2_name] mark S2, move scratchpad
 for_window [instance=$S2_name] sticky enable
 bindsym $mod+Shift+F2 [con_mark="S2"] focus
-bindsym $mod+F2 [instance=$S2_name] scratchpad show
+bindsym $mod+F2 [con_mark="S2"] scratchpad show
 
 # scratchpad 3 (ranger)
 for_window [instance=$S3_name] floating enable
@@ -404,7 +407,7 @@ for_window [instance=$S3_name] resize set 900 440, move position 0 640
 for_window [instance=$S3_name] mark S3, move scratchpad
 for_window [instance=$S3_name] sticky enable
 bindsym $mod+Shift+F3 [con_mark="S3"] focus
-bindsym $mod+F3 [instance=$S3_name] scratchpad show
+bindsym $mod+F3 [con_mark="S3"] scratchpad show
 
 
 #=====================
@@ -441,42 +444,42 @@ mode "resize" {
 }
 
 # mark a window
-bindsym $mod+m mode "mark"
+bindsym $mod+m mode "mark", $showmarks
 mode "mark" {
-        bindsym $mod+1 mark --add --toggle M1, mark --add _last, mode "default"
-        bindsym $mod+2 mark --add --toggle M2, mark --add _last, mode "default"
-        bindsym $mod+3 mark --add --toggle M3, mark --add _last, mode "default"
-        bindsym $mod+4 mark --add --toggle M4, mark --add _last, mode "default"
-        bindsym $mod+5 mark --add --toggle M5, mark --add _last, mode "default"
-        bindsym $mod+6 mark --add --toggle M6, mark --add _last, mode "default"
-        bindsym $mod+7 mark --add --toggle M7, mark --add _last, mode "default"
-        bindsym $mod+8 mark --add --toggle M8, mark --add _last, mode "default"
-        bindsym $mod+9 mark --add --toggle M9, mark --add _last, mode "default"
-        bindsym $mod+0 mark --add --toggle M0, mark --add _last, mode "default"
+        bindsym $mod+m $ensi i3-input -F 'mark --add --toggle "%s"' -P  'new mark: ', $hidemarks
+        bindsym $mod+1 mark --add --toggle M1, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+2 mark --add --toggle M2, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+3 mark --add --toggle M3, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+4 mark --add --toggle M4, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+5 mark --add --toggle M5, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+6 mark --add --toggle M6, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+7 mark --add --toggle M7, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+8 mark --add --toggle M8, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+9 mark --add --toggle M9, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+0 mark --add --toggle M0, mark --add _last, $hidemarks, mode "default"
 
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
+        bindsym Return $hidemarks, mode "default"
+        bindsym Escape $hidemarks, mode "default"
 }
 
 # go to marked window
-bindsym $mod+apostrophe mode "goto"
+#bindsym $mod+shift+apostrophe mark test
+bindsym $mod+apostrophe mode "goto", $showmarks
 mode "goto" {
+        bindsym $mod+apostrophe $ensi i3-input -F '[con_mark="%s"] focus' -P 'goto mark: ', $hidemarks
+        bindsym $mod+1 [con_mark="M1"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+2 [con_mark="M2"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+3 [con_mark="M3"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+4 [con_mark="M4"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+5 [con_mark="M5"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+6 [con_mark="M6"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+7 [con_mark="M7"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+8 [con_mark="M8"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+9 [con_mark="M9"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+0 [con_mark="M0"] focus, mark --add _last, $hidemarks, mode "default"
 
-        bindsym $mod+1 [con_mark="M1"] focus, mark --add _last, mode "default"
-        bindsym $mod+2 [con_mark="M2"] focus, mark --add _last, mode "default"
-        bindsym $mod+3 [con_mark="M3"] focus, mark --add _last, mode "default"
-        bindsym $mod+4 [con_mark="M4"] focus, mark --add _last, mode "default"
-        bindsym $mod+5 [con_mark="M5"] focus, mark --add _last, mode "default"
-        bindsym $mod+6 [con_mark="M6"] focus, mark --add _last, mode "default"
-        bindsym $mod+7 [con_mark="M7"] focus, mark --add _last, mode "default"
-        bindsym $mod+8 [con_mark="M8"] focus, mark --add _last, mode "default"
-        bindsym $mod+9 [con_mark="M9"] focus, mark --add _last, mode "default"
-        bindsym $mod+0 [con_mark="M0"] focus, mark --add _last, mode "default"
-
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
+        bindsym Return $hidemarks, mode "default"
+        bindsym Escape $hidemarks, mode "default"
 }
 
 # reload/lock/quit
