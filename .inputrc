@@ -1,0 +1,11 @@
+$include /etc/inputrc
+
+# https://stackoverflow.com/a/42107711/8225672
+# also https://stackoverflow.com/a/7979417/8225672
+set editing-mode vi
+set show-mode-in-prompt on
+set vi-ins-mode-string \1\e[6 q\2
+set vi-cmd-mode-string \1\e[2 q\2
+
+set keymap vi-insert
+RETURN: "\e\n"
