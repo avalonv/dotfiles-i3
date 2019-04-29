@@ -14,6 +14,9 @@ shopt -s histappend
 HISTSIZE=100000
 #HISTFILESIZE=-1
 
+# emulate vi for inputting text
+set -o vi
+
 export PATH="$PATH:$HOME/scripts:$HOME/bin:$HOME/.local/bin"
 export EDITOR='/bin/vim -p'
 export VISUAL='/bin/vim -p'
@@ -95,3 +98,4 @@ alias snow='for((I=0;J=--I;))do clear;for((D=LINES;S=++J**3%COLUMNS,--D;))do pri
 alias dic='dict_query'
 alias do_bonsai='while true; do ~/gitlab/bonsai.sh/bonsai.sh -l -t 1.0 -T -L 32 -b 2 && notify-send "bonsai $(echo $tty)" && sleep 1m; done'
 alias term_colors='for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done' # https://stackoverflow.com/a/28938235/8225672 # https://stackoverflow.com/questions/6403744/are-there-terminals-that-support-true-color#comment24567873_6486000
+alias mpc='ncmpcpp'
