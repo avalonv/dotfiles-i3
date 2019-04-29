@@ -24,7 +24,7 @@ separator = |
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-line-size = 5
+line-size = 3
 line-color = #f00
 
 #border-size = 4
@@ -53,9 +53,19 @@ cursor-scroll = ns-resize
 
 
 modules-left = alsa cpu memory battery date keyboard
-modules-center = i3
+modules-center = i3 marks
 modules-right = updates-void acpi-warn eth wlan
 
+
+[module/marks]
+type = custom/ipc
+format = <output>
+format-foreground = ${colors.primary}
+# hook-0 disabled
+hook-0 = echo ""
+hook-1 = $HOME/scripts/i3_getmarks.sh
+# the index is confusing because initial 1 means hook-0
+initial = 1
 
 [module/acpi-warn]
 type = custom/script
@@ -102,6 +112,7 @@ type = internal/i3
 format =  <label-state> <label-mode>
 index-sort = true
 enable-scroll = false
+enable-click = false
 wrapping-scroll = false
 
 label-mode-padding = 4
@@ -277,4 +288,4 @@ animation-discharging-0 = 
 animation-discharging-1 = 
 animation-discharging-2 = 
 animation-discharging-foreground = ${colors.foreground-alt}
-animation-discharging-framerate = 400
+animation-discharging-framerate = 1000
