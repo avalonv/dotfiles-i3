@@ -26,10 +26,10 @@ xscreensaver.Dialog.Button.background:  #ffffff
 
 !#define moomincore0  #142043
 #define moomincore0  #00001A
-#define moomincore1  #FF0066
+#define moomincore1  #A2003F
 #define moomincore2  #00807F
-#define moomincore3  #D79921
-#define moomincore4  #CC99FF
+#define moomincore3  #FBBA56
+#define moomincore4  #00C777
 #define moomincore5  #DC8CC3
 #define moomincore6  #74D7EC
 #define moomincore7  #DFA8FF
@@ -148,13 +148,19 @@ URxvt.allow_bold: true
 
 ! Terminus font under 14px did not have bold typeface by default
 ! see https://bbs.archlinux.org/viewtopic.php?id=95199 for fix
+
 URxvt.font:xft:Terminus:size=12
 URxvt.boldFont:xft:Terminus:size=12:weight=bold
 URxvt.italicFont:xft:Terminus:size=12:weight=oblique
+
 !URxvt.font:xft:Hack:size=10
 !URxvt.italicFont:xft:Hack:size=10:weight=italic
 !URxvt.boldFont:xft:Hack:size=10:weight=bold
 
+! read: /usr/share/doc/envypn-font/README
+!URxvt*font: envypn-13
+!URxvt*font:-*-envypn-Medium-R-*-*-15-*-*-*-*-*-ISO8859-1
+!URxvt*font:xft:envypn:pixelsize=18
 
 ! Resize font
 ! https://github.com/simmel/urxvt-resize-font/blob/master/resize-font
