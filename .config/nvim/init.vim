@@ -272,23 +272,42 @@ if !filereadable(vimplug_exists)
 endif
 
 " Required:
-call plug#begin(expand('~/.config/nvim/plugged'))
 call plug#begin('~/.config/nvim/plugged')
+
+Plug 'vim-syntastic/syntastic'
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+" don't automatically run syntastically, only toggle it via keybindings
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let s:syntastic_on = 0
+let g:syntastic_mode_map = {
+    \ 'mode': 'passive',
+    \ 'active_filetypes': [],
+    \ 'passive_filetypes': [] }
+function! ToggleSyntasticMode()
+    if s:syntastic_on
+        SyntasticReset
+        let s:syntastic_on = 0
+    else
+        SyntasticCheck
+        let s:syntastic_on = 1
+    endif
+endfunction
+noremap <silent> <Leader>S  :call ToggleSyntasticMode()<cr>
 
 Plug 'vim-airline/vim-airline'
 set laststatus=0
 set statusline=\ %n\ %F\ %r\ %Y
-
 let g:airline_symbols_ascii = 1 " no fancy symbols
 let g:airline_extensions = ['whitespace']
 "let g:airline_section_b = '%-0.10{getcwd()}'
 let g:airline_section_b = '%n %-0.10{expand("%:p:h:t")}/'
-let g:airline_section_c = '%t'
+let g:airline_section_c = '%t %{SyntasticStatuslineFlag()}'
 let g:airline_section_x = '%y'
+noremap <silent> <Leader>A :AirlineToggle<cr>
 
 Plug 'vim-airline/vim-airline-themes'
-" cool airline themes: bubblegum, wombat, lucius, jellybean, raven, serene
-
 let g:airline_theme = 'myserene'
 "let myserene=expand('~/.config/nvim/plugged/vim-airline-themes/autoload/airline/themes/myserene.vim')
 "if !filereadable(myserene)
@@ -300,4 +319,11 @@ let g:airline_theme = 'myserene'
 Plug 'ap/vim-css-color'
 
 Plug 'rafaqz/ranger.vim'
+" open ranger (files are opened in new tab)
+noremap <silent> <Leader>R :RangerTab<cr>
+
+Plug 'tpope/vim-surround'
+
+Plug 'tpope/vim-commentary'
+
 call plug#end()
