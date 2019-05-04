@@ -80,7 +80,7 @@ client.background       #111
 #=====================
 
 # wallpaper
-$ensi feh --bg-scale /Pictures/Wallpapers/touhou_abstract_fuschia.png
+$ensi feh --bg-scale ~/Pictures/Wallpapers/touhou_abstract_fuschia.png
 $ensi xrdb .Xresources
 
 # keyboard with right alt for acentos
