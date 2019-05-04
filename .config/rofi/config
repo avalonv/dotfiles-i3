@@ -13,9 +13,9 @@ rofi.opacity: 40
 !rofi.window-match-fields:
 rofi.window-format: {w} {c:8} :  {n11} :  {t:80}
 rofi.drun-display-format: {name}
-rofi.matching: fuzzy
+!rofi.matching: fuzzy
 rofi.no-sort: True
-!rofi.matching: regex
+rofi.matching: regex
 !rofi.filter: -@[hmr
 !rofi.disable-history: True
 rofi.case-sensitive: False
