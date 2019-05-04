@@ -2,6 +2,7 @@
 " (or just use neovim)
 " read:
 " https://stackoverflow.com/questions/20579142/toggle-function-in-vim
+" :help less
 
 set nocompatible                                        " don't be annoying
 filetype plugin indent on                               " enable plugins for file type detection
@@ -17,8 +18,8 @@ set wildignorecase                                      " ignore case when compl
 set number                                              " show line numbers
 set tabstop=4                                           " input 4 spaces when <tab> is pressed.
 set shiftwidth=4                                        " CTRL-V <tab> to insert a real tab.
-set expandtab                                           " ^
-set smarttab                                            " ^
+set expandtab
+set smarttab
 set hlsearch                                            " highlight matches while searching
 let c_comment_strings=1                                 " show strings inside C comments
 set mouse=vi                                            " enable mouse suppport in visual and insert modes
@@ -29,17 +30,21 @@ set background=dark                                     " don't hurt my eyes
 set ignorecase                                          " ignore case in searches
 set smartcase                                           " if pattern contains upper case letter, it is case sensitive
 set ruler                                               " file name, modified flag, line, column, percentage
-set rulerformat=%40(%15(%f\ %)%m\ \ %l\ %c\ \ %p%%%)    " ^
+set rulerformat=%40(%15(%f\ %)%m\ \ %l\ %c\ \ %p%%%)
 set title                                               " Set the window title
-set titlestring=vim:\ %F\ %r%m                          " ^
+set titlestring=vim:\ %F\ %r%m
 set scrolloff=5                                         " scroll offset
 set scroll=20                                           " number of lines to scroll down with Ctrl-D
 set nrformats-=octal                                    " do not recognize octal numbers for Ctrl-A and Ctrl-X
 set whichwrap+=<,>,h,l,[,]                              " go up/down when you reach the start/end of the current line
 set list                                                " explicitly display trailing characters
-set listchars=tab:>-,trail:␣,extends:>,precedes:<       " ^
+set listchars=tab:>\ ,trail:␣,extends:>,precedes:<,nbsp:+
 set guicursor=i:blinkon1ver20                           " blinking cursor in insert mode
 set nocursorline                                        " highlight the current line (disabled bc hogs resources)
+set bufhidden=delete                                    " delete buffers that become hidden from the buffer list
+set autoindent                                          " autoindent (duh)
+set autoread                                            " ask to update file when it detects edits done outside of vim
+
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -68,6 +73,17 @@ fun! OpenMultipleTabs(pattern_list)
     endfor
 endfun
 
+" open columns on the right if wide enough
+fun! CheckColumnLenght()
+    if &columns > 166
+        set splitright
+        wincmd L
+    else
+        set splitbelow
+        wincmd K
+    endif
+endfun
+
 command! -bar -bang -nargs=+ -complete=file Tabedit call OpenMultipleTabs([<f-args>])
 
 " like :!chmod 744
@@ -76,13 +92,9 @@ command MakeExe call setfperm("%","rwxr--r--")
 " open help windows on the right
 " https://stackoverflow.com/a/21843502/8225672
 autocmd FileType help wincmd L
+autocmd FileType help call CheckColumnLenght()
 "cabbrev h vert help
 "cabbrev H abo help
-
-" https://stackoverflow.com/a/1376808/8225672
-" see :h diw
-" delete backwards to end of word = diw (delete inner word)
-" delete a word till the end of the last word = daw
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -96,6 +108,8 @@ noremap Q gq
 " switch between windows
 noremap  <A-w> <esc><C-W><C-W>
 inoremap <A-w> <esc><C-W><C-W>
+noremap  <A-W> <esc><C-W>W
+inoremap <A-W> <esc><C-W>W
 
 " go to next/previous tab respectively
 noremap  <silent> <A-.> <esc>:tabnext<cr>
@@ -105,21 +119,24 @@ inoremap <silent> <A-,> <esc>:tabprevious<cr>
 
 " open new tab
 noremap <A-n> :Tabedit<space>
-
-" open ranger (files are opened in new tab)
-" a bit buggy, <F1> seems to fix things
-noremap <silent> <Leader>R :RangerTab<cr>
+noremap <A-N> :tabedit<space>
 
 " move all buffers to tabs
 " https://superuser.com/a/430324/900060
 " :h sball
-noremap <Leader>T :tab sball<cr>
+noremap <Leader>T :tab sball
+
+" open terminal
+noremap <Leader>t <esc>:vsplit term://bash
+
+" exit terminal mode
+tnoremap <A-w> <C-\><C-n>
 
 " go to next/previous buffer respectively
 noremap <silent> gn :bn<cr>
 noremap <silent> gp :bp<cr>
 
-" close
+" quit
 noremap  <A-Q> :q<cr>
 inoremap <A-Q> <esc>:q<cr>
 vnoremap <A-Q> <esc>:q<cr>
@@ -218,16 +235,16 @@ hi LineNr           ctermfg=238                              cterm=NONE
 hi TabLineFill      ctermfg=16          ctermbg=232          cterm=NONE
 hi TabLine          ctermfg=14          ctermbg=232          cterm=NONE
 hi TabLineSel       ctermfg=10          ctermbg=232          cterm=Bold
-"hi Comment          ctermfg=242                              cterm=Italic
+hi Comment                                                   cterm=Italic
 hi Operator         ctermfg=3
 hi Conditional      ctermfg=11                               cterm=Bold
 hi Constant         ctermfg=116
 hi Type             ctermfg=13
-hi PreProc          ctermfg=4 "63
-hi String           ctermfg=84
+hi PreProc          ctermfg=5 "63
+hi String           ctermfg=4
 hi Number           ctermfg=111
 hi Repeat           ctermfg=11                               cterm=Bold
-hi Label            ctermfg=4
+hi Label            ctermfg=5
 hi Function         ctermfg=10                               cterm=Bold
 hi Boolean          ctermfg=198                              cterm=Bold
 hi Special          ctermfg=10 "222
