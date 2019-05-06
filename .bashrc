@@ -20,6 +20,8 @@ set -o vi
 export PATH="$PATH:$HOME/scripts:$HOME/bin:$HOME/.local/bin"
 export EDITOR='/bin/vim -p'
 export VISUAL='/bin/vim -p'
+export RANGER_LOAD_DEFAULT_RC='FALSE'
+export MANPAGER='nvim +Man!'
 
 function set_prompt
 {
@@ -74,7 +76,6 @@ alias gowifi='sudo sv reload wpa_supplicant'
 alias goeth='sudo $HOME/scripts/connect_ethernet.sh'
 alias scanip='$HOME/scripts/pingsweep.sh'
 alias vore='$HOME/scripts/vore.sh'
-alias man='$HOME/scripts/vore.sh'
 alias kyll='$HOME/scripts/kyll.sh'
 
 alias vim='vim -p'
