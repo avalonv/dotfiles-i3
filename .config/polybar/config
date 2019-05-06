@@ -39,10 +39,15 @@ padding-right = 0
 module-margin-left = 1
 module-margin-right = 1
 
-font-0 = Fixed:pixelsize=14;
-font-1 = unifont:fontformat=truetype:size=12:antialias=false;0
-font-2 = siji:pixelsize=12;1
-font-3 = Fixed:pixelsize=14;
+
+
+font-0 = envypn:pixelsize=12;1
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = siji:pixelsize=10;1
+#font-0 = Fixed:pixelsize=14;
+#font-1 = unifont:fontformat=truetype:size=12:antialias=false;0
+#font-2 = siji:pixelsize=12;1
+#font-3 = Fixed:pixelsize=14;
 
 tray-detached = false
 tray-position = right
@@ -155,7 +160,7 @@ label-urgent-font = 3
 [module/cpu]
 type = internal/cpu
 interval = 3
-format-prefix = "cpu"
+format-prefix = ""
 format-prefix-foreground = ${colors.foreground-alt}
 label = " %percentage:2%%"
 
@@ -163,7 +168,7 @@ label = " %percentage:2%%"
 [module/memory]
 type = internal/memory
 interval = 5
-format-prefix = "ram"
+format-prefix = ""
 format-prefix-foreground = ${colors.foreground-alt}
 label = " %percentage_used%%"
 
