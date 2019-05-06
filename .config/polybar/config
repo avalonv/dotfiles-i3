@@ -1,9 +1,10 @@
 #create rofi dropdown menu
+; vim:ft=dosini
 
 [colors]
-background = #000000
-background-alt = #000000
-foreground = #FFDEE4
+background = #111
+background-alt = #222
+foreground = #BDACB7
 foreground-alt = #00b3b3
 primary = #F62BED
 secondary = #00ff99
@@ -12,15 +13,15 @@ alert = #bd2c40
 [bar/satsu]
 ;monitor = ${env:MONITOR:0}
 width = 100%
-height = 24
+height = 22
 offset-x = 0%
 offset-y = 0%
-radius = 3.0
+radius = 0
 fixed-center = true
 enable-ipc = true
 #pseudo-transparency = true
 
-separator = |
+separator =
 background = ${colors.background}
 foreground = ${colors.foreground}
 
@@ -60,7 +61,7 @@ modules-right = updates-void acpi-warn eth wlan
 [module/marks]
 type = custom/ipc
 format = <output>
-format-foreground = ${colors.primary}
+format-foreground = ${colors.secondary}
 # hook-0 disabled
 hook-0 = echo ""
 hook-1 = $HOME/scripts/i3_getmarks.sh
@@ -69,7 +70,9 @@ initial = 1
 
 [module/acpi-warn]
 type = custom/script
-format-prefix-foreground = ${colors.primary}
+format-foreground=${colors.foreground}
+format-background = ${colors.alert}
+format-padding = 1
 format-prefix = "-- "
 format = <label>
 exec = pgrep acpid >/dev/null && echo "" || echo "ACPI"
@@ -86,11 +89,12 @@ format-padding = 2
 [module/keyboard]
 type = internal/xkeyboard
 format = <label-indicator>
-format-foreground = ${colors.primary}
+format-foreground = ${colors.foreground}
+format-background = ${colors.alert}
 format-padding = 0
 
 label-indicator-padding = 1
-label-indicator = [%name%]
+label-indicator = %name%
 
 ; List of indicators to ignore
 #blacklist-0 = num lock
@@ -115,27 +119,27 @@ enable-scroll = false
 enable-click = false
 wrapping-scroll = false
 
-label-mode-padding = 4
-label-mode-foreground = #000
-label-mode-background = ${colors.primary}
+label-mode-padding = 3
+label-mode-foreground = ${colors.secondary}
+label-mode-background = ${colors.background-alt}
 
 ; focused = Active workspace on focused monitor
 label-focused = %index%
 label-focused-background = ${colors.background-alt}
-label-focused-underline = ${colors.secondary}
+label-focused-underline = ${colors.foreground-alt}
 label-focused-padding = 2
 label-focused-font = 3
 
 ; unfocused = Inactive workspace on any monitor
 label-unfocused = %index%
-label-unfocused-background = ${colors.background-alt}
+label-unfocused-background = ${colors.background}
 label-unfocused-padding = 2
 label-unfocused-font = 3
 
 ; visible = Active workspace on unfocused monitor
 label-visible = %index%
 label-visible-background = ${self.label-focused-background}
-label-visible-underline = ${self.label-focused-underline}
+#label-visible-underline = ${self.label-focused-underline}
 label-visible-padding = ${self.label-focused-padding}
 label-visible-font = 3
 
@@ -217,44 +221,37 @@ label-volume-foreground = ${colors.foreground-alt}
 
 format-muted = <label-muted>
 label-muted-foreground = ${colors.foreground-alt}
-label-muted = " sound muted"
+label-muted = " sound muted "
 
 # gay https://www.color-hex.com/color-palette/28256
-bar-volume-width = 21
-bar-volume-foreground-0 =  #74d7ec
-bar-volume-foreground-1 =  #74d7ec
-bar-volume-foreground-2 =  #74d7ec
-bar-volume-foreground-3 =  #74d7ec
-bar-volume-foreground-4 =  #ffafc7
-bar-volume-foreground-5 =  #ffafc7
-bar-volume-foreground-6 =  #ffafc7
-bar-volume-foreground-7 =  #ffafc7
-bar-volume-foreground-8 =  #fbf9f5
-bar-volume-foreground-9 =  #fbf9f5
-bar-volume-foreground-10 = #fbf9f5
-bar-volume-foreground-11 = #fbf9f5
-bar-volume-foreground-12 = #ffafc7
-bar-volume-foreground-13 = #ffafc7
-bar-volume-foreground-14 = #ffafc7
-bar-volume-foreground-15 = #ffafc7
-bar-volume-foreground-16 = #74d7ec
-bar-volume-foreground-17 = #74d7ec
-bar-volume-foreground-18 = #74d7ec
-bar-volume-foreground-19 = #74d7ec
-bar-volume-foreground-20 = #74d7ec
-
+bar-volume-width = 16
+bar-volume-foreground-0 = #74d7ec
+bar-volume-foreground-1 = #74d7ec
+bar-volume-foreground-2 = #74d7ec
+bar-volume-foreground-3 = #ffafc7
+bar-volume-foreground-4 = #ffafc7
+bar-volume-foreground-5 = #ffafc7
+bar-volume-foreground-6 = #fbf9f5
+bar-volume-foreground-7 = #fbf9f5
+bar-volume-foreground-8 = #fbf9f5
+bar-volume-foreground-9 = #ffafc7
+bar-volume-foreground-10 = #ffafc7
+bar-volume-foreground-11 = #ffafc7
+bar-volume-foreground-12 = #74d7ec
+bar-volume-foreground-13 = #74d7ec
+bar-volume-foreground-14 = #74d7ec
+bar-volume-foreground-15 = #74d7ec
 # bigger:
 #i=0; echo 'bar-volume-width = 25'; for c in 74d7ec ffafc7 fbf9f5 ffafc7 74d7ec ; do for n in {0..4}; do echo "bar-volume-foreground-${i} = #${c}"; let i++; done; done
 
 bar-volume-gradient = true
-bar-volume-indicator = /
-bar-volume-indicator-font = 3
-bar-volume-indicator-foreground = ${colors.foreground-alt}
-bar-volume-fill = ,
-bar-volume-fill-font = 3
-bar-volume-empty = .
-bar-volume-empty-font = 3
-bar-volume-empty-foreground = #dfdfdf
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = #333
 
 [module/battery]
 type = internal/battery
@@ -263,15 +260,14 @@ adapter = ACAD
 full-at = 99
 
 format-charging = <animation-charging> <label-charging>
-format-charging-underline = #00cc00
+format-charging-underline = ${colors.secondary}
 
 format-discharging = <animation-discharging> <label-discharging>
-format-discharging-underline =#ffb52a
+format-discharging-underline = ${colors.alert}
 
 #format-full-suffix = " |"
 format-full-prefix = " "
 format-full-prefix-foreground = ${colors.foreground-alt}
-format-full-underline = #000000
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
