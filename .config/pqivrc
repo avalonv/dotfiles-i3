@@ -1,0 +1,8 @@
+[options]
+transparent-background=1
+hide-info-box=1
+sort=0
+sort-key=MTIME
+[keybindings]
+k { goto_file_relative(-1); }
+j { goto_file_relative(1); }
