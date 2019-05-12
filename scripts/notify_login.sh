@@ -12,8 +12,8 @@ msg_subject="Alert! $remote_ip - login to $(hostname)"
 if [[ -z "$remote_ip" ]]; then
     remote_ip="localhost"
 else
-    ip_location="$(geoiplookup $remote_ip |
-    awk -F ', ' '/[^not found]*$/{print $NF;exit}')"
+    ip_location="$(geoiplookup $remote_ip | grep -v 'not found' |
+    awk -F ', ' '{print $NF;exit}')"
 fi
 
 if echo -e "$ignored_ips" | grep -q "$remote_ip" ; then
@@ -24,5 +24,3 @@ msg_body="New login to ${USER}@$(hostname) from $remote_ip \
 $([[ -n $ip_location ]] && echo "($ip_location) ")at $current_date"
 
 echo -e "$msg_body" | mail -s "$msg_subject" "$recipient"
-exit $?
-
