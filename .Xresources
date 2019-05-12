@@ -108,8 +108,8 @@ URxvt*searchable-scrollback:C-S-F
 ! Manual claims this is deprecated, but it works, unlike URxvt*keysym.C-f:searchable-scrollback:start
 
 ! ctrl up, ctrl down to scroll by line
-URxvt.keysym.C-Up: command:\033]720;1\007
-URxvt.keysym.C-Down: command:\033]721;1\007
+URxvt.keysym.C-K: command:\033]720;1\007
+URxvt.keysym.C-J: command:\033]721;1\007
 
 ! Fade text a bit when not focused
 URxvt*fading:30
