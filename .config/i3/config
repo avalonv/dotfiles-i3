@@ -374,12 +374,12 @@ bindsym $mod+Mod1+Left workspace prev
 #=====================
 
 # title styles
-for_window [class="Firefox"]   title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
-for_window [class="URxvt"]     title_format "<span foreground='$light_pink'><b> term </b></span><span>%title</span>"
-for_window [class="i3-frame"]  title_format "<span foreground='$light_pink'> %title</span>"
-for_window [instance=$S3_name] title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
-for_window [instance=$S2_name] title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
-for_window [instance=$S1_name] title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
+for_window [class="Firefox"]     title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
+for_window [class="URxvt|kitty"] title_format "<span foreground='$light_pink'><b> term </b></span><span>%title</span>"
+for_window [class="i3-frame"]    title_format "<span foreground='$light_pink'> %title</span>"
+for_window [instance=$S3_name]   title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
+for_window [instance=$S2_name]   title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
+for_window [instance=$S1_name]   title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
 
 
 #=====================
@@ -395,13 +395,13 @@ bindsym $mod+shift+x mark --add _last, move scratchpad
 # hide the named scratchpads
 bindsym $mod+Escape [con_mark="^S[1-3]"] move scratchpad
 
-# mark, goto last scratchpad window
+# goto last scratchpad window
 bindsym $mod+o [con_mark="_last"] focus
 
 
 # scratchpad 1 (hell)
 for_window [instance=$S1_name] floating enable
-for_window [instance=$S1_name] resize set 650 440
+for_window [instance=$S1_name] resize set 770 440
 for_window [instance=$S1_name] mark S1, move scratchpad
 for_window [instance=$S1_name] sticky enable
 bindsym $mod+Shift+F1 [con_mark="S1"] focus
@@ -415,7 +415,7 @@ for_window [instance=$S2_name] sticky enable
 bindsym $mod+Shift+F2 [con_mark="S2"] focus
 bindsym $mod+F2 [con_mark="S2"] scratchpad show
 
-# scratchpad 3 (ranger)
+# scratchpad 3 (ranger) (disabled for now cuz it won't fucking launch >:/)
 for_window [instance=$S3_name] floating enable
 for_window [instance=$S3_name] resize set 900 440, move position 0 640
 for_window [instance=$S3_name] mark S3, move scratchpad
@@ -499,12 +499,11 @@ mode "goto" {
 # reload/lock/quit
 bindsym $mod+Control+r mode "R|L|Q"
 mode "R|L|Q" {
-        bindsym $mod+R mode "default", reload, $ensi "$HOME/scripts/i3_reload.sh 'hell' 'man' 'ranger'"
+        bindsym $mod+R mode "default", reload, $ensi "$HOME/scripts/i3_reload.sh 'hell' 'man'"
         bindsym $mod+L mode "default", $ensi xautolock -locknow && sleep 10 && sudo zzz
         bindsym $mod+Q mode "quit?"
         bindsym $mod+c mode "cat?"
 
-        bindsym $mod+y exec i3-msg exit
         bindsym $mod+n mode "default"
         bindsym Escape mode "default"
         bindsym Return mode "default"
@@ -518,7 +517,7 @@ mode "quit?" {
 }
 
 mode "cat?" {
-        bindsym $mod+y exec urxvt -e vim -u NORC -c "norm isversbkVlbhgh.or/DU2-GTHyjh4&fyrrcV5V&&kqbgbbyVxrlVs" \
+        bindsym $mod+y $ensi urxvt -e vim -u NORC -c "norm isversbkVlbhgh.or/DU2-GTHyjh4&fyrrcV5V&&kqbgbbyVxrlVs" \
         -c "norm g??" -c "s/I/ /g" -c '.w !bash', mode "default"
         bindsym $mod+n mode "default"
         bindsym Escape mode "default"
