@@ -18,8 +18,8 @@ HISTSIZE=100000
 set -o vi
 
 export PATH="$PATH:$HOME/scripts:$HOME/bin:$HOME/.local/bin"
-export EDITOR='/bin/vim -p'
-export VISUAL='/bin/vim -p'
+export EDITOR='/bin/vim'
+export VISUAL='/bin/vim'
 export RANGER_LOAD_DEFAULT_RC='FALSE'
 export MANPAGER='nvim +Man!'
 
@@ -75,10 +75,9 @@ alias xbps-install='xbps-install -S'
 alias gowifi='sudo sv reload wpa_supplicant'
 alias goeth='sudo $HOME/scripts/connect_ethernet.sh'
 alias scanip='$HOME/scripts/pingsweep.sh'
-alias vore='$HOME/scripts/vore.sh'
 alias kyll='$HOME/scripts/kyll.sh'
 
-alias vim='vim -p'
+# alias vim='vim -p'
 alias copy='copyq_copy'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
