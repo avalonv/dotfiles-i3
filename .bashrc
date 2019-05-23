@@ -22,27 +22,45 @@ export EDITOR='/bin/vim'
 export VISUAL='/bin/vim'
 export RANGER_LOAD_DEFAULT_RC='FALSE'
 export MANPAGER='nvim +Man!'
+# fixes kitty ls_colors, see https://github.com/kovidgoyal/kitty/issues/781
+export LS_COLORS='di=01;94:ln=01;96:pi=33:so=01;95:bd=01;93:cd=01;93:ex=01;92:do=01;95:su=37;41:sg=30;43:st=37;44:ow=34;42:tw=30;42:ca=30;41'
+
+# getting term colors:
+# https://stackoverflow.com/a/28938235/8225672
+# https://stackoverflow.com/questions/6403744/are-there-terminals-that-support-true-color#comment24567873_6486000
+
+function random_color
+{
+    local prefix='\[\e[0;3'
+    local suffix='m\]'
+    local my_rand=$(( RANDOM % 16 ))
+    if [[ "$my_rand" -gt 7 ]]; then
+        prefix='\[\e[9'
+        my_rand=$(( my_rand - 8 ))
+    fi
+    echo -E "${prefix}${my_rand}${suffix}"
+}
 
 function set_prompt
 {
     local last_exit=$?
     local cool_ass_cat='~(=^⋅ω⋅^)'
-    local PS1begin='\[\e[m\]|\[\e[1;30m\]'
-    local PS1user='\[\e[1;31m\]\u\[\e[m\]'
-    local PS1host='\[\e[m\]@\h'
-    local PS1bad='|\[\e[1;32m\]'"${last_exit}"
-    local PS1time='(\A)'
-    local PS1dir='\[\e[m\]|\[\e[1;34m\]\w\[\e[m\]'
-    local PS1end='\n\[\e[1;37m\]\$\[\e[m\] '
+    local begin='\[\e[m\]|\[\e[1;90m\]'
+    local user='\[\e[1;91m\]\u\[\e[m\]'
+    local host='\[\e[m\]@\h'
+    local bad='|\[\e[1;92m\]'"${last_exit}"
+    local time='(\A)'
+    local dir='\[\e[m\]|\[\e[1;94m\]\w\[\e[m\]'
+    local end="\n$(random_color)\$\[\e[m\] "
 
     if [[ $(pwd) == "/home/$(id -nu ${UID})" ]]; then
-      PS1dir="\[\e[m\]|\[\e[1;33m\]$cool_ass_cat\[\e[m\]"
+      dir="\[\e[m\]|\[\e[1;93m\]$cool_ass_cat\[\e[m\]"
     fi
 
     if [[ $last_exit = 0 ]]; then
-        PS1="${PS1begin}${PS1user}${PS1host}${PS1dir} ${PS1time}${PS1end}"
+        PS1="${begin}${user}${host}${dir} ${time}${end}"
     else
-        PS1="${PS1begin}${PS1user}${PS1host}${PS1bad}${PS1dir} ${PS1time}${PS1end}"
+        PS1="${begin}${user}${host}${bad}${dir} ${time}${end}"
     fi
 }
 
