@@ -87,16 +87,14 @@ $ensi xrdb .Xresources
 $ensi setxkbmap -layout us -variant altgr-intl -option nodeadkeys
 
 $ensi sudo xbacklight -set 50
-$ensi pulseaudio --start &
+$ensi pulseaudio --start
 
-# blank xscreensaver after x minutes of inactivity, lock with i3lock otherwise
-$ensi xautolock -detectsleep -time 2 -locker "pgrep i3lock || xscreensaver-command -activate" -nowlocker $HOME/scripts/i3_lock.sh
+# blank xscreensaver after x minutes of inactivity
+$ensi xautolock -detectsleep -time 2 -locker "xscreensaver-command -activate" \
+-nowlocker "xscreensaver-command -activate"
 
-## Auto-lock after suspend.
-## # https://wiki.archlinux.org/index.php/Power_management#xss-lock
-#$ensi xss-lock -l -- "~/scripts/transfer-sleep-lock-i3lock.sh"&
-$ensi mate-power-manager &
-$ensi "sleep 5 && $HOME/scripts/i3_reload.sh 'start' 'hell' 'man' 'ranger' && xscreensaver -nosplash"
+$ensi mate-power-manager
+$ensi "sleep 5 && $HOME/scripts/i3_reload.sh 'start' 'hell' 'man' && xscreensaver -nosplash"
 
 
 #=====================
