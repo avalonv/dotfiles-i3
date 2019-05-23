@@ -113,7 +113,7 @@ exec_always --no-startup-id xset b off
 #=====================
 
 # start a terminal
-bindsym $mod+Return $ensi urxvt &, focus
+bindsym $mod+Return $ensi kitty, focus
 
 # restart i3
 bindsym $mod+shift+r restart
@@ -130,12 +130,13 @@ bindsym shift+XF86MonBrightnessUp   $ensi sudo xbacklight -inc 1
 bindsym shift+XF86MonBrightnessDown $ensi sudo xbacklight -dec 1
 
 # rofi show progrmans
-bindsym $mod+semicolon exec \
+bindsym $mod+semicolon $ensi \
 rofi -modi "drun#run" -show drun -lines 38 -width 18 -location 1
 
 # rofi show windows
-bindsym $mod+Tab exec \
-rofi -modi "window#ssh#bindings:egrep '^bindsym' $HOME/.config/i3/config" -show window -lines 12 -width 68 -location 0
+bindsym $mod+Tab $ensi \
+rofi -modi "window#ssh#bindings:egrep '^bindsym' $HOME/.config/i3/config" \
+-show window -lines 12 -width 68 -location 0
 
 # hide/show polybar
 bindsym $mod+Home $ensi polybar-msg cmd toggle
@@ -162,6 +163,7 @@ maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S
 # lock screen (now)
 bindsym $mod+Control+l focus output primary; $ensi xautolock -locknow
 
+
 #=====================
 #===MOUSE=BINDINGS====
 #=====================
@@ -184,6 +186,7 @@ bindsym button2 nop
 bindsym button3 nop
 bindsym button4 nop
 bindsym button5 nop
+
 
 #=====================
 #====WIN=BINDINGS=====
@@ -220,15 +223,15 @@ bindsym $mod+a focus parent
 bindsym $mod+d focus child
 
 # move focused
- bindsym $mod+Shift+Left  move left
- bindsym $mod+Shift+Down  move down
- bindsym $mod+Shift+Up    move up
- bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Right move right
 
- bindsym $mod+Shift+h     move left 30px
- bindsym $mod+Shift+j     move down 30px
- bindsym $mod+Shift+k     move up 30px
- bindsym $mod+Shift+l     move right 30px
+bindsym $mod+Shift+h     move left 30px
+bindsym $mod+Shift+j     move down 30px
+bindsym $mod+Shift+k     move up 30px
+bindsym $mod+Shift+l     move right 30px
 
 # i3_movecorner.sh
 bindsym $mod+KP_End   $ensi ~/scripts/i3_movecorner.sh 1
