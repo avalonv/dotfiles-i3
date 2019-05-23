@@ -107,13 +107,9 @@ alias l='ls --color=auto -CF'
 alias lm='ls --color=auto -ltcAh'
 alias lh='ls --color=auto --human-readable -sAh'
 alias sudo='sudo '
-
-alias screenoff='xset dpms force suspend'
-alias standby='sudo xbacklight -set 2 && sleep 4 && xset dpms force standby'
-alias lock='xscreensaver-command -lock'
-alias killjobs='kill $(jobs -p)'
-alias snow='for((I=0;J=--I;))do clear;for((D=LINES;S=++J**3%COLUMNS,--D;))do printf %*s*\\n $S;done;sleep .1;done'
-alias dic='dict_query'
-alias do_bonsai='while true; do ~/gitlab/bonsai.sh/bonsai.sh -l -t 1.0 -T -L 32 -b 2 && notify-send "bonsai $(echo $tty)" && sleep 1m; done'
-alias term_colors='for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done' # https://stackoverflow.com/a/28938235/8225672 # https://stackoverflow.com/questions/6403744/are-there-terminals-that-support-true-color#comment24567873_6486000
+alias trifle='rifle -f t '
 alias mpc='ncmpcpp'
+
+alias killjobs='kill $(jobs -p)'
+alias dic='dict_query'
+alias term_colors='for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done'
