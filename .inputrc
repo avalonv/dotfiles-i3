@@ -1,11 +1,27 @@
 $include /etc/inputrc
 
+# vi like editing
 # https://stackoverflow.com/a/42107711/8225672
 # also https://stackoverflow.com/a/7979417/8225672
 set editing-mode vi
 set show-mode-in-prompt on
-set vi-ins-mode-string \1\e[6 q\2
-set vi-cmd-mode-string \1\e[2 q\2
-
+set vi-ins-mode-string \1\e[6 q\2i
+set vi-cmd-mode-string \1\e[2 q\2c
 set keymap vi-insert
 RETURN: "\e\n"
+
+# colored autocompletable entries
+set colored-completion-prefix on
+set colored-stats on
+
+# match wrong case
+set completion-ignore-case on
+
+# completely disable bell
+set bell-style none
+
+# zsh like completion:
+# https://superuser.com/questions/288714/bash-autocomplete-like-zsh
+set show-all-if-ambiguous on
+# you can achieve the same with control-p
+#TAB:menu-complete
