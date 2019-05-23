@@ -69,7 +69,7 @@ URxvt.cursorUnderline:false
 
 ! Tranparency (composite)
 ! urxvt*depth: 4
-urxvt*background: rgba:0000/0000/0200/c800
+urxvt*background:#08000D
 
 ! Fake transparency
 !urxvt*transparent: true
@@ -145,17 +145,22 @@ URxvt*iso14755_52:False
 ! `fc-list -v | grep -i <fontname>`
 URxvt.allow_bold: true
 !URxvt.letterSpace: -1
+URxvt.lineSpace: -1
 
 ! Terminus font under 14px did not have bold typeface by default
 ! see https://bbs.archlinux.org/viewtopic.php?id=95199 for fix
 
-URxvt.font:xft:Terminus:size=12
-URxvt.boldFont:xft:Terminus:size=12:weight=bold
-URxvt.italicFont:xft:Terminus:size=12:weight=oblique
+/* URxvt.font:xft:Terminus:size=12 */
+/* URxvt.boldFont:xft:Terminus:size=12:weight=bold */
+/* URxvt.italicFont:xft:Terminus:size=12:weight=oblique */
 
-!URxvt.font:xft:Hack:size=10
-!URxvt.italicFont:xft:Hack:size=10:weight=italic
-!URxvt.boldFont:xft:Hack:size=10:weight=bold
+/* URxvt.font:xft:Hack:size=10 */
+/* URxvt.italicFont:xft:Hack:italic:size=10 */
+/* URxvt.boldFont:xft:Hack:bold:size=10 */
+
+URxvt.font:xft:IBM Plex Mono:size=10
+URxvt.italicFont:xft:IBM Plex Mono:italic:size=10
+URxvt.boldFont:xft:IBM Plex Mono:bold:size=10
 
 ! read: /usr/share/doc/envypn-font/README
 !URxvt*font: envypn-13
