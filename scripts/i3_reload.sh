@@ -9,17 +9,17 @@ if [[ $1 == 'start' ]]; then
     shift
 fi
 
-urxvt_color="-bg '#040008'"
+#urxvt_color="-bg '#040008'"
 echo 'Launching scratchpads'
 for id in $@; do
     echo $id
     if ! pgrep --full @${id} &> /dev/null ; then
         case $id in
-        hell) eval "urxvt -pe 'tabbed' $urxvt_color -name @hell" &;;
-        man) eval "urxvt -pe 'tabbed' $urxvt_color -name @man  -fn 'xft:Terminus:size=10'" &;;
-        ranger) eval "urxvt $urxvt_color -name @ranger -e 'ranger'" &;;
-        gotop) eval "urxvt $urxvt_color -name @gotop -e 'gotop --rate=0.7'" &;;
-        ?) eval "urxvt $urxvt_color -name @${id}" &;;
+        hell) eval "kitty --name @hell" &;;
+        man) eval "kitty --name @man" &;;
+        ranger) eval "kitty --name @ranger -e 'ranger -c ~/.config/ranger/rifle-new-window'" &;;
+        gotop) eval "kitty --name @gotop -e 'gotop --rate=0.7'" &;;
+        ?) eval "kitty --name @${id}" &;;
         esac
     fi
 done
