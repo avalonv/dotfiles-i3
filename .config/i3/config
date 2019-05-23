@@ -259,11 +259,23 @@ bindsym $mod+e layout toggle split
 # enter fullscreen
 bindsym $mod+f fullscreen toggle
 
+# increase/decrease opacity of window under mouse cursor (resets when window is redraw?)
+# requires transset
+# tip: increasing then reducing transparency is necessary to achieve full opacity
+bindsym $mod+F11 $ensi transset --id \
+$(eval $(xdotool getmouselocation --shell) && echo "$WINDOW") --dec .1
+bindsym $mod+F12 $ensi transset --id \
+$(eval $(xdotool getmouselocation --shell) && echo "$WINDOW") --inc .1
+# compton-trans doens't seem to work on some windows (respects its own config file?)
+# bindsym $mod+F11 $ensi compton-trans -w $(eval $(xdotool getmouselocation --shell) \
+# && echo "$WINDOW") -o -- +5
+# bindsym $mod+F12 $ensi compton-trans -w $(eval $(xdotool getmouselocation --shell) \
+# && echo "$WINDOW") -o -- -5
+
 
 #=====================
 #=====WIN=OPTIONS=====
 #=====================
-
 
 # launch as floating
 for_window [class="Peek"] floating enable
@@ -280,6 +292,7 @@ for_window [class="Ristretto"] floating enable
 for_window [class="Xfce4-panel"] floating enable
 for_window [class="mpv"] floating enable
 for_window [class="xev"] floating enable
+for_window [class="nvim-qt"] floating enable, resize set 600 350, mark _last, exec ~/scripts/i3_movecorner.sh 9
 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
