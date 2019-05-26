@@ -12,8 +12,8 @@ HISTSIZE=100000
 #HISTFILESIZE=-1
 
 export PATH="$PATH:$HOME/scripts:$HOME/bin:$HOME/.local/bin"
-export EDITOR='/bin/vim -p'
-export VISUAL='/bin/vim -p'
+export EDITOR='/bin/vim'
+export VISUAL='/bin/vim'
 
 # Scripts to start after logging on
 $HOME/scripts/notify_login.sh 'supersecret@email.com' 'localhost' >/dev/null 2>&1 & disown -a
