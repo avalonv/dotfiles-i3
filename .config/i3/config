@@ -379,6 +379,7 @@ for_window [instance=$S1_name]             title_format "<span foreground='$crim
 # "xwinfo" is useful for getting the sizes of windows
 bindsym $mod+plus scratchpad show
 bindsym $mod+x move scratchpad
+bindsym $mod+BackSpace move scratchpad
 bindsym $mod+shift+x mark --add _last, move scratchpad
 
 # hide the named scratchpads
