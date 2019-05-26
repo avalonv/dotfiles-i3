@@ -1,6 +1,5 @@
 # TODO:
 # find out if there are any i3-gaps options left >:c
-# learn how to use xmodmap?
 
 #=====================
 #=====VARIABLES=======
@@ -47,8 +46,8 @@ set $inact_ind                                     #27213D
 set $urgent                                        #FF0000
 set $black                                         #000000
 set $darker_blue                                   #000011
-set $light_pink                                    #FF66CC
-set_from_resource $dark_blue moomincore0           #00001A
+set $pink                                          #FF66CC
+set $burple                                        #08000D
 #moomincore0                                       #142043
 set_from_resource $crimson moomincore1             #FF0066
 #moomincore2                                       #00807F
@@ -61,17 +60,17 @@ set_from_resource $lighter_pink moomincore4        #CC99FF
 set_from_resource $fuschia moomincore9             #F62BED
 #moomincore10                                      #F93483
 #moomincore11                                      #F5A2BB
-set_from_resource $turquoise moomincore12          #00B3B3
+set $foreground                                    #00ffff
 #moomincore13                                      #FF6666
 set_from_resource $dark_pink moomincore14          #735787
 set_from_resource $title moomincore15              #FFFFFF
 
 # class                 <border>        <background>    <text>          <indicator>     <child_border>
-client.focused          $turquoise      $dark_blue      $lighter_pink   $focus_ind      $turquoise
+client.focused          $foreground     $burple         $lighter_pink   $focus_ind      $foreground
 client.focused_inactive $dark_pink      $darker_blue    $dark_pink      $dark_pink      #404040
-client.unfocused        $dark_blue      $black          $dark_pink      $dark_blue      $black
-client.urgent           $fuschia        $dark_blue      $fuschia        $fuschia        $fuschia
-client.placeholder      $dark_blue      $black          $dark_blue      #222222         $dark_blue
+client.unfocused        $burple         $black          $dark_pink      $burple         $black
+client.urgent           $fuschia        $burple         $fuschia        $fuschia        $fuschia
+client.placeholder      $burple         $black          $burple         #222222         $burple
 client.background       #111
 
 
