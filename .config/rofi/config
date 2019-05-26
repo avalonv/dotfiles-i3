@@ -7,18 +7,17 @@ rofi.run-command: {cmd}
 rofi.icon-theme: Papirus
 rofi.bw: 2
 rofi.ssh-client: ssh
-rofi.terminal: urxvt
+rofi.terminal: kitty
 rofi.show-icons: True
 rofi.opacity: 40
 !rofi.window-match-fields:
 rofi.window-format: {w} {c:8} :  {n11} :  {t:80}
 rofi.drun-display-format: {name}
-!rofi.matching: fuzzy
 rofi.no-sort: True
 rofi.matching: regex
 !rofi.filter: -@[hmr
 !rofi.disable-history: True
 rofi.case-sensitive: False
 rofi.sidebar-mode: True
-rofi.font:terminus bold 16
+rofi.font:IBM Plex Mono Bold 14
 !rofi.fake-transparency: true
