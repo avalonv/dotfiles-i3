@@ -304,13 +304,14 @@ for_window [window_role="Preferences"] floating enable
 for_window [instance="Friends List"] floating enable
 for_window [instance="File Upload"] resize set 520 400
 
-
 # border styles
 #smart_borders on (gaps?)
 hide_edge_borders smart
 for_window [class=".*"] border pixel 4
-for_window [instance="^@"] border normal
-for_window [floating] border normal
+# floating, but not of the two initial scratchpads
+for_window [floating instance="^[^@]"] border normal 3
+for_window [floating class="kitty|URxvt"] border pixel 3
+for_window [instance="^@"] border pixel 3
 
 # other
 #floating_maximum_size 1280 x 900
@@ -376,12 +377,13 @@ bindsym $mod+Mod1+Left workspace prev
 #=====================
 
 # title styles
-for_window [class="Firefox"]     title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
-for_window [class="URxvt|kitty"] title_format "<span foreground='$light_pink'><b> term </b></span><span>%title</span>"
-for_window [class="i3-frame"]    title_format "<span foreground='$light_pink'> %title</span>"
-for_window [instance=$S3_name]   title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
-for_window [instance=$S2_name]   title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
-for_window [instance=$S1_name]   title_format "<span foreground='$crimson'><b>✸</b></span><span> %title</span>"
+for_window [class="Firefox"]               title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
+for_window [class="URxvt|kitty|alacritty"] title_format "<span foreground='grey'><b> term </b></span><span>%title</span>"
+for_window [class="i3-frame"]              title_format "<span foreground='$pink'> %title</span>"
+for_window [con_mark=".*"]                 title_format "<span foreground='grey'><b>#</b></span><span> %title</span>"
+for_window [instance=$S3_name]             title_format "<span foreground='$crimson'><b>#</b></span><span> %title</span>"
+for_window [instance=$S2_name]             title_format "<span foreground='$crimson'><b>#</b></span><span> %title</span>"
+for_window [instance=$S1_name]             title_format "<span foreground='$crimson'><b>#</b></span><span> %title</span>"
 
 
 #=====================
