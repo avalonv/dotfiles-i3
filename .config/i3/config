@@ -130,7 +130,7 @@ bindsym shift+XF86MonBrightnessDown $ensi sudo xbacklight -dec 1
 
 # rofi show progrmans
 bindsym $mod+semicolon $ensi \
-rofi -modi "drun#run" -show drun -lines 38 -width 18 -location 1
+rofi -modi "drun#run" -show drun -lines 33 -width 20 -location 1
 
 # rofi show windows
 bindsym $mod+Tab $ensi \
@@ -262,14 +262,17 @@ bindsym $mod+f fullscreen toggle
 # requires transset
 # tip: increasing then reducing transparency is necessary to achieve full opacity
 bindsym $mod+F11 $ensi transset --id \
-$(eval $(xdotool getmouselocation --shell) && echo "$WINDOW") --dec .1
+$(eval $(xdotool getmouselocation --shell) && echo "$WINDOW") --dec .03
 bindsym $mod+F12 $ensi transset --id \
-$(eval $(xdotool getmouselocation --shell) && echo "$WINDOW") --inc .1
+$(eval $(xdotool getmouselocation --shell) && echo "$WINDOW") --inc .03
 # compton-trans doens't seem to work on some windows (respects its own config file?)
 # bindsym $mod+F11 $ensi compton-trans -w $(eval $(xdotool getmouselocation --shell) \
 # && echo "$WINDOW") -o -- +5
 # bindsym $mod+F12 $ensi compton-trans -w $(eval $(xdotool getmouselocation --shell) \
 # && echo "$WINDOW") -o -- -5
+
+# toggle sticky behaviour for floating window
+bindsym $mod+shift+asterisk sticky toggle
 
 
 #=====================
