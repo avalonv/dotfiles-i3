@@ -1,5 +1,6 @@
 " TODO:
-" learh more about this g/"\[/normal A ]
+" learn more about this g/"\[/normal A ]
+" vim:foldenable
 
 "**************************
 "******** SETTINGS ********
@@ -44,7 +45,8 @@ set autochdir                                           " auto change working di
 set hidden                                              " don't ask to save buffers when closing them, hide them
 set splitright                                          " open new windows on the right by default
 set nofoldenable                                        " initially disable folding
-set foldmethod=marker                                   " use markers to designate folds
+set foldmethod=syntax
+set foldnestmax=1
 set encoding=utf-8                                      " (duh)
 "set lazyredraw                                          " don't redraw screen while macros are running
 set confirm                                             " confirm quit
@@ -74,7 +76,7 @@ endfunction
 command RmTrailing call RmTrailing()
 
 "help me
-" open columns on the right if wide enough
+" split windows to the right if wide enough
 function! CheckColumnLenght()
     if &columns > 140
         set splitright
@@ -302,15 +304,17 @@ let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
 
 " auto install plug
 if !filereadable(vimplug_exists)
-  if !executable("curl")
-    echoerr "You have to install curl or first install vim-plug yourself!"
-    execute "q!"
-  endif
-  echo "Installing Vim-Plug..."
-  echo ""
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  let g:not_finish_vimplug = "yes"
-  autocmd VimEnter * PlugInstall
+    let choice = confirm("Would you like to install vimplug?", "y/n")
+    if choice == 'y'
+        if !executable("curl")
+            echoerr "You have to install curl or first install vim-plug yourself!"
+            execute "q!"
+        endif
+        echo "Installing Vim-Plug..."
+        echo ""
+        silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        let g:not_finish_vimplug = "yes"
+        autocmd VimEnter * PlugInstall
 endif
 
 call plug#begin('~/.config/nvim/plugged')
@@ -444,7 +448,7 @@ nnoremap <silent> "" :<C-u>CocList -A --normal yank<cr>
 Plug 'Raimondi/delimitMate'
 au filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'`'}
 let g:delimitMate_autoclose = 1
-let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
+let g:delimitMate_matchpairs = "(:),[:],{:}"
 let g:delimitMate_jump_expansion = 1
 let g:delimitMate_expand_space = 1
 let g:delimitMate_expand_cr = 2
