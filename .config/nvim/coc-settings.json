@@ -1,0 +1,33 @@
+{
+    // show diagnostic message if there's an error in the line
+    "diagnostic.checkCurrentLine": true,
+
+    // coc-python
+    "python.analysis.diagnosticEnabled": false,
+    // see https://github.com/neoclide/coc-python/issues/14 for why this is
+    // needed. coc-python sucks, prefer coc-pyls
+    "python.linting.enabled": true,
+    "python.jediEnabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": true,
+
+    // coc-yank
+    "yank.highlight.enable": false,
+    "yank.highlight.duration": 500,
+    "yank.list.maxsize": 200,
+
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+            "filetypes": ["c", "cpp", "objc", "objcpp"],
+            "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls"
+                }
+            }
+        }
+    }
+}
+
+
