@@ -46,7 +46,7 @@ function set_prompt
     local last_exit=$?
     local cool_ass_cat='~(=^⋅ω⋅^)'
     local begin='\[\e[m\]|\[\e[1;90m\]'
-    local user='\[\e[1;91m\]\u\[\e[m\]'
+    local user='\[\e[1;93m\]\u\[\e[m\]'
     local host='\[\e[m\]@\h'
     local bad='|\[\e[1;92m\]'"${last_exit}"
     local time='(\A)'
@@ -87,7 +87,7 @@ alias xbps-update='xbps-install -Su'
 alias xbps-search='xbps-query --regex -Rs'
 alias xbps-info='xbps-query -RS'
 alias xbps-deps='xbps-query -Rx'
-alias xbps-install='xbps-install -S'
+# alias xbps-install='xbps-install -S'
 
 # My scripts
 alias gowifi='sudo sv reload wpa_supplicant'
@@ -109,7 +109,9 @@ alias lh='ls --color=auto --human-readable -sAh'
 alias sudo='sudo '
 alias trifle='rifle -f t '
 alias mpc='ncmpcpp'
+alias yget="youtube-dl -x --audio-format mp3"
 
 alias killjobs='kill $(jobs -p)'
 alias dic='dict_query'
 alias term_colors='for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done'
+alias screenshot='maim -m 9 ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png'
