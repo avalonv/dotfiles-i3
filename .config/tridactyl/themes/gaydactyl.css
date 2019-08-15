@@ -1,0 +1,151 @@
+:root.TridactylThemeGaydactyl {
+    --tridactyl-font-family: "San Francisco", sans-serif;
+    --tridactyl-small-font-size: "1.5rem";
+    --tridactyl-bg: black;
+    --tridactyl-fg: violet;
+    --tridactyl-url-fg: #01787D;
+    --tridactyl-url-bg: none;
+}
+
+:root.TridactylThemeGaydactyl #tridactyl-colon::before {
+    color: var(--tridactyl-fg);
+    width: 90%;
+    font-size: 1.3rem;
+    line-height: 1.3;
+    background: black;
+    padding: 1rem;
+    content: " >:3";
+}
+
+:root.TridactylThemeGaydactyl #command-line-holder {
+    order: 1;
+    border: 2px solid #36262E;
+    color: var(--tridactyl-bg);
+}
+
+:root.TridactylThemeGaydactyl #tridactyl-input {
+    color: var(--tridactyl-fg);
+    width: 90%;
+    font-size: 1.3rem;
+    line-height: 1.3;
+    background: black;
+    padding: 1rem;
+}
+
+:root.TridactylThemeGaydactyl #completions table {
+    font-size: 0.8rem;
+    font-weight: 200;
+    border-spacing: 0;
+    table-layout: fixed;
+    padding: 1rem;
+    padding-top: 0;
+}
+
+:root.TridactylThemeGaydactyl #completions > div {
+    max-height: calc(20 * var(--option-height));
+    min-height: calc(10 * var(--option-height));
+}
+
+/* COMPLETIONS */
+
+:root.TridactylThemeGaydactyl #completions {
+    --option-height: 1.4em;
+    color: white;
+    background: black;
+    display: inline-block;
+    font-size: unset;
+    font-weight: 200;
+    overflow: hidden;
+    width: 100%;
+    border-top: unset;
+    order: 2;
+}
+
+/* Olie doesn't know how CSS inheritance works */
+:root.TridactylThemeGaydactyl #completions .HistoryCompletionSource {
+    max-height: unset;
+    min-height: unset;
+}
+
+:root.TridactylThemeGaydactyl #completions .HistoryCompletionSource table {
+    width: 100%;
+    font-size: 9pt;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+
+/* redundancy 2: redundancy 2: more redundancy */
+:root.TridactylThemeGaydactyl #completions .BmarkCompletionSource {
+    max-height: unset;
+    min-height: unset;
+}
+
+:root.TridactylThemeGaydactyl #completions table tr td.prefix,
+:root.TridactylThemeGaydactyl #completions table tr td.privatewindow,
+:root.TridactylThemeGaydactyl #completions table tr td.container,
+:root.TridactylThemeGaydactyl #completions table tr td.icon {
+    display: none;
+}
+
+:root.TridactylThemeGaydactyl #completions .BufferCompletionSource table {
+    width: unset;
+    font-size: unset;
+    border-spacing: unset;
+    table-layout: unset;
+}
+
+:root.TridactylThemeGaydactyl #completions table tr .title {
+    width: 50%;
+}
+
+:root.TridactylThemeGaydactyl #completions table tr {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+:root.TridactylThemeGaydactyl #completions .sectionHeader {
+    background: unset;
+    font-weight: 200;
+    border-bottom: unset;
+    padding: 0.3rem !important;
+    padding-left: unset;
+    padding-bottom: 0.1rem;
+}
+
+:root.TridactylThemeGaydactyl #completions .focused,
+:root.TridactylThemeGaydactyl #completions .focused .url {
+    background: var(--tridactyl-bg);
+    text-decoration: underline;
+}
+
+:root.TridactylThemeGaydactyl #cmdline_iframe {
+    position: fixed !important;
+    bottom: unset;
+    top: 0% !important;
+    left: 0% !important;
+    /* z-index: 2147483647 !important; */
+    /* width: 80% !important; */
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 15px !important;
+    opacity: 0.85;
+}
+
+:root.TridactylThemeGaydactyl .TridactylStatusIndicator {
+    position: fixed !important;
+    bottom: 0 !important;
+    font-family: "Fira Code", monospace !important;
+    background: black !important;
+    border: unset !important;
+    border: 1px #36262E solid !important;
+    font-size: 9px !important;
+    font-weight: 200 !important;
+    padding: 0.8ex !important;
+}
+
+/* #Gaydactyl-normal { */
+/*  border-color: green !important; */
+/* } */
+
+/* #Gaydactyl-insert { */
+/*  border-color: yellow !important; */
+/* } */
