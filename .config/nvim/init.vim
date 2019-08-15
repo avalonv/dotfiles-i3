@@ -1,6 +1,5 @@
+" vim:foldenable:foldmethod=marker
 " TODO:
-" learn more about this g/"\[/normal A ]
-" vim:foldenable
 
 "**************************
 "******** SETTINGS ********
@@ -17,7 +16,7 @@ set history=1000                                        " lots of command line h
 set wildmode=longest,list,full                          " bash like autocompletion
 set wildignorecase                                      " ignore case when completing file names
 set number                                              " show line numbers
-set tabstop=4                                           " input 4 spaces when <tab> is pressed.
+set tabstop=8                                           " input 4 spaces when <tab> is pressed.
 set shiftwidth=4                                        " CTRL-V <tab> to insert a real tab.
 set expandtab
 set smarttab
@@ -36,7 +35,7 @@ set scrolloff=5                                         " scroll offset
 set nrformats-=octal                                    " do not recognize octal numbers for Ctrl-A and Ctrl-X
 set whichwrap+=<,>,h,l,[,]                              " go up/down when you reach the start/end of the current line
 set list                                                " explicitly display trailing characters
-set listchars=tab:>\ ,trail:␣,extends:>,precedes:<,nbsp:+
+set listchars=tab:>·,trail:␣,extends:>,precedes:<,nbsp:+
 set guicursor=i:blinkon1ver20                           " blinking cursor in insert mode
 set nocursorline                                        " highlight the current line (disabled bc hogs resources)
 set autoindent                                          " autoindent (duh)
@@ -45,8 +44,11 @@ set autochdir                                           " auto change working di
 set hidden                                              " don't ask to save buffers when closing them, hide them
 set splitright                                          " open new windows on the right by default
 set nofoldenable                                        " initially disable folding
-set foldmethod=syntax
-set foldnestmax=1
+" set foldopen=all                                        " Open folds if you touch them in any way
+" set foldclose=all                                       " Open folds if you touch them in any way
+set foldlevel=0                                         " Autofold everything by default
+set foldmethod=marker
+set foldnestmax=1                                       " only fold outer functions
 set encoding=utf-8                                      " (duh)
 "set lazyredraw                                          " don't redraw screen while macros are running
 set confirm                                             " confirm quit
@@ -73,7 +75,7 @@ function! RmTrailing()
     call winrestview(l:save)
 endfunction
 
-command RmTrailing call RmTrailing()
+command! RmTrailing call RmTrailing()
 
 "help me
 " split windows to the right if wide enough
@@ -104,14 +106,19 @@ if !exists(":DiffOrig")
     command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis
 endif
 
+command! Nvimrc edit ~/.config/nvim/init.vim
+
 command! MakeExe !chmod +x %
 
 command! SingleCompile !gcc -W -o "%:r"_temp.out %
 
-command! CopyPWD !copyq copy "$(pwd)"
+command! CopyDir silent !copyq copy "$(pwd)"
+command! CopyFullPath silent !copyq copy '%:p'
 
-" number of lines to scroll down with Ctrl-D
-autocmd VimEnter * set scroll=10
+" get hightlight group for word under cursor
+command! GetHlGroup echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+            \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+            \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
 
 " open help windows on the right
 " https://stackoverflow.com/a/21843502/8225672
@@ -122,7 +129,26 @@ autocmd FileType help call CheckColumnLenght()
 "cabbrev H abo help
 
 " enable fold markers for these files
-autocmd FileType vim,c,c++,python,txt setlocal foldmethod=marker
+autocmd FileType vim,c,c++ setlocal foldmethod=syntax
+autocmd FileType python,sh setlocal foldmethod=indent
+autocmd FileType txt,conf setlocal foldmethod=marker
+
+" https://www.reddit.com/r/vim/comments/48zclk/i_just_found_a_simple_method_to_read_pdf_doc_odt/
+" requires pandoc
+autocmd BufReadPre *.docx,*.rtf,*.odp,*.odt silent set ro
+autocmd BufReadPost *.docx,*.rtf,*.odp,*.odt silent %!pandoc "%" -tplain -o /dev/stdout
+
+" Read-only .doc through antiword
+autocmd BufReadPre *.doc silent set ro
+autocmd BufReadPost *.doc silent %!antiword "%"
+
+" Read-only pdf through pdftotext
+" autocmd BufReadPre *.pdf silent set ro
+" autocmd BufReadPost *.pdf silent %!pdftotext -nopgbrk -layout -q -eol unix "%" - | fmt -w78
+
+" remove line numbers when entering terminal:
+autocmd TermOpen * setlocal nonumber | setlocal norelativenumber
+autocmd TermClose * setlocal number | setlocal relativenumber
 "}}}
 
 "**************************
@@ -177,9 +203,15 @@ noremap <silent> gl <esc>:buffer #<cr>
 " list buffers
 noremap <leader>b <esc>:buffers<cr>:buffer<space>
 
+" go to command line mode
+noremap :: q:i
+
 " quit/delbuffer
-noremap  <silent> <M-Q> <esc>:call CheckNBuffers()<cr>
-inoremap <silent> <M-Q> <esc>:call CheckNBuffers()<cr>
+" noremap  <silent> <M-Q> <esc>:call CheckNBuffers()<cr>
+" inoremap <silent> <M-Q> <esc>:call CheckNBuffers()<cr>
+noremap  <silent> <M-Q> <esc>:q<cr>
+inoremap <silent> <M-Q> <esc>:q<cr>
+cnoremap <silent> <M-Q> <esc>:q<cr>
 
 " toggle relative line numbers
 noremap <silent> <Leader>l <esc>:set relativenumber!<cr>
@@ -214,6 +246,10 @@ inoremap <M-l> <right>
 noremap <C-j> 5j
 noremap <C-k> 5k
 
+" pasting over a selection in visual mode doesn't replace the unnamed
+" regiester with the selection
+xnoremap <silent> p p:if v:register == '"'<Bar>let @@=@0<Bar>endif<cr>
+
 " don't save characters deleted with x the unnamed register
 noremap x "_x
 noremap X "_X
@@ -247,6 +283,12 @@ vnoremap <M-c> :!eval<space>
 nnoremap oo o<Esc>
 nnoremap OO i<cr><Esc>
 
+" coc sometimes interfere with <M-A>
+inoremap <M-0> <C-o>^
+inoremap <M-a> <C-o>A
+inoremap <M-b> <C-o>b
+inoremap <M-w> <C-o>w
+
 " move lines up or down
 " https://vim.fandom.com/wiki/Moving_lines_up_or_down
 nnoremap <silent> <M-J> :m .+1<CR>==
@@ -259,11 +301,16 @@ vnoremap <silent> <M-K> :m '<-2<CR>gv=gv
 " compile a single c file
 noremap <silent> <Leader>cc :SingleCompile<cr>
 
-" toggle folding
-noremap <silent> <Leader>z :set foldenable!<cr>
-
 " open/close one fold (zA does it recursively)
 noremap zz za
+
+" close all folds in the buffer
+nnoremap <silent> <Leader>z <esc>mpggVGzC`p
+
+noremap <leader>yf :CopyFullPath<cr>
+noremap <leader>yd :CopyDir<cr>
+
+
 "}}}
 
 "**************************
@@ -280,7 +327,6 @@ hi clear SpellBad
 
 hi SpellBad cterm=underline ctermfg=3
 hi MatchParen cterm=bold,italic,underline ctermbg=0 ctermfg=12
-
 
 " syntax highlight "+,%,=,<>,-,^,*" etc in certain files
 " https://stackoverflow.com/a/18943408/8225672
@@ -299,161 +345,5 @@ endfunction
 "******** PLUGINS *********
 "**************************
 "{{{
-
-let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
-
-" auto install plug
-if !filereadable(vimplug_exists)
-    let choice = confirm("Would you like to install vimplug?", "y/n")
-    if choice == 'y'
-        if !executable("curl")
-            echoerr "You have to install curl or first install vim-plug yourself!"
-            execute "q!"
-        endif
-        echo "Installing Vim-Plug..."
-        echo ""
-        silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-        let g:not_finish_vimplug = "yes"
-        autocmd VimEnter * PlugInstall
-    endif
-endif
-
-call plug#begin('~/.config/nvim/plugged')
-
-"<- syntax checker/linter ->
-Plug 'vim-syntastic/syntastic'
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-" don't automatically run syntastically, only toggle it via keybindings
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let s:syntastic_on = 0
-let g:syntastic_mode_map = {
-    \ 'mode': 'passive',
-    \ 'active_filetypes': [],
-    \ 'passive_filetypes': [] }
-function! ToggleSyntasticMode()
-    if s:syntastic_on
-        SyntasticReset
-        let s:syntastic_on = 0
-    else
-        SyntasticCheck
-        let s:syntastic_on = 1
-    endif
-endfunction
-noremap <silent> <Leader>S  :call ToggleSyntasticMode()<cr>
-
-"<- airline ->
-Plug 'vim-airline/vim-airline'
-set laststatus=0
-set statusline=\ %n\ %F\ %r\ %Y
-let g:airline_symbols_ascii = 1 " no fancy symbols
-let g:airline_extensions = ['whitespace']
-"let g:airline_section_b = '%-0.10{getcwd()}'
-let g:airline_section_b = '%n %-0.10{expand("%:p:h:t")}/'
-let g:airline_section_c = '%t %{SyntasticStatuslineFlag()}'
-let g:airline_section_x = '%y'
-noremap <silent> <Leader>A :AirlineToggle<cr>
-
-"<- airline themes ->
-Plug 'vim-airline/vim-airline-themes'
-let g:airline_theme = 'myserene'
-"let myserene=expand('~/.config/nvim/plugged/vim-airline-themes/autoload/airline/themes/myserene.vim')
-"if !filereadable(myserene)
-"  let g:airline_theme = 'myserene'
-"else
-"  let g:airline_theme = 'serene'
-"endif
-
-" highlight colornames/hex
-Plug 'ap/vim-css-color'
-
-"<- ranger in vim ->
-Plug 'rafaqz/ranger.vim'
-
-Plug 'tpope/vim-surround'
-
-"<- bindings/functions for commenting ->
-Plug 'tpope/vim-commentary'
-
-"<- show indentation lines ->
-Plug 'Yggdroot/indentLine'
-let g:indentLine_char = '|'
-autocmd FileType man,help IndentLinesDisable
-autocmd TermOpen * IndentLinesDisable
-
-"<- Conquer Of Completion ->
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
-let g:coc_global_extensions = [
-            \  'coc-emoji', 'coc-eslint', 'coc-yank', 'coc-prettier',
-            \  'coc-tsserver', 'coc-tslint', 'coc-tslint-plugin',
-            \  'coc-css', 'coc-json', 'coc-python', 'coc-yaml']
-
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-"inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" modified because it interferes with delimitMate
-" (see https://github.com/Raimondi/delimitMate/issues/111)
-imap <expr> <CR> pumvisible()
-                 \ ? "\<C-y>"
-                 \ : '<Plug>delimitMateCR'
-
-" Use `lp` and `ln` for navigate diagnostics
-nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
-nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> <leader>ld <Plug>(coc-definition)
-nmap <silent> <leader>lt <Plug>(coc-type-definition)
-nmap <silent> <leader>li <Plug>(coc-implementation)
-nmap <silent> <leader>lf <Plug>(coc-references)
-
-" Remap for rename current word
-nmap <leader>lr <Plug>(coc-rename)
-
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-    if &filetype == 'vim'
-        execute 'h '.expand('<cword>')
-    else
-        call CocAction('doHover')
-    endif
-endfunction
-
-" Highlight symbol under cursor on CursorHold
-" autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" show yank history
-nnoremap <silent> "" :<C-u>CocList -A --normal yank<cr>
-
-" <- auto-closing parens and brackets ->
-Plug 'Raimondi/delimitMate'
-au filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'`'}
-let g:delimitMate_autoclose = 1
-let g:delimitMate_matchpairs = "(:),[:],{:}"
-let g:delimitMate_jump_expansion = 1
-let g:delimitMate_expand_space = 1
-let g:delimitMate_expand_cr = 2
-let g:delimitMate_expand_inside_quotes = 1
-
-call plug#end()
+source ~/.config/nvim/plugins_default.vim
 "}}}
