@@ -11,12 +11,12 @@ fi
 
 #urxvt_color="-bg '#040008'"
 echo 'Launching scratchpads'
-for id in $@; do
+for id in "$@"; do
     echo $id
     if ! pgrep --full @${id} &> /dev/null ; then
         case $id in
-        hell) eval "kitty --name @hell" &;;
-        man) eval "kitty --name @man" &;;
+        hell) eval "kitty --name @hell -o background=#04010F" &;;
+        man) eval "kitty --name @man -o background=#04010F" &;;
         ranger) eval "kitty --name @ranger -e 'ranger -c ~/.config/ranger/rifle-new-window'" &;;
         gotop) eval "kitty --name @gotop -e 'gotop --rate=0.7'" &;;
         ?) eval "kitty --name @${id}" &;;
@@ -25,7 +25,7 @@ for id in $@; do
 done
 echo "Scratchpads launched"
 
-function wait_for
+kill_all()
 {
     program=$1
     echo -n "Trying to kill $program"
@@ -37,9 +37,9 @@ function wait_for
     echo -e "\nLaunching $program"
 }
 
-function l_compton
+start_compton()
 {
-    wait_for compton
+    kill_all compton
     compton --config ~/.config/compton/compton.conf &
     local last_exit="$?"
     if [[ $last_exit -ne '0' ]]; then
@@ -49,9 +49,9 @@ function l_compton
     fi
 }
 
-function l_polybar
+start_polybar()
 {
-    wait_for polybar
+    kill_all polybar
     polybar satsu &
     local last_exit="$?"
     if [[ $last_exit -ne '0' ]]; then
@@ -61,7 +61,7 @@ function l_polybar
     fi
 }
 
-function l_systray
+start_systray()
 {
     # doesn't kill them, only starts them
     for arg in "dunst -conf $HOME/.config/dunst/dunstrc" "copyq" "caffeine" #"wpa_gui -qt"
@@ -74,9 +74,9 @@ function l_systray
     done
 }
 
-function l_redshift
+start_redshift()
 {
-    wait_for redshift
+    kill_all redshift
     redshift -x
     redshift -c ~/.config/redshift.conf &
     local last_exit="$?"
@@ -91,14 +91,14 @@ functionlist=$'compton\npolybar\nsystray\nredshift'
 
 if [[ -n $startall ]]; then
     for i in $functionlist; do
-        eval "l_${i}"
+        eval "start_${i}"
     done
 else
     prompt="Restart (Shift+Enter to select)"
     checklist=$(echo "$functionlist" | rofi -dmenu -multi-select -p "$prompt")
     for choice in $checklist; do
-        echo "l_${choice}"
-        eval "l_${choice}"
+        echo "start_${choice}"
+        eval "start_${choice}"
     done
 fi
 
