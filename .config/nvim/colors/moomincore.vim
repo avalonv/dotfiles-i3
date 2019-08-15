@@ -15,7 +15,7 @@ hi Comment             ctermfg=14   guifg=#735787                             ct
 hi Conditional         ctermfg=11   guifg=#F5A2BB                             cterm=Bold    gui=Bold
 hi Constant            ctermfg=116  guifg=#87D7D7
 hi CursorLineNr        ctermfg=8    guifg=#766D7F  ctermbg=NONE guibg=#08000D
-hi Folded              ctermfg=255  guifg=#FFFFFF  ctermbg=0    guibg=#00001A
+hi Folded              ctermfg=255  guifg=#FFFFFF  ctermbg=234
 hi Function            ctermfg=12   guifg=#00B3B3                             cterm=Bold    gui=Bold
 hi Label               ctermfg=5    guifg=#AAA6E1
 hi LineNr              ctermfg=238  guifg=#444444  ctermbg=NONE guibg=#08000D cterm=NONE    gui=NONE
@@ -36,6 +36,9 @@ hi Pmenu               ctermfg=13                  ctermbg=0                  ct
 hi PmenuSel            ctermfg=0                   ctermbg=6
 hi WildMenu            ctermfg=0                   ctermbg=6
 hi StatusLine          ctermfg=0                   ctermbg=13
+hi NonText             ctermfg=7                                              cterm=NONE    gui=NONE
+hi Search              ctermfg=10                  ctermbg=3                  cterm=bold
+hi Error               ctermfg=15                  ctermbg=1
 
 hi! link Identifier Normal
 hi! link SpecialChar Normal
