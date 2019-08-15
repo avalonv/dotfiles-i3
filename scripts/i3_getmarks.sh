@@ -5,7 +5,7 @@
 # otherwise just run it at a regular interval
 
 #ignore="$@"
-ignore='_last S1 S2 S3'
+ignore='_last'
 marks=$(i3-msg -t get_marks | jq '.[]' | sort | tr --delete '"')
 
 if [[ -n "$ignore" ]]; then
