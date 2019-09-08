@@ -20,6 +20,7 @@ set nocompatible                                        " don't be annoying
 set backspace=indent,eol,start                          " allow backspacing over everything in insert mode.
 set tabpagemax=30                                       " increase max number of tabs (default is 10)
 set history=1000                                        " lots of command line history
+set wildmenu
 " set wildmode=longest,list,full                          " bash like autocompletion (superseded by popup menu)
 set wildignorecase                                      " ignore case when completing file names
 set wildignore=*.o,*.obj,*.out                          " ignore the following types when autocompleting filenames
@@ -29,9 +30,10 @@ set shiftwidth=4                                        " CTRL-V <tab> to insert
 set expandtab
 set smarttab
 set hlsearch                                            " highlight matches while searching
+set incsearch
 set mouse=vi                                            " enable mouse support in visual and insert modes
 set ttimeout                                            " time out for key codes
-set ttimeoutlen=100                                     " wait up to 100ms after Esc for special key
+set ttimeoutlen=50                                      " wait up to 100ms after Esc for special key
 set timeoutlen=700                                      " wait up to 700ms to complete a sequence of commands
 set display=truncate                                    " show @@@ in the last line if it is truncated.
 set background=dark                                     " don't hurt my eyes
@@ -65,6 +67,7 @@ set shortmess+=c                                        " don't give |ins-comple
 set relativenumber
 set statusline=\ %n\ %F\ %r\ %Y
 set splitright
+set belloff=all
 
 if has("nvim-0.4")
     set wildoptions=pum                                     " use ins-completion like pop menu for wildmenu
