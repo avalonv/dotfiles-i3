@@ -7,16 +7,15 @@
 background = #111
 background-alt = #222
 foreground = #BDACB7
-foreground-alt = #00b3b3
+foreground-alt = #F5A2BB
 primary = #F62BED
 secondary = #00ff99
 alert = #bd2c40
 ; }}}
-
 [bar/satsu]
 ; {{{
-;monitor = ${env:MONITOR:0}
-monitor = eDP
+# guess monitor
+; monitor = eDP
 width = 100%
 height = 22
 offset-x = 0%
@@ -70,7 +69,6 @@ modules-center = i3 marks
 modules-right = acpi-warn updates-void openweathermap-forecast eth wlan
 
 ; }}}
-
 [module/marks]
 ; {{{
 type = custom/ipc
@@ -82,7 +80,6 @@ hook-1 = $HOME/scripts/i3_getmarks.sh
 # the index is confusing because initial 1 means hook-0
 initial = 1
 ; }}}
-
 [module/acpi-warn]
 ; {{{
 type = custom/script
@@ -95,7 +92,6 @@ exec = pgrep acpid >/dev/null && echo "" || echo "ACPI"
 label = "%output%"
 interval = 10
 ; }}}
-
 [module/xwindow]
 ; {{{
 type = internal/xwindow
@@ -103,7 +99,6 @@ label = %title:0:30:...%
 #format-foreground = #0000ff
 format-padding = 2
 ; }}}
-
 [module/keyboard]
 ; {{{
 type = internal/xkeyboard
@@ -119,7 +114,6 @@ label-indicator = %name%
 #blacklist-0 = num lock
 #blacklist-1 = scroll lock
 ; }}}
-
 [module/updates-void]
 ; {{{
 type = custom/script
@@ -131,7 +125,6 @@ exec = $HOME/scripts/updates-void.sh
 label = "%output%"
 interval = 120
 ; }}}
-
 [module/i3]
 ; {{{
 type = internal/i3
@@ -176,7 +169,6 @@ label-urgent-font = 3
 ; Separator in between workspaces
 #label-separator = |
 ; }}}
-
 [module/cpu]
 ; {{{
 type = internal/cpu
@@ -186,7 +178,6 @@ format-prefix-foreground = ${colors.foreground-alt}
 label = " %percentage:2%%"
 
 ; }}}
-
 [module/memory]
 ; {{{
 type = internal/memory
@@ -196,7 +187,6 @@ format-prefix-foreground = ${colors.foreground-alt}
 label = " %percentage_used%%"
 
 ; }}}
-
 [module/wlan]
 ; {{{
 type = internal/network
@@ -214,7 +204,6 @@ ramp-signal-3 = 
 ramp-signal-4 = 
 ramp-signal-foreground = ${colors.foreground-alt}
 ; }}}
-
 [module/eth]
 ; {{{
 type = internal/network
@@ -226,7 +215,6 @@ format-connected-prefix-foreground = ${colors.foreground-alt}
 label-connected = %local_ip%
 format-disconnected =
 ; }}}
-
 [module/date]
 ; {{{
 type = internal/date
@@ -244,7 +232,6 @@ format-prefix-foreground = ${colors.foreground-alt}
 
 label = %date% %time%
 ; }}}
-
 [module/alsa]
 ; {{{
 type = internal/alsa
@@ -287,7 +274,6 @@ bar-volume-empty = ─
 bar-volume-empty-font = 2
 bar-volume-empty-foreground = #333
 ; }}}
-
 [module/battery]
 ; {{{
 type = internal/battery
@@ -322,7 +308,6 @@ animation-discharging-2 = 
 animation-discharging-foreground = ${colors.foreground-alt}
 animation-discharging-framerate = 1000
 ; }}}
-
 [module/openweathermap-forecast]
 ; {{{
 type = custom/script
