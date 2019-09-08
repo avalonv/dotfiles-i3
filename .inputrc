@@ -14,6 +14,9 @@ RETURN: "\e\n"
 set colored-completion-prefix on
 set colored-stats on
 
+# don't save modified history if the command isn't run
+set revert-all-at-newline on
+
 # match wrong case
 set completion-ignore-case on
 
