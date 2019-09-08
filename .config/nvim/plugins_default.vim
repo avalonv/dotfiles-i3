@@ -1,4 +1,5 @@
 " vim:foldenable:foldmethod=marker
+" <C-w>f ~/.config/nvim/init.vim
 
 let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
 
@@ -17,7 +18,7 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 "}}}
-Plug 'vim-syntastic/syntastic'"{{{
+Plug 'vim-syntastic/syntastic' "{{{
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 " don't automatically run syntastically, only toggle it via keybindings
@@ -39,38 +40,110 @@ function! ToggleSyntasticMode()
     endif
 endfunction
 noremap <silent> <Leader>S  :call ToggleSyntasticMode()<cr>
-noremap <silent> <Leader>s  :SyntasticCheck<cr>
 "}}}
-Plug 'vim-airline/vim-airline'"{{{
+Plug 'vim-airline/vim-airline' "{{{
+" set noshowmode
 " set laststatus=0
 " set statusline=\ %n\ %F\ %r\ %Y
 " let g:airline_symbols_ascii = 1 " no fancy symbols
+let g:airline#extensions#disable_rtp_load = 1
 let g:airline_powerline_fonts = 1
-let g:airline_extensions = ['whitespace']
-"let g:airline_section_b = '%-0.10{getcwd()}'
-let g:airline_section_b = '%n %-0.10{expand("%:p:h:t")}/'
-let g:airline_section_c = '%t %{SyntasticStatuslineFlag()}'
-let g:airline_section_x = '%y'
+let g:airline_extensions = ['whitespace','tabline','coc']
+let g:airline_section_x = ''
+let g:airline_section_y = '%y'
+" let g:airline_section_c = '%-0.15{expand("%:p:h")}/%t %{SyntasticStatuslineFlag()}'
+" let g:airline_section_x = '%y %z'
+
 noremap <silent> <Leader>A :AirlineToggle<cr>
-let g:airline#extensions#tabline#enabled = 1
-
-
 "<- airline themes ->
 Plug 'vim-airline/vim-airline-themes'
-let g:airline_theme = 'myserene'
-"let myserene=expand('~/.config/nvim/plugged/vim-airline-themes/autoload/airline/themes/myserene.vim')
-"if !filereadable(myserene)
-"  let g:airline_theme = 'myserene'
-"else
-"  let g:airline_theme = 'serene'
+" (=^‥^=) ω＾|
+" let g:airline_mode_map = {
+"     \ '__'     : '-',
+"     \ 'c'      : '＾● ⋏ ●＾',
+"     \ 'i'      : '｡＾･ｪ･＾｡',
+"     \ 'ic'     : '｡＾･ｪ･＾｡',
+"     \ 'ix'     : '｡＾･ｪ･＾｡',
+"     \ 'n'      : '  ㅇㅅㅇ ',
+"     \ 'multi'  : '  ㅇㅅㅇ ',
+"     \ 'ni'     : '  ㅇㅅㅇ ',
+"     \ 'no'     : '  ㅇㅅㅇ ',
+"     \ 'R'      : ' (=･ｪ･=? ',
+"     \ 'Rv'     : ' (=･ｪ･=? ',
+"     \ 's'      : ' (=･ｪ･=? ',
+"     \ 'S'      : ' (=･ｪ･=? ',
+"     \ '^S'     : ' (=･ｪ･=? ',
+"     \ 't'      : ' ( ^..^)ﾉ',
+"     \ 'v'      : '(=^.ω.^=)',
+"     \ 'V'      : '(=^.ω.^=)',
+"     \ ''     : '(=^.ω.^=)',
+"     \ }
+let g:airline_mode_map = {
+    \ '__'     : '-',
+    \ 'c'      : 'COMM',
+    \ 'i'      : 'INSE',
+    \ 'ic'     : 'IN-C',
+    \ 'ix'     : 'INSE',
+    \ 'n'      : 'NORM',
+    \ 'multi'  : 'NORM',
+    \ 'ni'     : 'NORM',
+    \ 'no'     : 'NORM',
+    \ 'R'      : 'REPL',
+    \ 'Rv'     : 'REPL',
+    \ 's'      : 'REPL',
+    \ 'S'      : 'REPL',
+    \ '^S'     : 'REPL',
+    \ 't'      : 'Term',
+    \ 'v'      : 'VISU',
+    \ 'V'      : 'VI-L',
+    \ ''     : 'VI-B',
+    \ }
+
+" let g:airline_mode_map = {
+"     \ '__'     : '-',
+"     \ 'c'      : 'COMMAND',
+"     \ 'i'      : 'INSERT ',
+"     \ 'ic'     : 'INSER-C',
+"     \ 'ix'     : 'INSERT ',
+"     \ 'n'      : 'NORMAL ',
+"     \ 'multi'  : 'NORMAL ',
+"     \ 'ni'     : 'NORMAL ',
+"     \ 'no'     : 'NORMAL ',
+"     \ 'R'      : 'REPLACE',
+"     \ 'Rv'     : 'REPLACE',
+"     \ 's'      : 'REPLACE',
+"     \ 'S'      : 'REPLACE',
+"     \ '^S'     : 'REPLACE',
+"     \ 't'      : 'Term   ',
+"     \ 'v'      : 'VISUAL ',
+"     \ 'V'      : 'V-LINE ',
+"     \ ''     : 'V-BLOCK',
+"     \ }
+
+" let g:airline_theme_patch_func = 'AirlineThemePatch'
+" function! AirlineThemePatch(palette)
+"   if g:airline_theme == 'serene'
+"     for colors in values(a:palette.inactive)
+"       let colors[3] = 245
+"     endfor
+"   endif
+" endfunction
+
+set noshowmode
+if !empty(glob("~/.config/nvim/plugged/vim-airline-themes/autoload/airline/themes/myserene.vim"))
+  let g:airline_theme = 'mylucius'
+else
+  let g:airline_theme = 'lucius'
+endif
+
 "endif}}}
-Plug 'rafaqz/ranger.vim'"{{{
+Plug 'rafaqz/ranger.vim' "{{{
 "}}}
-Plug 'tpope/vim-surround'"{{{
+Plug 'tpope/vim-surround' "{{{
 "}}}
-Plug 'tpope/vim-commentary'"{{{
+Plug 'tpope/vim-commentary' "{{{
 "}}}
-Plug 'Yggdroot/indentLine'"{{{
+Plug 'Yggdroot/indentLine' "{{{
 let g:indentLine_char = '|'
 autocmd FileType man,help IndentLinesDisable
 " append to ~/.config/nvim/plugged/ranger.vim/plugin/ranger.vim:
@@ -79,7 +152,7 @@ autocmd FileType man,help IndentLinesDisable
 "  setlocal signcolumn=no
 "  IndentLinesDisable
 "}}}
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}"{{{
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}} "{{{
 let g:coc_global_extensions = [
             \  'coc-emoji', 'coc-eslint', 'coc-yank', 'coc-prettier',
             \  'coc-tsserver', 'coc-tslint', 'coc-tslint-plugin',
@@ -155,5 +228,21 @@ nnoremap <silent> "" :<C-u>CocList -A --normal yank<cr>
 " let g:delimitMate_expand_space = 1
 " let g:delimitMate_expand_cr = 2
 " let g:delimitMate_expand_inside_quotes = 1
+"}}}
+Plug 'tpope/vim-repeat' "{{{
+"}}}
+" Plug 'justinmk/vim-sneak' "{{{
+" map f <Plug>Sneak_s
+" map F <Plug>Sneak_S
+" " map t <Plug>Sneak_t
+" " map T <Plug>Sneak_T
+" nnoremap <silent> t :<C-U>call sneak#wrap('',           2, 0, 0, 1)<CR>
+" nnoremap <silent> T :<C-U>call sneak#wrap('',           2, 1, 0, 1)<CR>
+" xnoremap <silent> t :<C-U>call sneak#wrap(visualmode(), 2, 0, 0, 1)<CR>
+" xnoremap <silent> T :<C-U>call sneak#wrap(visualmode(), 2, 1, 0, 1)<CR>
+" onoremap <silent> t :<C-U>call sneak#wrap(v:operator,   2, 0, 0, 1)<CR>
+" onoremap <silent> T :<C-U>call sneak#wrap(v:operator,   2, 1, 0, 1)<CR>
+"}}}
+Plug 'ap/vim-css-color' "{{{
 "}}}
 call plug#end()
