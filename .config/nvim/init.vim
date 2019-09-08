@@ -59,7 +59,6 @@ set foldmethod=marker
 set foldnestmax=1                                       " only fold outer functions
 "set lazyredraw                                          " don't redraw screen while macros are running
 set confirm                                             " confirm quit
-set signcolumn=yes                                      " always show gutter on the left
 set numberwidth=3                                       " smaller line number width
 set complete=.,w,b,u,t,spell                            " enable english word suggestions when 'spell is on
 set updatetime=300                                      " smaller updatetime for CursorHold & CursorHoldI
@@ -69,6 +68,9 @@ set statusline=\ %n\ %F\ %r\ %Y
 set splitright
 set belloff=all
 
+if has("nvim-0.3")
+    set signcolumn=yes                                      " always show gutter on the left
+endif
 if has("nvim-0.4")
     set wildoptions=pum                                     " use ins-completion like pop menu for wildmenu
 endif
@@ -131,7 +133,9 @@ autocmd FileType help wincmd K
 " autocmd FileType help call CheckColumnLenght()
 
 " open new windows on the right by default (https://github.com/neovim/neovim/issues/8350)
-autocmd WinNew * wincmd L
+if has("nvim-0.3")
+    autocmd WinNew * wincmd L
+endif
 
 " enable fold markers for these files
 autocmd FileType vim,c,c++ setlocal foldmethod=syntax
