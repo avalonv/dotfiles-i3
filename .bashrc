@@ -21,16 +21,45 @@ HISTFILESIZE=-1
 set -o vi
 
 export PATH="$PATH:$HOME/scripts:$HOME/bin:$HOME/.local/bin"
-export EDITOR='/bin/vim'
-export VISUAL='/bin/vim'
+
+if nvim_path=$(which nvim); then
+    export MANPAGER='nvim +Man!'
+    export EDITOR="$nvim_path"
+    export VISUAL="$nvim_path"
+    alias vim='nvim'
+else
+    export EDITOR='vim'
+    export VISUAL='vim'
+fi
+
 export RANGER_LOAD_DEFAULT_RC='FALSE'
-export MANPAGER='nvim +Man!'
+
 # fixes kitty ls_colors, see https://github.com/kovidgoyal/kitty/issues/781
-export LS_COLORS='di=01;94:ln=01;96:pi=33:so=01;95:bd=01;93:cd=01;93:ex=01;92:do=01;95:su=37;41:sg=30;43:st=37;44:ow=34;42:tw=30;42:ca=30;41'
+if [[ "$TERM" -eq "xterm-kitty" ]]; then
+    export LS_COLORS='di=01;94:ln=01;96:pi=33:so=01;95:bd=01;93:cd=01;93:ex=01;92:do=01;95:su=37;41:sg=30;43:st=37;44:ow=34;42:tw=30;42:ca=30;41'
+fi
 
 # getting term colors:
 # https://stackoverflow.com/a/28938235/8225672
 # https://stackoverflow.com/questions/6403744/are-there-terminals-that-support-true-color#comment24567873_6486000
+
+function copyq_copy
+{
+   local this="$@"
+
+   copyq copy "$this"
+}
+
+alias copy='copyq_copy'
+
+function dict_query
+{ # colorit is part of the "m4" package
+   local term="$@"
+
+   dict -i wn "$term" | colorit | tail --lines=+50
+}
+
+alias dic='dict_query'
 
 function random_color
 {
@@ -67,23 +96,9 @@ function set_prompt
     fi
 }
 
-function copyq_copy
-{
-   local this="$@"
-
-   copyq copy "$this"
-}
-
-
-function dict_query
-{ # colorit is part of the "m4" package
-   local term="$@"
-
-   dict -i wn "$term" | colorit | tail --lines=+50
-}
-
 
 PROMPT_COMMAND='set_prompt'
+
 
 # void only
 alias xbps-update='xbps-install -Su'
@@ -98,8 +113,6 @@ alias goeth='sudo $HOME/scripts/connect_ethernet.sh'
 alias scanip='$HOME/scripts/pingsweep.sh'
 alias kyll='$HOME/scripts/kyll.sh'
 
-# alias vim='vim -p'
-alias copy='copyq_copy'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -116,6 +129,5 @@ alias yget="youtube-dl -x --audio-format mp3"
 # https://superuser.com/questions/927523/how-to-download-only-subtitles-of-videos-using-youtube-dl
 
 alias killjobs='kill $(jobs -p)'
-alias dic='dict_query'
 alias term_colors='for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done'
 alias screenshot='maim -m 9 ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png'
