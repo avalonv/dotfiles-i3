@@ -1,20 +1,28 @@
 " vim:foldenable:foldmethod=marker
 " TODO:
+" change line 265 to have the search/replace enter insert mode in command
+" line mode
+" plugins to test:
+" spelunker.vim
+" sneak
+" nerdcommenter
+" /(^\|.\)noremap \+<\(silent>\)\@!.*\(:\)
+" kqqnwi<silent><esc>q:set nowrapscan<cr>100@q
+" disable airline extensions
+" enable tabline
+" find out how to hide buffers using <C-w> shortcuts
 
-"**************************
-"******** SETTINGS ********
-"**************************
-"{{{
+"******** SETTINGS ******** {{{
 
 filetype plugin indent on                               " enable plugins for file type detection
 syntax on                                               " use syntax highlighting
 set nocompatible                                        " don't be annoying
-set noshowmode                                          " don't show current mode
 set backspace=indent,eol,start                          " allow backspacing over everything in insert mode.
 set tabpagemax=30                                       " increase max number of tabs (default is 10)
 set history=1000                                        " lots of command line history
-set wildmode=longest,list,full                          " bash like autocompletion
+" set wildmode=longest,list,full                          " bash like autocompletion (superseded by popup menu)
 set wildignorecase                                      " ignore case when completing file names
+set wildignore=*.o,*.obj,*.out                          " ignore the following types when autocompleting filenames
 set number                                              " show line numbers
 set tabstop=8                                           " input 4 spaces when <tab> is pressed.
 set shiftwidth=4                                        " CTRL-V <tab> to insert a real tab.
@@ -44,29 +52,28 @@ set autochdir                                           " auto change working di
 set hidden                                              " don't ask to save buffers when closing them, hide them
 set splitright                                          " open new windows on the right by default
 set nofoldenable                                        " initially disable folding
-" set foldopen=all                                        " Open folds if you touch them in any way
-" set foldclose=all                                       " Open folds if you touch them in any way
 set foldlevel=0                                         " Autofold everything by default
 set foldmethod=marker
 set foldnestmax=1                                       " only fold outer functions
-set encoding=utf-8                                      " (duh)
 "set lazyredraw                                          " don't redraw screen while macros are running
 set confirm                                             " confirm quit
 set signcolumn=yes                                      " always show gutter on the left
 set numberwidth=3                                       " smaller line number width
-set complete=.,w,b,u,t,kspell                           " enable english word suggestions when 'spell is on
+set complete=.,w,b,u,t,spell                            " enable english word suggestions when 'spell is on
 set updatetime=300                                      " smaller updatetime for CursorHold & CursorHoldI
 set shortmess+=c                                        " don't give |ins-completion-menu| messages.
 set relativenumber
+set statusline=\ %n\ %F\ %r\ %Y
+set splitright
+
+if has("nvim-0.4")
+    set wildoptions=pum                                     " use ins-completion like pop menu for wildmenu
+endif
 
 let c_comment_strings=1                                 " show strings inside C comments
 let python_highlight_all = 1                            " use full python syntax highlighting
 "}}}
-
-"**************************
-"*** FUNCTIONS/COMMANDS ***
-"**************************
-"{{{
+"*** FUNCTIONS/COMMANDS *** {{{
 
 " https://vi.stackexchange.com/a/456/1111
 function! RmTrailing()
@@ -89,15 +96,6 @@ function! CheckColumnLenght()
     endif
 endfunction
 
-" if there is more than one buffer, delete it, else quit
-function! CheckNBuffers()
-    if len(getbufinfo({'buflisted':1})) > 1
-        bdelete
-    else
-        quit
-    endif
-endfunction
-
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
@@ -108,12 +106,16 @@ endif
 
 command! Nvimrc edit ~/.config/nvim/init.vim
 
-command! MakeExe !chmod +x %
+command! ChmodX !chmod +x %
 
 command! SingleCompile !gcc -W -o "%:r"_temp.out %
 
-command! CopyDir silent !copyq copy "$(pwd)"
-command! CopyFullPath silent !copyq copy '%:p'
+command! CopyDir silent !xclip -selection clipboard "$(pwd)"
+command! CopyFullPath silent !clip -selection clpboard '%:p'
+
+" stolen from justinmk
+command! InsertDate           norm! i<c-r>=strftime('%Y/%m/%d %H:%M:%S')<cr>
+command! InsertDateYYYYMMdd   norm! i<c-r>=strftime('%Y%m%d')<cr>
 
 " get hightlight group for word under cursor
 command! GetHlGroup echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
@@ -122,11 +124,11 @@ command! GetHlGroup echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") .
 
 " open help windows on the right
 " https://stackoverflow.com/a/21843502/8225672
-autocmd FileType help wincmd L
-autocmd FileType help call CheckColumnLenght()
+autocmd FileType help wincmd K
+" autocmd FileType help call CheckColumnLenght()
 
-"cabbrev h vert help
-"cabbrev H abo help
+" open new windows on the right by default (https://github.com/neovim/neovim/issues/8350)
+autocmd WinNew * wincmd L
 
 " enable fold markers for these files
 autocmd FileType vim,c,c++ setlocal foldmethod=syntax
@@ -135,26 +137,24 @@ autocmd FileType txt,conf setlocal foldmethod=marker
 
 " https://www.reddit.com/r/vim/comments/48zclk/i_just_found_a_simple_method_to_read_pdf_doc_odt/
 " requires pandoc
-autocmd BufReadPre *.docx,*.rtf,*.odp,*.odt silent set ro
+autocmd BufReadPre *.docx,*.rtf,*.odp,*.odt silent setlocal nomodifiable
 autocmd BufReadPost *.docx,*.rtf,*.odp,*.odt silent %!pandoc "%" -tplain -o /dev/stdout
 
 " Read-only .doc through antiword
-autocmd BufReadPre *.doc silent set ro
+autocmd BufReadPre *.doc silent setlocal nomodifiable
 autocmd BufReadPost *.doc silent %!antiword "%"
 
-" Read-only pdf through pdftotext
-" autocmd BufReadPre *.pdf silent set ro
-" autocmd BufReadPost *.pdf silent %!pdftotext -nopgbrk -layout -q -eol unix "%" - | fmt -w78
+" Read-only pdf through pdftotext (requires poppler-utils)
+autocmd BufReadPre *.pdf silent setlocal nomodifiable
+autocmd BufReadPost *.pdf silent %!pdftotext -nopgbrk -layout -q -eol unix "%" - | fmt -w78
 
 " remove line numbers when entering terminal:
-autocmd TermOpen * setlocal nonumber | setlocal norelativenumber
-autocmd TermClose * setlocal number | setlocal relativenumber
-"}}}
+autocmd TermOpen * setlocal nonumber norelativenumber signcolumn=no
+autocmd TermClose * setlocal number relativenumber signcolumn=yes
 
-"**************************
-"******** MAPPINGS ********
-"**************************
-"{{{
+autocmd FileType markdown,txt setlocal spell
+"}}}
+"******** MAPPINGS ******** {{{
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -165,21 +165,16 @@ inoremap <C-U> <C-G>u<C-U>v
 " Revert with ":unmap Q".
 noremap Q gq
 
-" switch between windows
-noremap  <M-w> <esc><C-W><C-W>
-inoremap <M-w> <esc><C-W><C-W>
-noremap  <M-W> <esc><C-W>W
-inoremap <M-W> <esc><C-W>W
 
 " go to next/previous tab respectively
 noremap  <silent> <M-.> <esc>:tabnext<cr>
-noremap  <silent> <M-,> <esc>:tabprevious<cr>
 inoremap <silent> <M-.> <esc>:tabnext<cr>
+noremap  <silent> <M-,> <esc>:tabprevious<cr>
 inoremap <silent> <M-,> <esc>:tabprevious<cr>
 
-" open new tab/buffer
-noremap <M-n> :tabnew<cr>:edit<space>
-noremap <M-N> :edit<space>
+" open new tab/edit new file
+noremap <C-w>e <esc>:edit<space>
+noremap <silent> <C-w>N :tabnew<cr>
 
 " move all buffers to tabs
 " https://superuser.com/a/430324/900060
@@ -187,37 +182,29 @@ noremap <M-N> :edit<space>
 noremap <Leader>t <esc>:buffers<cr>:tab sball
 
 " open terminal
-noremap <Leader>T <esc>:vsplit term://bash
+noremap <silent> <Leader>T <esc>:vsplit term://bash
 
-" split window
-noremap <Leader>v <esc>:vsplit<cr>
-
-" exit terminal mode
+" stop reading input in terminal
 tnoremap <M-w> <C-\><C-n>
 
 " go to next/previous/last buffer respectively
-noremap <silent> gn :bnext<cr>
+noremap <silent> go :bnext<cr>
 noremap <silent> gp :bprevious<cr>
 noremap <silent> gl <esc>:buffer #<cr>
 
 " list buffers
-noremap <leader>b <esc>:buffers<cr>:buffer<space>
-
-" go to command line mode
-noremap :: q:i
+noremap <C-w>b <esc>:buffers<cr>:buffer<space>
 
 " quit/delbuffer
-" noremap  <silent> <M-Q> <esc>:call CheckNBuffers()<cr>
-" inoremap <silent> <M-Q> <esc>:call CheckNBuffers()<cr>
 noremap  <silent> <M-Q> <esc>:q<cr>
 inoremap <silent> <M-Q> <esc>:q<cr>
 cnoremap <silent> <M-Q> <esc>:q<cr>
 
-" toggle relative line numbers
-noremap <silent> <Leader>l <esc>:set relativenumber!<cr>
+" toggle line numbers
+noremap <silent> <Leader>l <esc>:set relativenumber!<cr>:set nu!<cr>
 
-" toggle show line numbers
-noremap <silent> <Leader>n <esc>:set nu!<cr>
+" toggle spell
+noremap <silent> <Leader>s <esc>:set spell!<cr>
 
 " disable highlighting for the last search
 " (https://stackoverflow.com/a/657484/8225672)
@@ -227,8 +214,13 @@ imap <silent> <F1> <esc>:nohlsearch<cr>a
 " toggle case insensitive searches
 map <Leader>i :set ignorecase!<cr>
 
-" copy to selection clipboard (copyq is a bitch)
-map <Leader>* "*y
+" copy selection clipboard
+noremap + "+y
+noremap ++ "+yy
+vnoremap + "+y
+vnoremap ++ "+yy
+xnoremap + "+y
+xnoremap ++ "+yy
 
 " increase/decrease indentation
 nnoremap <Tab> >>
@@ -247,7 +239,7 @@ noremap <C-j> 5j
 noremap <C-k> 5k
 
 " pasting over a selection in visual mode doesn't replace the unnamed
-" regiester with the selection
+" register with the selection
 xnoremap <silent> p p:if v:register == '"'<Bar>let @@=@0<Bar>endif<cr>
 
 " don't save characters deleted with x the unnamed register
@@ -299,34 +291,36 @@ vnoremap <silent> <M-J> :m '>+1<CR>gv=gv
 vnoremap <silent> <M-K> :m '<-2<CR>gv=gv
 
 " compile a single c file
-noremap <silent> <Leader>cc :SingleCompile<cr>
+noremap <Leader>cc :write<cr>:SingleCompile<cr>
 
 " open/close one fold (zA does it recursively)
+" zR opens all folds, zM closes all
 noremap zz za
 
-" close all folds in the buffer
-nnoremap <silent> <Leader>z <esc>mpggVGzC`p
+" copy file path to clipboard
+noremap <silent> <leader>yf :CopyFullPath<cr>
+noremap <silent> <leader>yd :CopyDir<cr>
 
-noremap <leader>yf :CopyFullPath<cr>
-noremap <leader>yd :CopyDir<cr>
+" execute everything to the right of the cursor as ex commands
+noremap <silent> <leader>: y$:<C-r>"<cr>
 
 
 "}}}
-
-"**************************
-"******** COLOURS *********
-"**************************
-"{{{
+"******** COLOURS ********* {{{
 
 " see :h group-name
 " also see https://vim.fandom.com/wiki/Xterm256_color_names_for_console_Vim
 " for gui colors
-colorscheme moomincore
-hi clear CursorLine " highlight ONLY the linenr
-hi clear SpellBad
+" <C-w>f ~/.config/nvim/colors/moomincore.vim
+if !empty(glob("~/.config/nvim/colors/moomincore.vim"))
+    colorscheme moomincore
+endif
 
-hi SpellBad cterm=underline ctermfg=3
-hi MatchParen cterm=bold,italic,underline ctermbg=0 ctermfg=12
+hi clear CursorLine " highlight ONLY the linenr
+" hi clear SpellBad
+
+hi CursorLine ctermbg=233 ctermfg=NONE
+hi VertSplit ctermfg=6 ctermbg=0 cterm=NONE
 
 " syntax highlight "+,%,=,<>,-,^,*" etc in certain files
 " https://stackoverflow.com/a/18943408/8225672
@@ -335,15 +329,14 @@ function! s:def_base_syntax()
   syntax match commonOperator "\(+\|%\|=\|/\|<\|>\|-\|\^\|\*\)"
   syntax match baseDelimiter "\(\[\|\]\|\.\|,\)"
   syntax match myParens "\((\|)\)"
-  hi link commonOperator Operator
-  hi link baseDelimiter Label
-  hi myParens ctermfg=10
+  hi link commonOperator Statement
+  hi link baseDelimiter Statement
+  hi link myParens Special
 endfunction
 "}}}
-
-"**************************
-"******** PLUGINS *********
-"**************************
-"{{{
-source ~/.config/nvim/plugins_default.vim
+"******** PLUGINS ********* {{{
+" <C-w>f ~/.config/nvim/plugins_default.vim
+if !empty(glob("~/.config/nvim/plugins_default.vim"))
+    source ~/.config/nvim/plugins_default.vim
+endif
 "}}}
