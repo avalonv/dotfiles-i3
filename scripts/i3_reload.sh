@@ -9,14 +9,14 @@ if [[ $1 == 'start' ]]; then
     shift
 fi
 
-#urxvt_color="-bg '#040008'"
+kitty_opt="-o background=#04010F -o font_size=10"
 echo 'Launching scratchpads'
 for id in "$@"; do
     echo $id
     if ! pgrep --full @${id} &> /dev/null ; then
         case $id in
-        hell) eval "kitty --name @hell -o background=#04010F" &;;
-        man) eval "kitty --name @man -o background=#04010F" &;;
+        hell) eval "kitty --name @hell $kitty_opt" &;;
+        man) eval "kitty --name @man $kitty_opt" &;;
         ranger) eval "kitty --name @ranger -e 'ranger -c ~/.config/ranger/rifle-new-window'" &;;
         gotop) eval "kitty --name @gotop -e 'gotop --rate=0.7'" &;;
         ?) eval "kitty --name @${id}" &;;
