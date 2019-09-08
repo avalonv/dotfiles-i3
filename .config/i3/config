@@ -1,11 +1,8 @@
+# vim:foldenable:foldmethod=marker
 # TODO:
 # find out if there are any i3-gaps options left >:c
-# vim:foldenable:foldmethod=marker
 
-#=====================
-#=====VARIABLES=======
-#=====================
-#{{{
+#===== VARIABLES ===== {{{
 
 # workspace names
 set $mod Mod4
@@ -39,10 +36,7 @@ set $hidemarks exec --no-startup-id polybar-msg hook marks 1
 font pango:terminus, Icons 10
 
 #}}}
-#=====================
-#=======COLORS========
-#=====================
-#{{{
+#====== COLORS ======= {{{
 
 set $inact_ind                                     #27213D
 set $urgent                                        #FF0000
@@ -76,10 +70,7 @@ client.placeholder      $burple         $black          $burple         #222222 
 client.background       #111
 
 #}}}
-#=====================
-#=====EXEC=ONCE=======
-#=====================
-#{{{
+#==== EXEC ONCE ====== {{{
 
 # wallpaper
 $ensi feh --bg-scale ~/Pictures/Wallpapers/manfeedingswans.jpg
@@ -88,7 +79,10 @@ $ensi xrdb .Xresources
 # keyboard with right alt for acentos
 $ensi setxkbmap -layout us -variant altgr-intl -option nodeadkeys
 
-$ensi sudo xbacklight -set 50
+# lower brightness
+# $ensi sudo xbacklight -set 50
+
+# start pulseaudio
 $ensi pulseaudio --start
 
 # blank xscreensaver after x minutes of inactivity
@@ -96,13 +90,17 @@ $ensi pulseaudio --start
 $ensi xautolock -detectsleep -time 2 -locker "xscreensaver-command -activate" \
 -nowlocker "xscreensaver-command -lock"
 
-$ensi "sleep 5 && $HOME/scripts/i3_reload.sh 'start' 'hell' 'man' && xscreensaver -nosplash"
+$ensi "sleep 5 && $HOME/scripts/i3_reload.sh 'start' 'hell' 'man'"
+
+$ensi xscreensaver -nosplash
+
+$ensi keynav "loadconfig ~/.keynavrc"
+
+# $ensi ~/scripts/i3_modtab.py
+$ensi pgrep 'i3_modtab' || ~/scripts/i3_modtab.sh
 
 #}}}
-#=====================
-#=====EXEC=ALWAYS=====
-#=====================
-#{{{
+#==== EXEC ALWAYS ==== {{{
 
 # energy star
 exec_always --no-startup-id xset dpms 70 120 300
@@ -111,10 +109,7 @@ exec_always --no-startup-id xset dpms 70 120 300
 exec_always --no-startup-id xset b off
 
 #}}}
-#=====================
-#======BINDINGS=======
-#=====================
-#{{{
+#===== BINDINGS ====== {{{
 
 # start a terminal
 bindsym $mod+Return $ensi kitty, focus
@@ -145,18 +140,16 @@ rofi -modi "window#ssh#bindings:egrep '^bindsym' $HOME/.config/i3/config" \
 # hide/show polybar
 bindsym $mod+Home $ensi polybar-msg cmd toggle
 
-# take screenshot of focused window/selected region (maim)
+# take screenshot of focused window/selected region and save it to clipboard
+# maim:
 bindsym --release $mod+Shift+p  $ensi \
-maim -m 9 -s ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
-
+maim -m 9 -s | tee ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png | xclip -selection clipboard -t image/png
 bindsym --release $mod+Shift+Print $ensi \
-maim -m 9 -s ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
-
+maim -m 9 -s | tee ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png | xclip -selection clipboard -t image/png
 bindsym --release $mod+Print $ensi \
-maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
-
+maim -m 9 -i $(xdotool getactivewindow) | tee ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png | xclip -selection clipboard -t image/png
 bindsym --release $mod+p $ensi \
-maim -m 9 -i $(xdotool getactivewindow) ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png
+maim -m 9 -i $(xdotool getactivewindow) | tee ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png | xclip -selection clipboard -t image/png
 
 # scrot:
 #bindsym --release $mod+Shift+p     $ensi scrot -s -q 100 -e 'mv $f ~/Pictures/Screenshots/'
@@ -171,13 +164,9 @@ bindsym $mod+Control+l focus output primary; $ensi xautolock -locknow
 bindsym $mod+i exec copyq show
 
 #}}}
-#=====================
-#===MOUSE=BINDINGS====
-#=====================
-#{{{
+#== MOUSE BINDINGS === {{{
 
-### THIS IS AWFUL!!!!
-# simulate mouse buttons
+# bindsym $mod+n $ensi keynav "loadconfig ~/.keynavrc"
 #bindsym --release $mod+z $ensi xdotool click --clearmodifiers 1
 #bindsym --release $mod+x $ensi xdotool click --clearmodifiers 3
 #bindsym $mod+z exec xvkbd -no-repeat -no-jump-pointer -text '\m1'
@@ -196,10 +185,7 @@ bindsym button4 nop
 bindsym button5 nop
 
 #}}}
-#=====================
-#====WIN=BINDINGS=====
-#=====================
-#{{{
+#=== WIN BINDINGS ==== {{{
 
 # use mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -229,6 +215,7 @@ bindsym $mod+F10 $ensi ~/scripts/i3_togglegaps.sh
 
 # change focus between tiling/floating
 bindsym $mod+grave focus mode_toggle
+bindsym $mod+Escape focus mode_toggle
 
 # focus the parent/child container
 bindsym $mod+a focus parent
@@ -255,6 +242,15 @@ bindsym $mod+KP_Right $ensi ~/scripts/i3_movecorner.sh 6
 bindsym $mod+KP_Home  $ensi ~/scripts/i3_movecorner.sh 7
 bindsym $mod+KP_Up    $ensi ~/scripts/i3_movecorner.sh 8
 bindsym $mod+KP_Prior $ensi ~/scripts/i3_movecorner.sh 9
+
+# i3_modtab.py
+# bindsym $mod+Tab exec echo "swap_focus" | nc --send-only -U \
+# "$XDG_RUNTIME_DIR/i3/event-listener.sock"
+
+# i3_modtab.sh
+# bindsym $mod+Tab [con_mark=_last] focus
+bindsym $mod+o [con_mark="_last"] focus
+
 
 # warp to mouse
 # bindsym $mod+c move position mouse
@@ -288,10 +284,7 @@ $(eval $(xdotool getmouselocation --shell) && echo "$WINDOW") --inc .05
 bindsym $mod+shift+asterisk sticky toggle
 
 #}}}
-#=====================
-#=====WIN=OPTIONS=====
-#=====================
-#{{{
+#==== WIN OPTIONS ==== {{{
 
 # launch as floating
 for_window [class="Peek"] floating enable
@@ -309,7 +302,7 @@ for_window [class="Xfce4-panel"] floating enable
 for_window [class="mpv"] floating enable
 for_window [class="xev"] floating enable
 # for_window [class="nvim-qt"] floating enable, resize set 600 350, mark _last, exec ~/scripts/i3_movecorner.sh 9
-for_window [class="tridactyl_editor"] floating enable, resize set 700 400, mark _last, exec ~/scripts/i3_movecorner.sh 9
+for_window [class="tridactyl_editor"] floating enable, resize set 850 500, mark e, exec ~/scripts/i3_movecorner.sh 9
 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
@@ -326,11 +319,11 @@ smart_borders on
 hide_edge_borders smart
 
 # border styles
-for_window [class=".*"] border pixel 4
+for_window [class=".*"] border pixel 3
 # floating, but not of the two initial scratchpads
-for_window [floating instance="^[^@]"] border normal 3
-for_window [floating class="kitty|URxvt"] border pixel 3
-for_window [instance="^@"] border pixel 3
+for_window [floating instance="^[^@]"] border normal 2
+for_window [floating class="kitty|URxvt"] border pixel 2
+for_window [instance="^@"] border pixel 2
 
 # other
 #floating_maximum_size 1280 x 900
@@ -341,10 +334,7 @@ force_display_urgency_hint 2000 ms
 #mouse_warping none
 
 #}}}
-#=====================
-#=====WORKSPACES======
-#=====================
-#{{{
+#==== WORKSPACES ===== {{{
 
 workspace_layout tabbed
 workspace_auto_back_and_forth no
@@ -392,39 +382,25 @@ bindsym $mod+mod1+Right workspace next
 bindsym $mod+mod1+Left workspace prev
 
 #}}}
-#=====================
-#=====TITLE=STYLES====
-#=====================
-#{{{
+#=== TITLE STYLES ==== {{{
 
 # title styles
 for_window [class="Firefox"]               title_format "<span foreground='grey'><b> web </b></span><span>%title</span>"
 for_window [class="URxvt|kitty|alacritty"] title_format "<span foreground='grey'><b> term </b></span><span>%title</span>"
-for_window [class="i3-frame"]              title_format "<span foreground='$pink'> %title</span>"
-for_window [con_mark=".*"]                 title_format "<span foreground='grey'><b>#</b></span><span> %title</span>"
+# for_window [class="i3-frame"]              title_format "<span foreground='$pink'> %title</span>"
 for_window [instance=$S3_name]             title_format "<span foreground='$crimson'><b>#</b></span><span> %title</span>"
 for_window [instance=$S2_name]             title_format "<span foreground='$crimson'><b>#</b></span><span> %title</span>"
 for_window [instance=$S1_name]             title_format "<span foreground='$crimson'><b>#</b></span><span> %title</span>"
 
 #}}}
-#=====================
-#=====SCRATCHPADS=====
-#=====================
-#{{{
+#==== SCRATCHPADS ==== {{{
 
 # aka "minimizable" windows
 # "xwinfo" is useful for getting the sizes of windows
 bindsym $mod+plus scratchpad show
-bindsym $mod+x move scratchpad
+bindsym $mod+q move scratchpad
 bindsym $mod+BackSpace move scratchpad
 bindsym $mod+shift+x mark --add _last, move scratchpad
-
-# hide the named scratchpads
-bindsym $mod+Escape [con_mark="^S[1-3]"] move scratchpad
-
-# goto last scratchpad window
-bindsym $mod+o [con_mark="_last"] focus
-
 
 # scratchpad 1 (hell)
 for_window [instance=$S1_name] floating enable
@@ -451,10 +427,7 @@ bindsym $mod+Shift+F3 [con_mark="S3"] focus
 bindsym $mod+F3 [con_mark="S3"] scratchpad show
 
 #}}}
-#=====================
-#========MODES========
-#=====================
-#{{{
+#======= MODES ======= {{{
 
 bindsym $mod+r mode "resize"
 mode "resize" {
@@ -489,43 +462,94 @@ mode "resize" {
 bindsym $mod+m mode "mark", $showmarks
 mode "mark" {
         bindsym $mod+m $ensi i3-input -F 'mark --add --toggle "%s"' -P  'new mark: ', $hidemarks
-        bindsym $mod+1 mark --add --toggle M1, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+2 mark --add --toggle M2, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+3 mark --add --toggle M3, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+4 mark --add --toggle M4, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+5 mark --add --toggle M5, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+6 mark --add --toggle M6, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+7 mark --add --toggle M7, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+8 mark --add --toggle M8, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+9 mark --add --toggle M9, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+0 mark --add --toggle M0, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+1 mark --add --toggle 1, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+2 mark --add --toggle 2, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+3 mark --add --toggle 3, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+4 mark --add --toggle 4, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+5 mark --add --toggle 5, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+6 mark --add --toggle 6, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+7 mark --add --toggle 7, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+8 mark --add --toggle 8, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+9 mark --add --toggle 9, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+0 mark --add --toggle 0, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+a mark --add --toggle a, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+b mark --add --toggle b, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+c mark --add --toggle c, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+d mark --add --toggle d, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+e mark --add --toggle e, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+f mark --add --toggle f, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+g mark --add --toggle g, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+h mark --add --toggle h, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+i mark --add --toggle i, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+j mark --add --toggle j, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+k mark --add --toggle k, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+l mark --add --toggle l, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+m mark --add --toggle m, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+n mark --add --toggle n, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+o mark --add --toggle o, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+p mark --add --toggle p, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+q mark --add --toggle q, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+r mark --add --toggle r, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+s mark --add --toggle s, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+t mark --add --toggle t, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+u mark --add --toggle u, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+v mark --add --toggle v, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+w mark --add --toggle w, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+x mark --add --toggle x, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+y mark --add --toggle y, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+z mark --add --toggle z, mark --add _last, $hidemarks, mode "default"
 
         bindsym Return $hidemarks, mode "default"
         bindsym Escape $hidemarks, mode "default"
 }
 
 # go to marked window
-#bindsym $mod+shift+apostrophe mark test
 bindsym $mod+apostrophe mode "goto", $showmarks
 mode "goto" {
         bindsym $mod+apostrophe $ensi i3-input -F '[con_mark="%s"] focus' -P 'goto mark: ', $hidemarks
-        bindsym $mod+1 [con_mark="M1"] focus, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+2 [con_mark="M2"] focus, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+3 [con_mark="M3"] focus, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+4 [con_mark="M4"] focus, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+5 [con_mark="M5"] focus, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+6 [con_mark="M6"] focus, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+7 [con_mark="M7"] focus, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+8 [con_mark="M8"] focus, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+9 [con_mark="M9"] focus, mark --add _last, $hidemarks, mode "default"
-        bindsym $mod+0 [con_mark="M0"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+1 [con_mark="1"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+2 [con_mark="2"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+3 [con_mark="3"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+4 [con_mark="4"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+5 [con_mark="5"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+6 [con_mark="6"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+7 [con_mark="7"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+8 [con_mark="8"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+9 [con_mark="9"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+0 [con_mark="0"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+a [con_mark="a"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+b [con_mark="b"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+c [con_mark="c"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+d [con_mark="d"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+e [con_mark="e"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+f [con_mark="f"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+g [con_mark="g"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+h [con_mark="h"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+i [con_mark="i"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+j [con_mark="j"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+k [con_mark="k"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+l [con_mark="l"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+m [con_mark="m"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+n [con_mark="n"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+o [con_mark="o"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+p [con_mark="p"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+q [con_mark="q"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+r [con_mark="r"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+s [con_mark="s"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+t [con_mark="t"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+u [con_mark="u"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+v [con_mark="v"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+w [con_mark="w"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+x [con_mark="x"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+y [con_mark="y"] focus, mark --add _last, $hidemarks, mode "default"
+        bindsym $mod+z [con_mark="z"] focus, mark --add _last, $hidemarks, mode "default"
 
         bindsym Return $hidemarks, mode "default"
         bindsym Escape $hidemarks, mode "default"
 }
 
 # reload/lock/quit
-bindsym $mod+Control+r mode "R|L|Q"
+bindsym $mod+End mode "R|L|Q"
 mode "R|L|Q" {
         bindsym $mod+R mode "default", reload, $ensi "$HOME/scripts/i3_reload.sh 'hell' 'man'"
         bindsym $mod+L mode "default", $ensi xautolock -locknow && sleep 10 && sudo zzz
