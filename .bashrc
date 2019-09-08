@@ -3,6 +3,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTFILE=$HOME/.bash_history
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -110,6 +113,7 @@ alias sudo='sudo '
 alias trifle='rifle -f t '
 alias mpc='ncmpcpp'
 alias yget="youtube-dl -x --audio-format mp3"
+# https://superuser.com/questions/927523/how-to-download-only-subtitles-of-videos-using-youtube-dl
 
 alias killjobs='kill $(jobs -p)'
 alias dic='dict_query'
