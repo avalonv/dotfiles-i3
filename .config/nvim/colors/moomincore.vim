@@ -28,18 +28,23 @@ hi Statement           ctermfg=11   guifg=#F5A2BB
 hi String              ctermfg=13   guifg=#FF6666
 hi TabLine             ctermfg=14   guifg=#735787  ctermbg=232  guibg=#050009 cterm=NONE    gui=NONE
 hi TabLineFill         ctermfg=16   guifg=#000000  ctermbg=232  guibg=#050009 cterm=NONE    gui=NONE
-hi TabLineSel          ctermfg=6    guifg=#74D7EC  ctermbg=232  guibg=#050009 cterm=Bold    gui=Bold
+hi TabLineSel          ctermfg=6    guifg=#74D7EC  ctermbg=232  guibg=#050009 cterm=NONE    gui=NONE
 hi Type                ctermfg=4    guifg=#00C777
 hi pythonBuiltin       ctermfg=11   guifg=#F5A2BB                             cterm=Bold    gui=Bold
 hi pythonStatement     ctermfg=6    guifg=#74D7EC
-hi Pmenu               ctermfg=13                  ctermbg=0                  cterm=Bold    gui=Bold
+hi Pmenu               ctermfg=11                  ctermbg=233                cterm=NONE    gui=NONE
 hi PmenuSel            ctermfg=0                   ctermbg=6
-hi WildMenu            ctermfg=0                   ctermbg=6
-hi StatusLine          ctermfg=0                   ctermbg=13
+hi WildMenu            ctermfg=0                   ctermbg=6                  cterm=NONE
+hi StatusLine          ctermfg=0                   ctermbg=11
 hi NonText             ctermfg=7                                              cterm=NONE    gui=NONE
-hi Search              ctermfg=10                  ctermbg=3                  cterm=bold
-hi Error               ctermfg=15                  ctermbg=1
+hi Search              ctermfg=16                  ctermbg=3                  cterm=NONE
+hi Error               ctermfg=9                   ctermbg=NONE               cterm=undercurl
+hi cType               ctermfg=2
+hi SpellBad            ctermfg=NONE                ctermbg=NONE               cterm=undercurl
+hi MatchParen          ctermfg=3                   ctermbg=NONE               cterm=bold,underline
 
+hi! link pythonBuiltin Function
+hi! link SpellCap SpellBad
 hi! link Identifier Normal
 hi! link SpecialChar Normal
 hi! link Repeat Conditional
