@@ -40,11 +40,13 @@ hi NonText             ctermfg=7                                              ct
 hi Search              ctermfg=16                  ctermbg=3                  cterm=NONE
 hi Error               ctermfg=9                   ctermbg=NONE               cterm=undercurl
 hi cType               ctermfg=2
+" vim/neovim currently don't support configuring individual underline/curl
+" colors
 hi SpellBad            ctermfg=NONE                ctermbg=NONE               cterm=undercurl
 hi MatchParen          ctermfg=3                   ctermbg=NONE               cterm=bold,underline
 
-hi! link pythonBuiltin Function
 hi! link SpellCap SpellBad
+hi! link pythonBuiltin Function
 hi! link Identifier Normal
 hi! link SpecialChar Normal
 hi! link Repeat Conditional
