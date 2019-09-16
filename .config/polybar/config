@@ -43,8 +43,7 @@ padding-right = 0
 module-margin-left = 1
 module-margin-right = 1
 
-
-
+; confusingly using those values are 1-indexed
 font-0 = envypn:pixelsize=12;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
@@ -64,7 +63,7 @@ cursor-click = pointer
 cursor-scroll = ns-resize
 
 
-modules-left = alsa cpu memory battery date keyboard
+modules-left = alsa cpu memory battery date keyboard xinput-lock
 modules-center = i3 marks
 modules-right = acpi-warn updates-void openweathermap-forecast eth wlan
 
@@ -176,7 +175,6 @@ interval = 3
 format-prefix = ""
 format-prefix-foreground = ${colors.foreground-alt}
 label = " %percentage:2%%"
-
 ; }}}
 [module/memory]
 ; {{{
@@ -314,4 +312,11 @@ type = custom/script
 exec = ~/scripts/openweathermap-forecast.sh
 interval = 1200
 label-font = 4
+; }}}
+[module/xinput-lock]
+; {{{
+type = custom/script
+exec = ~/scripts/xinput_lock.sh 'AT Translated Set 2 keyboard'
+interval = 10
+label-font = 5
 ; }}}
