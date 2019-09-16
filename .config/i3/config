@@ -73,8 +73,10 @@ client.background       #111
 #==== EXEC ONCE ====== {{{
 
 # wallpaper
-$ensi feh --bg-scale ~/Pictures/Wallpapers/manfeedingswans.jpg
+$ensi feh --bg-scale ~/Pictures/Wallpapers/koi.jpg
+
 $ensi xrdb .Xresources
+$ensi xscreensaver -no-splash &
 
 # keyboard with right alt for acentos
 $ensi setxkbmap -layout us -variant altgr-intl -option nodeadkeys
@@ -87,14 +89,10 @@ $ensi pulseaudio --start
 
 # blank xscreensaver after x minutes of inactivity
 # see https://www.daveeddy.com/2018/10/01/run-user-scripts-on-suspend-and-wakeup-on-void-linux/
-$ensi xautolock -detectsleep -time 2 -locker "xscreensaver-command -activate" \
--nowlocker "xscreensaver-command -lock"
+# $ensi xautolock -detectsleep -time 2 -locker "xscreensaver-command -activate" \
+# -nowlocker "xscreensaver-command -lock"
 
 $ensi "sleep 5 && $HOME/scripts/i3_reload.sh 'start' 'hell' 'man'"
-
-$ensi xscreensaver -nosplash
-
-$ensi keynav "loadconfig ~/.keynavrc"
 
 # $ensi ~/scripts/i3_modtab.py
 $ensi pgrep 'i3_modtab' || ~/scripts/i3_modtab.sh
@@ -103,7 +101,7 @@ $ensi pgrep 'i3_modtab' || ~/scripts/i3_modtab.sh
 #==== EXEC ALWAYS ==== {{{
 
 # energy star
-exec_always --no-startup-id xset dpms 70 120 300
+# exec_always --no-startup-id xset dpms 70 120 300
 
 # turn off god awful beep
 exec_always --no-startup-id xset b off
@@ -136,6 +134,9 @@ rofi -modi "drun#run" -show drun -lines 33 -width 20 -location 1
 bindsym $mod+slash $ensi \
 rofi -modi "window#ssh#bindings:egrep '^bindsym' $HOME/.config/i3/config" \
 -show window -lines 12 -width 68 -location 0
+bindsym $mod+g $ensi \
+rofi -modi "window#ssh#bindings:egrep '^bindsym' $HOME/.config/i3/config" \
+-show window -lines 12 -width 68 -location 0
 
 # hide/show polybar
 bindsym $mod+Home $ensi polybar-msg cmd toggle
@@ -158,11 +159,15 @@ maim -m 9 -i $(xdotool getactivewindow) | tee ~/Pictures/Screenshots/$(date +%F-
 #bindsym --release $mod+p           $ensi scrot -u -q 100 -e 'mv $f ~/Pictures/Screenshots/'
 
 # lock screen (now)
-bindsym $mod+Control+l focus output primary; $ensi xautolock -locknow
+# bindsym $mod+Control+l focus output primary; $ensi xautolock -locknow
+bindsym $mod+Control+l focus output primary; $ensi xscreensaver-command -lock
 
 # open CopyQ's menu for inserting text
 bindsym $mod+i exec copyq show
 
+# rofi thing
+# https://github.com/davatorium/rofi/issues/38
+# bindsym $mod+Tab exec rofi -show window -kb-accept-entry '!Super-Tab,!Super_L,!Super+Super_L,Return'
 #}}}
 #== MOUSE BINDINGS === {{{
 
@@ -395,12 +400,12 @@ for_window [instance=$S1_name]             title_format "<span foreground='$crim
 #}}}
 #==== SCRATCHPADS ==== {{{
 
-# aka "minimizable" windows
-# "xwinfo" is useful for getting the sizes of windows
 bindsym $mod+plus scratchpad show
+# only move window to scratchpad if it is floating
+# bindsym $mod+q [floating con_id=__focused__] move scratchpad
 bindsym $mod+q move scratchpad
+# move any window to scrathcpad
 bindsym $mod+BackSpace move scratchpad
-bindsym $mod+shift+x mark --add _last, move scratchpad
 
 # scratchpad 1 (hell)
 for_window [instance=$S1_name] floating enable
@@ -552,7 +557,8 @@ mode "goto" {
 bindsym $mod+End mode "R|L|Q"
 mode "R|L|Q" {
         bindsym $mod+R mode "default", reload, $ensi "$HOME/scripts/i3_reload.sh 'hell' 'man'"
-        bindsym $mod+L mode "default", $ensi xautolock -locknow && sleep 10 && sudo zzz
+        # bindsym $mod+L mode "default", $ensi xautolock -locknow && sleep 10 && sudo zzz
+        bindsym $mod+L mode "default", $ensi xscreensaver-command -lock && sleep 10 && sudo zzz
         bindsym $mod+Q mode "quit?"
         bindsym $mod+c mode "cat?"
 
