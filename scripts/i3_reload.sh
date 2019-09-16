@@ -9,7 +9,7 @@ if [[ $1 == 'start' ]]; then
     shift
 fi
 
-kitty_opt="-o background=#04010F -o font_size=10"
+kitty_opt="-o background=#04010F -o font_size=10 -o background_opacity=0.8"
 echo 'Launching scratchpads'
 for id in "$@"; do
     echo $id
