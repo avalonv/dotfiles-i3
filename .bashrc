@@ -20,7 +20,7 @@ HISTFILESIZE=-1
 # emulate vi for inputting text
 set -o vi
 
-export PATH="$PATH:$HOME/scripts:$HOME/bin:$HOME/.local/bin"
+export PATH="$PATH:$HOME/scripts:$HOME/bin:$HOME/.local/bin:$HOME/.npm-global/bin"
 
 if nvim_path=$(which nvim); then
     export MANPAGER='nvim +Man!'
@@ -35,7 +35,7 @@ fi
 export RANGER_LOAD_DEFAULT_RC='FALSE'
 
 # fixes kitty ls_colors, see https://github.com/kovidgoyal/kitty/issues/781
-if [[ "$TERM" -eq "xterm-kitty" ]]; then
+if [[ "$TERM" == "xterm-kitty" ]]; then
     export LS_COLORS='di=01;94:ln=01;96:pi=33:so=01;95:bd=01;93:cd=01;93:ex=01;92:do=01;95:su=37;41:sg=30;43:st=37;44:ow=34;42:tw=30;42:ca=30;41'
 fi
 
@@ -128,6 +128,7 @@ alias mpc='ncmpcpp'
 alias yget="youtube-dl -x --audio-format mp3"
 # https://superuser.com/questions/927523/how-to-download-only-subtitles-of-videos-using-youtube-dl
 
+alias rsync-dots='rsync -r --existing $HOME/ $HOME/github/satsudots'
 alias killjobs='kill $(jobs -p)'
 alias term_colors='for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done'
 alias screenshot='maim -m 9 ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png'
