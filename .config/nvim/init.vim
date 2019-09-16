@@ -1,19 +1,12 @@
 " vim:foldenable:foldmethod=marker
 " TODO:
-" change line 265 to have the search/replace enter insert mode in command
-" line mode
 " plugins to test:
-" spelunker.vim
-" sneak
 " nerdcommenter
-" /(^\|.\)noremap \+<\(silent>\)\@!.*\(:\)
-" kqqnwi<silent><esc>q:set nowrapscan<cr>100@q
 " disable airline extensions
-" enable tabline
-" find out how to hide buffers using <C-w> shortcuts
 
 "******** SETTINGS ******** {{{
 
+" quite a few of these are set by default, but I prefer to have them here anyways
 filetype plugin indent on                               " enable plugins for file type detection
 syntax on                                               " use syntax highlighting
 set nocompatible                                        " don't be annoying
@@ -50,7 +43,7 @@ set guicursor=i:blinkon1ver20                           " blinking cursor in ins
 set nocursorline                                        " highlight the current line (disabled bc hogs resources)
 set autoindent                                          " autoindent (duh)
 set autoread                                            " ask to update file when it detects edits done outside of vim
-set autochdir                                           " auto change working directory
+" set autochdir                                           " auto change working directory
 set hidden                                              " don't ask to save buffers when closing them, hide them
 set splitright                                          " open new windows on the right by default
 set nofoldenable                                        " initially disable folding
@@ -65,8 +58,10 @@ set updatetime=300                                      " smaller updatetime for
 set shortmess+=c                                        " don't give |ins-completion-menu| messages.
 set relativenumber
 set statusline=\ %n\ %F\ %r\ %Y
-set splitright
 set belloff=all
+set spellsuggest=15                                     " never give more than 15 spell suggestions
+set showmode
+set ruler
 
 if has("nvim-0.3")
     set signcolumn=yes                                      " always show gutter on the left
@@ -115,8 +110,8 @@ command! ChmodX !chmod +x %
 
 command! SingleCompile !gcc -W -o "%:r"_temp.out %
 
-command! CopyDir silent !xclip -selection clipboard "$(pwd)"
-command! CopyFullPath silent !clip -selection clpboard '%:p'
+command! CopyDir silent !echo "$(pwd)" | xclip -selection clipboard
+command! CopyFullPath silent !echo '%:p' | xclip -selection clpboard
 
 " stolen from justinmk
 command! InsertDate           norm! i<c-r>=strftime('%Y/%m/%d %H:%M:%S')<cr>
@@ -126,16 +121,20 @@ command! InsertDateYYYYMMdd   norm! i<c-r>=strftime('%Y%m%d')<cr>
 command! GetHlGroup echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
             \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
             \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
-
+"}}}
+"******** AUTOCMDS ******** {{{
+"
 " open help windows on the right
 " https://stackoverflow.com/a/21843502/8225672
-autocmd FileType help wincmd K
+" autocmd FileType help wincmd K
 " autocmd FileType help call CheckColumnLenght()
 
 " open new windows on the right by default (https://github.com/neovim/neovim/issues/8350)
-if has("nvim-0.3")
-    autocmd WinNew * wincmd L
-endif
+" disabled because this causes weird bugs with certain windows unless you add
+" ":noautocmd" to everything
+" if has("nvim-0.3")
+"     autocmd WinNew * wincmd L
+" endif
 
 " enable fold markers for these files
 autocmd FileType vim,c,c++ setlocal foldmethod=syntax
@@ -172,7 +171,6 @@ inoremap <C-U> <C-G>u<C-U>v
 " Revert with ":unmap Q".
 noremap Q gq
 
-
 " go to next/previous tab respectively
 noremap  <silent> <M-.> <esc>:tabnext<cr>
 inoremap <silent> <M-.> <esc>:tabnext<cr>
@@ -183,13 +181,20 @@ inoremap <silent> <M-,> <esc>:tabprevious<cr>
 noremap <C-w>e <esc>:edit<space>
 noremap <silent> <C-w>N :tabnew<cr>
 
+" I want https://github.com/neovim/neovim/issues/8350 !!!!
+noremap <silent> <C-w>n :new<cr>:wincmd L<cr>
+noremap <silent> <C-w>f <C-w>f<C-w>L
+
+" delete buffer
+noremap <silent> <C-w>D <esc>:bdelete<cr>
+
 " move all buffers to tabs
 " https://superuser.com/a/430324/900060
 " :h sball
 noremap <Leader>t <esc>:buffers<cr>:tab sball
 
 " open terminal
-noremap <silent> <Leader>T <esc>:vsplit term://bash
+noremap <silent> <Leader>T <esc>:vsplit term://bash<cr>
 
 " stop reading input in terminal
 tnoremap <M-w> <C-\><C-n>
@@ -305,15 +310,22 @@ noremap <Leader>cc :write<cr>:SingleCompile<cr>
 noremap zz za
 
 " copy file path to clipboard
-noremap <silent> <leader>yf :CopyFullPath<cr>
-noremap <silent> <leader>yd :CopyDir<cr>
+noremap  <leader>yp :CopyFullPath<cr>
+noremap  <leader>yd :CopyDir<cr>
 
 " execute everything to the right of the cursor as ex commands
 noremap <silent> <leader>: y$:<C-r>"<cr>
 
+" guess correct spelling and apply it to all matches
+noremap Z= z=1<cr>:silent spellrepall<cr><cr>
 
+" bind <M-key> to arrow keys in ex mode
+:cnoremap <M-l> <right>
+:cnoremap <M-h> <left>
+:cnoremap <M-j> <down>
+:cnoremap <M-k> <up>
 "}}}
-"******** COLOURS ********* {{{
+"********* COLORS ********* {{{
 
 " see :h group-name
 " also see https://vim.fandom.com/wiki/Xterm256_color_names_for_console_Vim
@@ -341,9 +353,9 @@ function! s:def_base_syntax()
   hi link myParens Special
 endfunction
 "}}}
-"******** PLUGINS ********* {{{
-" <C-w>f ~/.config/nvim/plugins_default.vim
-if !empty(glob("~/.config/nvim/plugins_default.vim"))
-    source ~/.config/nvim/plugins_default.vim
-endif
+"********* notes **********"{{{
+"→ use <C-f> to edit the current command or seach pattern
+"→ use g<C-a> on a Block selection with 1s to create a incrementing list
+"→ /(^\|.\)noremap \+<\(silent>\)\@!.*\(:\) (a regex example for when I need to
+" find mappings that should be <silent>)
 "}}}
