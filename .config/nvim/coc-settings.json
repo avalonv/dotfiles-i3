@@ -1,15 +1,16 @@
 {
-    // show diagnostic message if there's an error in the line
-    "diagnostic.checkCurrentLine": true,
+    // show diagnostic message if there's an error in the line,
+    // rahter than under the cursor
+    "diagnostic.checkCurrentLine": false,
 
     // coc-python
     "python.analysis.diagnosticEnabled": false,
     // see https://github.com/neoclide/coc-python/issues/14 for why this is
     // needed. coc-python sucks, prefer coc-pyls
-    "python.linting.enabled": true,
     "python.jediEnabled": true,
-    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": false,
 
     // coc-yank
     "yank.highlight.enable": false,
