@@ -26,5 +26,5 @@ set bell-style none
 # zsh like completion:
 # https://superuser.com/questions/288714/bash-autocomplete-like-zsh
 set show-all-if-ambiguous on
-# you can achieve the same with control-p
+# you can achieve the same with <C-p>/<C-n>
 #TAB:menu-complete
