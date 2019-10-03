@@ -43,7 +43,7 @@ set guicursor=i:blinkon1ver20                           " blinking cursor in ins
 set nocursorline                                        " highlight the current line (disabled bc hogs resources)
 set autoindent                                          " autoindent (duh)
 set autoread                                            " ask to update file when it detects edits done outside of vim
-" set autochdir                                           " auto change working directory
+set autochdir                                           " auto change working directory
 set hidden                                              " don't ask to save buffers when closing them, hide them
 set splitright                                          " open new windows on the right by default
 set nofoldenable                                        " initially disable folding
@@ -71,7 +71,7 @@ if has("nvim-0.4")
 endif
 
 let c_comment_strings=1                                 " show strings inside C comments
-let python_highlight_all = 1                            " use full python syntax highlighting
+let python_highlight_all=1                              " use full python syntax highlighting
 "}}}
 "******** PLUGINS ********* {{{
 " auto install plug{{{
@@ -89,6 +89,8 @@ if !filereadable(vimplug_exists)
 endif
 "}}}
 call plug#begin('~/.config/nvim/plugged')
+
+if has('ttyin') " this is useless in a GUI
 Plug 'vim-airline/vim-airline' "{{{
 set noshowmode
 set noruler " no gods no masters
@@ -98,6 +100,12 @@ set noruler " no gods no masters
 let g:airline#extensions#disable_rtp_load = 1
 let g:airline_powerline_fonts = 1
 let g:airline_extensions = ['whitespace','tabline','coc']
+let g:airline#extensions#tabline#buffers_label = 'B:'
+let g:airline#extensions#tabline#tabs_label = 'T:'
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#buf_label_first = 1
+let g:airline#extensions#tabline#buffer_min_count = 2
+let g:airline#extensions#tabline#show_close_button = 0
 let g:airline_section_x = ''
 let g:airline_section_y = '%y'
 " let g:airline_section_c = '%-0.15{expand("%:p:h")}/%t %{SyntasticStatuslineFlag()}'
@@ -106,27 +114,6 @@ let g:airline_section_y = '%y'
 noremap <silent> <Leader>A :AirlineToggle<cr>
 "<- airline themes ->
 Plug 'vim-airline/vim-airline-themes'
-" (=^‥^=) ω＾|
-" let g:airline_mode_map = {
-"     \ '__'     : '-',
-"     \ 'c'      : '＾● ⋏ ●＾',
-"     \ 'i'      : '｡＾･ｪ･＾｡',
-"     \ 'ic'     : '｡＾･ｪ･＾｡',
-"     \ 'ix'     : '｡＾･ｪ･＾｡',
-"     \ 'n'      : '  ㅇㅅㅇ ',
-"     \ 'multi'  : '  ㅇㅅㅇ ',
-"     \ 'ni'     : '  ㅇㅅㅇ ',
-"     \ 'no'     : '  ㅇㅅㅇ ',
-"     \ 'R'      : ' (=･ｪ･=? ',
-"     \ 'Rv'     : ' (=･ｪ･=? ',
-"     \ 's'      : ' (=･ｪ･=? ',
-"     \ 'S'      : ' (=･ｪ･=? ',
-"     \ '^S'     : ' (=･ｪ･=? ',
-"     \ 't'      : ' ( ^..^)ﾉ',
-"     \ 'v'      : '(=^.ω.^=)',
-"     \ 'V'      : '(=^.ω.^=)',
-"     \ ''     : '(=^.ω.^=)',
-"     \ }
 let g:airline_mode_map = {
     \ '__'     : '-',
     \ 'c'      : 'COMM',
@@ -163,7 +150,8 @@ else
   let g:airline_theme = 'lucius'
 endif
 
-"endif}}}
+"}}}
+endif
 Plug 'rafaqz/ranger.vim' "{{{
 "}}}
 Plug 'tpope/vim-surround' "{{{
@@ -320,6 +308,9 @@ Plug 'lilydjwg/colorizer' "{{{
 ""}}}
 Plug 'maxbrunsfeld/vim-yankstack' "{{{
 "}}}
+Plug 'tpope/vim-eunuch' "{{{
+"}}}
+
 call plug#end()
 call yankstack#setup()
 "}}}
@@ -346,6 +337,42 @@ function! CheckColumnLenght()
     endif
 endfunction
 
+function! <SID>BetterRegister()
+    let more = &more
+    set nomore
+    redraw!
+    registers
+    echohl Question | echon "\nPlease press the register name" | echohl None
+    let &more = more
+    while 1
+        let ch = getchar()
+        if ch !~# '\v[0-9]+'
+            continue
+        else
+            redraw!
+            return nr2char(ch)
+        endif
+    endwhile
+endfunction
+
+function! <SID>BetterMark()
+    let more = &more
+    set nomore
+    redraw!
+    marks
+    echohl Question | echon "\nPlease press the mark name" | echohl None
+    let &more = more
+    while 1
+        let ch = getchar()
+        if ch !~# '\v[0-9]+'
+            continue
+        else
+            redraw!
+            return nr2char(ch)
+        endif
+    endwhile
+endfunction
+
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
@@ -354,11 +381,24 @@ if !exists(":DiffOrig")
     command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis
 endif
 
-command! Nvimrc edit ~/.config/nvim/init.vim
 
 command! ChmodX !chmod +x %
 
 command! SingleCompile !gcc -W -o "%:r"_temp.out %
+
+if !has("nvim")
+    command! Config edit ~/.vimrc
+else
+    command! Config edit ~/.config/nvim/init.vim
+endif
+
+" if !has("nvim")
+"     command! SudoWrite w !sudo tee % > /dev/null
+" else
+    " https://github.com/neovim/neovim/issues/1716 (just use eunuch.vim for
+    " now)
+    " command! SudoWrite w :term sudo tee % > /dev/null
+" endif
 
 command! CopyDir silent !echo "$(pwd)" | xclip -selection clipboard
 command! CopyFullPath silent !echo '%:p' | xclip -selection clpboard
@@ -387,21 +427,21 @@ command! GetHlGroup echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") .
 " endif
 
 " enable fold markers for these files
-autocmd FileType vim,c,c++ setlocal foldmethod=syntax
+autocmd FileType c,c++ setlocal foldmethod=syntax
 autocmd FileType python,sh setlocal foldmethod=indent
-autocmd FileType txt,conf setlocal foldmethod=marker
+autocmd FileType txt,conf,vim setlocal foldmethod=marker
 
 " https://www.reddit.com/r/vim/comments/48zclk/i_just_found_a_simple_method_to_read_pdf_doc_odt/
-" requires pandoc
-autocmd BufReadPre *.docx,*.rtf,*.odp,*.odt silent setlocal nomodifiable
+" Read-only docs through pandoc (requires pandoc)
+autocmd BufReadPre *.docx,*.rtf,*.odp,*.odt silent setlocal readonly
 autocmd BufReadPost *.docx,*.rtf,*.odp,*.odt silent %!pandoc "%" -tplain -o /dev/stdout
 
 " Read-only .doc through antiword
-autocmd BufReadPre *.doc silent setlocal nomodifiable
+autocmd BufReadPre *.doc silent setlocal readonly
 autocmd BufReadPost *.doc silent %!antiword "%"
 
 " Read-only pdf through pdftotext (requires poppler-utils)
-autocmd BufReadPre *.pdf silent setlocal nomodifiable
+autocmd BufReadPre *.pdf silent setlocal readonly
 autocmd BufReadPost *.pdf silent %!pdftotext -nopgbrk -layout -q -eol unix "%" - | fmt -w78
 
 " remove line numbers when entering terminal:
@@ -411,6 +451,7 @@ autocmd TermClose * setlocal number relativenumber signcolumn=yes
 autocmd FileType markdown,txt setlocal spell
 "}}}
 "******** MAPPINGS ******** {{{
+map <space> <leader>
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -450,8 +491,8 @@ noremap <silent> <Leader>T <esc>:vsplit term://bash<cr>
 tnoremap <M-w> <C-\><C-n>
 
 " go to next/previous/last buffer respectively
-noremap <silent> go :bnext<cr>
-noremap <silent> gp :bprevious<cr>
+noremap <silent> gp :bnext<cr>
+noremap <silent> go :bprevious<cr>
 noremap <silent> gl <esc>:buffer #<cr>
 
 " list buffers
@@ -574,6 +615,13 @@ noremap Z= z=1<cr>:silent spellrepall<cr><cr>
 :cnoremap <M-h> <left>
 :cnoremap <M-j> <down>
 :cnoremap <M-k> <up>
+
+" inoremap <c-r> <c-r>="\<lt>c-r>" . <SID>BetterRegister()<cr>
+nnoremap <expr> <leader>" <SID>BetterRegister()
+nnoremap <expr> <leader>@ <SID>BetterRegister()
+
+nnoremap <expr> <leader>' <SID>BetterMark()
+nnoremap <expr> <leader>` <SID>BetterMark()
 "}}}
 "********* COLORS ********* {{{
 
@@ -608,4 +656,5 @@ endfunction
 "→ use g<C-a> on a Block selection with 1s to create a incrementing list
 "→ /(^\|.\)noremap \+<\(silent>\)\@!.*\(:\) (a regex example for when I need to
 " find mappings that should be <silent>)
+"→ get spell files https://github.com/neovim/neovim/issues/2804#issuecomment-109901018
 "}}}
