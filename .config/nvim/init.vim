@@ -90,7 +90,6 @@ endif
 "}}}
 call plug#begin('~/.config/nvim/plugged')
 
-if has('ttyin') " this is useless in a GUI
 Plug 'vim-airline/vim-airline' "{{{
 set noshowmode
 set noruler " no gods no masters
@@ -151,7 +150,6 @@ else
 endif
 
 "}}}
-endif
 Plug 'rafaqz/ranger.vim' "{{{
 "}}}
 Plug 'tpope/vim-surround' "{{{
@@ -236,83 +234,13 @@ endfunction
 " show yank history
 " nnoremap <silent> "" :<C-u>CocList -A --normal yank<cr>
 "}}}
-" Plug 'Raimondi/delimitMate'{{{
-" au filetype vim let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'", '`':'`'}
-" let g:delimitMate_autoclose = 1
-" let g:delimitMate_matchpairs = "(:),[:],{:}"
-" let g:delimitMate_jump_expansion = 1
-" let g:delimitMate_expand_space = 1
-" let g:delimitMate_expand_cr = 2
-" let g:delimitMate_expand_inside_quotes = 1
-"}}}
 Plug 'tpope/vim-repeat' "{{{
-"}}}
-" Plug 'justinmk/vim-sneak' "{{{
-" map f <Plug>Sneak_s
-" map F <Plug>Sneak_S
-" " map t <Plug>Sneak_t
-" " map T <Plug>Sneak_T
-" nnoremap <silent> t :<C-U>call sneak#wrap('',           2, 0, 0, 1)<CR>
-" nnoremap <silent> T :<C-U>call sneak#wrap('',           2, 1, 0, 1)<CR>
-" xnoremap <silent> t :<C-U>call sneak#wrap(visualmode(), 2, 0, 0, 1)<CR>
-" xnoremap <silent> T :<C-U>call sneak#wrap(visualmode(), 2, 1, 0, 1)<CR>
-" onoremap <silent> t :<C-U>call sneak#wrap(v:operator,   2, 0, 0, 1)<CR>
-" onoremap <silent> T :<C-U>call sneak#wrap(v:operator,   2, 1, 0, 1)<CR>
 "}}}
 Plug 'lilydjwg/colorizer' "{{{
 "}}}
-"Plug 'kamykn/spelunker.vim' "{{{
-"set nospell
-
-"" Enable spelunker.vim. (default: 1)
-"let g:enable_spelunker_vim = 1
-
-"" Check spelling for words longer than set characters. (default: 4)
-"let g:spelunker_target_min_char_len = 1
-
-"" Max amount of word suggestions. (default: 15)
-"let g:spelunker_max_suggest_words = 15
-
-"" Max amount of highlighteds words in buffer. (default: 100)
-"let g:spelunker_max_hi_words_each_buf = 100
-
-"" Spellcheck type: (default: 1)
-"" 1: File is checked for spelling mistakes when opening and saving. This
-"" may take a bit of time on large files.
-"" 2: Spellcheck displayed words in buffer. Fast and dynamic. The waiting time
-"" depeds on the setting of CursorHold `set updatetime=1000`.
-"let g:spelunker_check_type = 2
-
-"" Create own custom autogroup to enable spelunker.vim for specific filetypes.
-"augroup spelunker
-"  autocmd!
-"  " Setting for g:spelunker_check_type = 1:
-"  autocmd BufWinEnter,BufWritePost * call spelunker#check()
-
-"  " Setting for g:spelunker_check_type = 2:
-"  autocmd CursorHold * call spelunker#check_displayed_words()
-"augroup END
-
-"function! ToggleSpelunker()
-"    if g:enable_spelunker_vim
-"        let g:enable_spelunker_vim = 0
-"    else
-"        let g:enable_spelunker_vim = 1
-"    endif
-"endfunction
-
-"noremap <silent> <Leader>s :call ToggleSpelunker()<cr>
-
-"hi link SpelunkerSpellBad SpellBad
-"hi link SpelunkerComplexOrCompoundWord SpellBad
-""}}}
-Plug 'maxbrunsfeld/vim-yankstack' "{{{
-"}}}
 Plug 'tpope/vim-eunuch' "{{{
 "}}}
-
 call plug#end()
-call yankstack#setup()
 "}}}
 "*** FUNCTIONS/COMMANDS *** {{{
 
@@ -567,8 +495,8 @@ nnoremap Y y$
 " find and replace
 " in visual mode, replace only within selection, non linewise
 " https://stackoverflow.com/a/1104144/8225672
-nnoremap <M-r> :%s///gc<left><left><left><left>
-vnoremap <M-r> :s/\%V//gc<left><left><left><left>
+nnoremap <M-r> :%s:::gc<left><left><left><left>
+vnoremap <M-r> :s:\%V::gc<left><left><left><left>
 
 " filter selection with shell commands
 " https://stackoverflow.com/a/2600768/8225672
@@ -652,9 +580,12 @@ function! s:def_base_syntax()
 endfunction
 "}}}
 "********* notes **********"{{{
-"→ use <C-f> to edit the current command or seach pattern
+" Stuff I want to Remember (cuz brain is dumb, mostly regexes and gcommands
+" and shit)
+"→ use <C-f> to edit the current command or search pattern
 "→ use g<C-a> on a Block selection with 1s to create a incrementing list
-"→ /(^\|.\)noremap \+<\(silent>\)\@!.*\(:\) (a regex example for when I need to
+"→ /(^\|.\)noremap \+<\(silent>\)\@!.*\(:\) (a regex example with lookaheads for when I need to
 " find mappings that should be <silent>)
 "→ get spell files https://github.com/neovim/neovim/issues/2804#issuecomment-109901018
+"→ regex to find lines of code, exclude all empty lines and comments: ^\(\s\+#\|#\)\@!.\+$
 "}}}
