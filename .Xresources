@@ -44,22 +44,22 @@ xscreensaver.Dialog.Button.background:  #ffffff
 
 ! URxvt stuff:
 
-URxvt.color0: moomincore0
-URxvt.color1: moomincore1
-URxvt.color2: moomincore2
-URxvt.color3: moomincore3
-URxvt.color4: moomincore4
-URxvt.color5: moomincore5
-URxvt.color6: moomincore6
-URxvt.color7: moomincore7
-URxvt.color8: moomincore8
-URxvt.color9: moomincore9
-URxvt.color10: moomincore10
-URxvt.color11: moomincore11
-URxvt.color12: moomincore12
-URxvt.color13: moomincore13
-URxvt.color14: moomincore14
-URxvt.color15: moomincore15
+/* URxvt.color0: moomincore0 */
+/* URxvt.color1: moomincore1 */
+/* URxvt.color2: moomincore2 */
+/* URxvt.color3: moomincore3 */
+/* URxvt.color4: moomincore4 */
+/* URxvt.color5: moomincore5 */
+/* URxvt.color6: moomincore6 */
+/* URxvt.color7: moomincore7 */
+/* URxvt.color8: moomincore8 */
+/* URxvt.color9: moomincore9 */
+/* URxvt.color10: moomincore10 */
+/* URxvt.color11: moomincore11 */
+/* URxvt.color12: moomincore12 */
+/* URxvt.color13: moomincore13 */
+/* URxvt.color14: moomincore14 */
+/* URxvt.color15: moomincore15 */
 
 URxvt.cursorColor: #ff0000
 URxvt.cursorColor2: #61f2b6

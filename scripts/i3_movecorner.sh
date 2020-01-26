@@ -5,8 +5,7 @@
 
 preset=$1
 keep_mouse='true'
-{ read screen_name max_x max_y ; } < <(xrandr -q |
-awk '/\yconnected\y/{ gsub("x|+", " ", $0); print $1 " " $4 " " $5}' | head -n 1)
+{ read screen_name max_x max_y ; } < <(xrandr -q | awk '/\yconnected primary\y/{ gsub("x|+", " ", $0); print $1 " " $4 " " $5}' | head -n 1)
 # find 'connected', replace x/+ with space, print fields
 
 half_x=$(( max_x / 2 ))

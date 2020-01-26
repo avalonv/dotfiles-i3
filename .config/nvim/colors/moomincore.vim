@@ -15,7 +15,7 @@ hi Comment             ctermfg=14   guifg=#735787                             ct
 hi Conditional         ctermfg=11   guifg=#F5A2BB                             cterm=Bold    gui=Bold
 hi Constant            ctermfg=116  guifg=#87D7D7
 hi CursorLineNr        ctermfg=8    guifg=#766D7F  ctermbg=NONE guibg=#08000D
-hi Folded              ctermfg=255  guifg=#FFFFFF  ctermbg=234
+hi Folded              ctermfg=255  guifg=#FFFFFF  ctermbg=234  guibg=#131116
 hi Function            ctermfg=12   guifg=#00B3B3                             cterm=Bold    gui=Bold
 hi Label               ctermfg=5    guifg=#AAA6E1
 hi LineNr              ctermfg=238  guifg=#444444  ctermbg=NONE guibg=#08000D cterm=NONE    gui=NONE

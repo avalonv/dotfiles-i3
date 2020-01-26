@@ -406,7 +406,7 @@
     },
     "noiframe": "false",
     "noiframeon": [],
-    "editorcmd": "kitty --class tridactyl_editor -e nvim %f -c 'normal %lG%cl'",
+    "editorcmd": "kitty --class tridactyl_editor -e nvim %f +'normal %lG%cl' +'set spell' +'noremap j gj' +'noremap k gk'",
     "rsscmd": "yank %u",
     "browser": "firefox",
     "yankto": "clipboard",

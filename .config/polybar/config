@@ -65,7 +65,7 @@ cursor-scroll = ns-resize
 
 modules-left = alsa cpu memory battery date keyboard xinput-lock
 modules-center = i3 marks
-modules-right = acpi-warn updates-void openweathermap-forecast eth wlan
+modules-right = updates-void openweathermap-forecast eth wlan
 
 ; }}}
 [module/marks]

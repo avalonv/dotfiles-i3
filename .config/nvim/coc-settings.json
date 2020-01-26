@@ -6,11 +6,15 @@
     // coc-python
     "python.analysis.diagnosticEnabled": false,
     // see https://github.com/neoclide/coc-python/issues/14 for why this is
-    // needed. coc-python sucks, prefer coc-pyls
+    // needed. coc-python kinda sucks, prefer coc-pyls
     "python.jediEnabled": true,
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
     "python.linting.pylintEnabled": false,
+    // :thonk: might disable this
+    "pyls.enable": true,
+    "pyls.plugins.pyflakes.enabled": true,
+    "pyls.plugins.pycodestyle.enabled": false,
 
     // coc-yank
     "yank.highlight.enable": false,

@@ -1,3 +1,5 @@
+/* vim:ft=css */
+
 comment {
     selected-active-background: @active-background;
     selected-active-foreground: @active-foreground;
@@ -26,7 +28,8 @@ comment {
 
     background-color: @background;
     background: #08000D;
-    foreground: #DC8CC3;
+    /* text foreground */
+    foreground: #AAA6E1;
     border-color: @background;
     spacing: 1;
 }

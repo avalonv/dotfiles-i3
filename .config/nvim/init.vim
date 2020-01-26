@@ -168,7 +168,7 @@ autocmd TermOpen * IndentLinesDisable
 "}}}
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}} "{{{
 let g:coc_global_extensions = [
-            \  'coc-emoji', 'coc-eslint', 'coc-yank', 'coc-prettier',
+            \  'coc-emoji', 'coc-eslint', 'coc-prettier',
             \  'coc-tsserver', 'coc-tslint', 'coc-tslint-plugin',
             \  'coc-css', 'coc-pyls', 'coc-pairs', 'coc-json', 'coc-yaml']
 
@@ -265,40 +265,52 @@ function! CheckColumnLenght()
     endif
 endfunction
 
-function! <SID>BetterRegister()
-    let more = &more
-    set nomore
-    redraw!
-    registers
-    echohl Question | echon "\nPlease press the register name" | echohl None
-    let &more = more
-    while 1
-        let ch = getchar()
-        if ch !~# '\v[0-9]+'
-            continue
-        else
-            redraw!
-            return nr2char(ch)
-        endif
-    endwhile
+let g:NormieMode = 0
+
+function! ToggleNormieMode()
+    if g:NormieMode == 0
+        set spell
+        set norelativenumber
+        set nonumber
+        noremap j gj
+        noremap k gk
+        noremap 0 g0
+        noremap $ g$
+        let g:NormieMode = 1
+    else
+        set nospell
+        set relativenumber
+        set number
+        unmap j
+        unmap k
+        unmap 0
+        unmap $
+        let g:NormieMode = 0
+    endif
 endfunction
 
-function! <SID>BetterMark()
-    let more = &more
-    set nomore
-    redraw!
-    marks
-    echohl Question | echon "\nPlease press the mark name" | echohl None
-    let &more = more
-    while 1
-        let ch = getchar()
-        if ch !~# '\v[0-9]+'
-            continue
-        else
-            redraw!
-            return nr2char(ch)
-        endif
-    endwhile
+" https://github.com/camspiers/dotfiles/blob/46d71055608fa4998bdb86cb9ebe354cfd61e712/files/.config/nvim/init.vim#L247
+function! CreateCenteredFloatingWindow()
+    let width = float2nr(&columns * 0.6)
+    let height = float2nr(&lines * 0.6)
+    let top = ((&lines - height) / 2) - 1
+    let left = (&columns - width) / 2
+    let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
+
+    let top = "╭" . repeat("─", width - 2) . "╮"
+    let mid = "│" . repeat(" ", width - 2) . "│"
+    let bot = "╰" . repeat("─", width - 2) . "╯"
+    let lines = [top] + repeat([mid], height - 2) + [bot]
+    let s:buf = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
+    call nvim_open_win(s:buf, v:true, opts)
+    set winhl=Normal:Floating
+    let opts.row += 1
+    let opts.height -= 2
+    let opts.col += 2
+    let opts.width -= 4
+    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+    au BufWipeout <buffer> exe 'bw '.s:buf
 endfunction
 
 " Convenient command to see the difference between the current buffer and the
@@ -327,6 +339,8 @@ endif
     " now)
     " command! SudoWrite w :term sudo tee % > /dev/null
 " endif
+
+command! GoodSpell %s:\<i\(\>\|m\>\)\@=:\U&:gie | %s:\<Im\>:I'm:gie | %s:\(^\|\. \)\a:\U&:gie | nohlsearch
 
 command! CopyDir silent !echo "$(pwd)" | xclip -selection clipboard
 command! CopyFullPath silent !echo '%:p' | xclip -selection clpboard
@@ -419,8 +433,8 @@ noremap <silent> <Leader>T <esc>:vsplit term://bash<cr>
 tnoremap <M-w> <C-\><C-n>
 
 " go to next/previous/last buffer respectively
-noremap <silent> gp :bnext<cr>
-noremap <silent> go :bprevious<cr>
+noremap <silent> GK :bnext<cr>
+noremap <silent> GJ :bprevious<cr>
 noremap <silent> gl <esc>:buffer #<cr>
 
 " list buffers
@@ -434,7 +448,7 @@ cnoremap <silent> <M-Q> <esc>:q<cr>
 " toggle line numbers
 noremap <silent> <Leader>l <esc>:set relativenumber!<cr>:set nu!<cr>
 
-" toggle spell
+" toggle spell / capitalize sentences
 noremap <silent> <Leader>s <esc>:set spell!<cr>
 
 " disable highlighting for the last search
@@ -544,12 +558,7 @@ noremap Z= z=1<cr>:silent spellrepall<cr><cr>
 :cnoremap <M-j> <down>
 :cnoremap <M-k> <up>
 
-" inoremap <c-r> <c-r>="\<lt>c-r>" . <SID>BetterRegister()<cr>
-nnoremap <expr> <leader>" <SID>BetterRegister()
-nnoremap <expr> <leader>@ <SID>BetterRegister()
-
-nnoremap <expr> <leader>' <SID>BetterMark()
-nnoremap <expr> <leader>` <SID>BetterMark()
+noremap <leader>n :call ToggleNormieMode()<cr>
 "}}}
 "********* COLORS ********* {{{
 
@@ -571,21 +580,21 @@ hi VertSplit ctermfg=6 ctermbg=0 cterm=NONE
 " https://stackoverflow.com/a/18943408/8225672
 autocmd FileType python call <SID>def_base_syntax()
 function! s:def_base_syntax()
-  syntax match commonOperator "\(+\|%\|=\|/\|<\|>\|-\|\^\|\*\)"
-  syntax match baseDelimiter "\(\[\|\]\|\.\|,\)"
-  syntax match myParens "\((\|)\)"
-  hi link commonOperator Statement
-  hi link baseDelimiter Statement
-  hi link myParens Special
+    syntax match commonOperator "\(+\|%\|=\|/\|<\|>\|-\|\^\|\*\)"
+    syntax match baseDelimiter "\(\[\|\]\|\.\|,\)"
+    syntax match myParens "\((\|)\)"
+    hi link commonOperator Statement
+    hi link baseDelimiter Statement
+    hi link myParens Special
 endfunction
 "}}}
 "********* notes **********"{{{
-" Stuff I want to Remember (cuz brain is dumb, mostly regexes and gcommands
-" and shit)
+" Stuff I want to Remember (cuz brain is dumb, mostly regexes and gcommands and shit)
 "→ use <C-f> to edit the current command or search pattern
 "→ use g<C-a> on a Block selection with 1s to create a incrementing list
-"→ /(^\|.\)noremap \+<\(silent>\)\@!.*\(:\) (a regex example with lookaheads for when I need to
-" find mappings that should be <silent>)
+"→ /(^\|.\)noremap \+<\(silent>\)\@!.*\(:\) (a regex example with lookaheads for when I need to find mappings that should be <silent>)
 "→ get spell files https://github.com/neovim/neovim/issues/2804#issuecomment-109901018
 "→ regex to find lines of code, exclude all empty lines and comments: ^\(\s\+#\|#\)\@!.\+$
+"→ uppercase the first character of every sentence: %s:\(^\|\. \)\a:\U&:gi
+"→ uppercase "I"s and change "Im" to "I'm": :%s:\<i\(\>\|m\>\)\@=:\U&:gi | %s:\<Im\>:I'm:gi
 "}}}

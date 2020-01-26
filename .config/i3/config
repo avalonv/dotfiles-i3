@@ -254,7 +254,8 @@ bindsym $mod+KP_Prior $ensi ~/scripts/i3_movecorner.sh 9
 
 # i3_modtab.sh
 # bindsym $mod+Tab [con_mark=_last] focus
-bindsym $mod+o [con_mark="_last"] focus
+bindsym $mod+o   [con_mark="_last"] focus
+bindsym $mod+Tab [con_mark="_last"] focus
 
 
 # warp to mouse
@@ -466,7 +467,7 @@ mode "resize" {
 # mark a window
 bindsym $mod+m mode "mark", $showmarks
 mode "mark" {
-        bindsym $mod+m $ensi i3-input -F 'mark --add --toggle "%s"' -P  'new mark: ', $hidemarks
+        bindsym $mod+m $ensi i3-input -F 'mark --add --toggle "%s"' -P  'new mark: ', $hidemarks, mode "default"
         bindsym $mod+1 mark --add --toggle 1, mark --add _last, $hidemarks, mode "default"
         bindsym $mod+2 mark --add --toggle 2, mark --add _last, $hidemarks, mode "default"
         bindsym $mod+3 mark --add --toggle 3, mark --add _last, $hidemarks, mode "default"
@@ -555,10 +556,11 @@ mode "goto" {
 
 # reload/lock/quit
 bindsym $mod+End mode "R|L|Q"
+bindsym $mod+Control+r mode "R|L|Q"
 mode "R|L|Q" {
         bindsym $mod+R mode "default", reload, $ensi "$HOME/scripts/i3_reload.sh 'hell' 'man'"
-        # bindsym $mod+L mode "default", $ensi xautolock -locknow && sleep 10 && sudo zzz
-        bindsym $mod+L mode "default", $ensi xscreensaver-command -lock && sleep 10 && sudo zzz
+        # bindsym $mod+L mode "default", $ensi xautolock -locknow
+        bindsym $mod+L mode "default", $ensi xscreensaver-command -lock
         bindsym $mod+Q mode "quit?"
         bindsym $mod+c mode "cat?"
 

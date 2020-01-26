@@ -101,7 +101,7 @@ PROMPT_COMMAND='set_prompt'
 
 
 # void only
-alias xbps-update='xbps-install -Su'
+alias xbps-update='xbps-install -Suy'
 alias xbps-search='xbps-query --regex -Rs'
 alias xbps-info='xbps-query -RS'
 alias xbps-deps='xbps-query -Rx'
@@ -128,7 +128,9 @@ alias mpc='ncmpcpp'
 alias yget="youtube-dl -x --audio-format mp3"
 # https://superuser.com/questions/927523/how-to-download-only-subtitles-of-videos-using-youtube-dl
 
-alias rsync-dots='rsync -r --existing $HOME/ $HOME/github/satsudots'
+alias rsync='rsync --progress'
+alias rsync-dots='rsync -r --existing $HOME/ $HOME/github/satsudots && cd $HOME/github/satsudots && git status'
 alias killjobs='kill $(jobs -p)'
 alias term_colors='for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done'
 alias screenshot='maim -m 9 ~/Pictures/Screenshots/$(date +%F-%H%M%S)_maim.png'
+alias myip="echo $(curl -s ipecho.net/plain)"
